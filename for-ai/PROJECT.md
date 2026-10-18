@@ -6,9 +6,17 @@ A standalone Microsoft Word add-in that connects AI writing assistants to locall
 
 ## Primary goal
 
-Deliver an independently buildable Windows Word add-in, installer, public source
-repository and two-page GitHub Pages site. Preserve known editing restrictions
-and hand off unfinished real-client stress tests without claiming they passed.
+Finish the full standalone acceptance matrix in `HANDOFF.md`, correcting
+defects and retaining actual evidence for every applicable scenario. The public
+repository, installer and two-page site already exist. Publication alone does
+not complete this goal.
+
+Completion requires passing component and hosted CI, native dialog geometry,
+installed Word behavior, independent real WebGPT document sessions, cold/reloaded
+picker rendering, physical navigation, measured edit latency and saved/reopened
+state. Verify final packaging, downloads, Pages and remote synchronization.
+Failed, blocked or unrun required cases remain incomplete; never substitute a
+simulation or a component result for the named real surface.
 
 ## Non-goals
 

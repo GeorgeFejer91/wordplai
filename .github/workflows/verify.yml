@@ -23,6 +23,14 @@ jobs:
       - name: Word component and transport checks (no Office process)
         shell: pwsh
         run: ./modules/word/test.ps1 -OutputDirectory artifacts/ci-components
+      - name: Retain synthetic native UI evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-ui-${{ github.run_id }}
+          path: artifacts/ci-components/ui/
+          if-no-files-found: ignore
+          retention-days: 7
       - name: For-AI structure and safety
         shell: pwsh
         run: ./for-ai/scripts/check-context.ps1 -ProjectRoot .

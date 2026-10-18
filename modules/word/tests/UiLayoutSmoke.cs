@@ -763,11 +763,14 @@ namespace UnderTree.WordAddin
                     {
                         int top = table.Padding.Top + rowHeights.Take(cell.Row).Sum();
                         int left = table.Padding.Left + columnWidths.Take(cell.Column).Sum();
-                        Require(bounds.Left >= left && bounds.Top >= top && bounds.Right <= left + columnWidths[cell.Column] + 1
-                            && bounds.Bottom <= top + rowHeights[cell.Row] + 1,
+                        bool contained = bounds.Left >= left && bounds.Top >= top && bounds.Right <= left + columnWidths[cell.Column] + 1
+                            && bounds.Bottom <= top + rowHeights[cell.Row] + 1;
+                        if (!contained) Capture(form, "cell-layout-failure");
+                        Require(contained,
                             "Native table cell contains " + control.GetType().Name + " " + control.Text + " " + bounds
                             + " in cell " + cell + " " + new Rectangle(left, top, columnWidths[cell.Column], rowHeights[cell.Row])
-                            + (cell.Row < table.RowStyles.Count ? " row style " + table.RowStyles[cell.Row].SizeType + " " + table.RowStyles[cell.Row].Height : " implicit row style"));
+                            + (cell.Row < table.RowStyles.Count ? " row style " + table.RowStyles[cell.Row].SizeType + " " + table.RowStyles[cell.Row].Height : " implicit row style")
+                            + (contained ? "" : "; geometry " + FailureGeometry(form, control, table)));
                     }
                 }
             }
@@ -815,6 +818,20 @@ namespace UnderTree.WordAddin
         {
             if (!value) throw new InvalidOperationException(message);
             checks.Add(message);
+        }
+
+        private static string FailureGeometry(Form form, Control control, TableLayoutPanel table)
+        {
+            return new JavaScriptSerializer().Serialize(new {
+                window = new { form.Size, form.ClientSize, form.MinimumSize, form.MaximumSize,
+                    form.DeviceDpi, font = form.Font.ToString(), form.AutoScaleDimensions, form.CurrentAutoScaleDimensions,
+                    workingArea = Screen.FromControl(form).WorkingArea },
+                parent = new { table.ClientSize, table.Padding, rows = table.GetRowHeights(),
+                    styles = table.RowStyles.Cast<RowStyle>().Select(row => new { row.SizeType, row.Height }).ToArray() },
+                children = table.Controls.Cast<Control>().Select(child => new {
+                    type = child.GetType().Name, child.Text, child.Bounds, child.MinimumSize, child.PreferredSize,
+                    child.Margin, font = child.Font.ToString(), cell = table.GetCellPosition(child) }).ToArray()
+            });
         }
 
         private static void WriteReport(bool passed, string error)
