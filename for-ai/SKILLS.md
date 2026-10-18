@@ -18,16 +18,24 @@ Higher-priority instructions and the current user request always win.
 | --- | --- | --- |
 | Human-read shell inspection, builds and tests | [rtk](skills/rtk/SKILL.md) | Prefer supported RTK filters; keep exact reads and parser input raw. Use bounded native commands if unavailable. |
 | Any coding, refactor, fix, or code review | `ponytail` | Required when installed: reuse existing owners, prefer native/standard features, and implement the smallest complete change. If unavailable, disclose that and apply the YAGNI rules in `PROJECT.md`. |
-| Current or uncertain public facts, APIs, standards, libraries, or online research | `multi-source-web-search` | Conditional: open primary sources, run a blind-spot pass for nontrivial work, and cite the pages actually inspected. |
-| Architecture, ownership, contracts, authority, observability, or durable handoff design | `system-engineering` | Conditional when the task materially changes these surfaces. |
-| Large repository inventory, instruction audit, dependency pressure, or broad impact mapping | `rust-work-graph` | Conditional only when repository complexity justifies graph analysis. |
-| HTML/CSS or frontend UI generation | `uncodixfy` | Conditional for visible frontend code; preserve the product's chosen identity. |
+| Application code and build tooling | `quality-implementation` | Required when installed; preserve contracts and keep extraction bounded. |
+| Planning or modifying tests | `test-engineering` | Required when installed; retain failures and observe real behavior. |
+| HTML/CSS site or picker changes | `uncodixfy-pretext` | Required with its Pretext reference and Ponytail companion; measure bounded labels and verify rendered layouts. |
+| Current GitHub/platform facts | Primary official documentation | Verify changing deployment/release APIs before use. |
 
 ## Project-specific routes
 
-None yet. Add exact identifiers only after the project selects a stack or
-domain that genuinely needs them. Record required vs conditional status,
-nesting order, fallback behavior, and source revision for vendored skills.
+The desktop surface is native C#/COM/WinForms; use native measurement and do not
+claim HTML/Pretext verification for it. Tauri skills do not apply to this stack.
+Keep existing Pretext 0.0.8 for the picker and site unless a measured change
+requires an upgrade. RTK is the only vendored skill; other routes refer to the
+named installed skills. If a required skill is absent, report it and use a
+documented fallback rather than silently installing external instructions.
+
+The installed test-engineering skill references an optional `test-report.py`
+helper that is absent here. Use the existing drivers' actual JSON receipts,
+exit codes and retained logs; record their scope in `VERIFICATION.md`. Do not
+invent a helper-generated report or report that the missing script ran.
 
 ## Supply-chain rule
 

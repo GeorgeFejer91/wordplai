@@ -1,0 +1,28 @@
+{
+  "name": "wordplai",
+  "version": "0.1.0-preview.1",
+  "private": true,
+  "type": "module",
+  "description": "A standalone Microsoft Word add-in with locally owned AI writing rules",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GeorgeFejer91/wordplai.git"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "scripts": {
+    "site:build": "node site/build.mjs",
+    "test:site": "node site/test.mjs",
+    "widget:build": "node modules/word/widget/build.mjs",
+    "test:widget": "node modules/word/widget/test.mjs",
+    "test:widget:state": "node modules/word/widget/state.test.mjs",
+    "verify:architecture": "node modules/maintenance/validate-architecture.mjs"
+  },
+  "devDependencies": {
+    "@chenglou/pretext": "0.0.8",
+    "playwright-core": "1.62.1",
+    "rolldown": "1.2.3"
+  }
+}

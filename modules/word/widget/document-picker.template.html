@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choose a Word document · wordplai</title>
+  <style>
+    :root { color-scheme: light dark; font: 16px/1.5 Arial, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: light-dark(#202124, #ededed); background: light-dark(#fff, #202123); }
+    main { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: 14px; min-width: 0; padding: 16px; }
+    header, section, footer, li, button, span, p { min-width: 0; }
+    h1 { margin: 0; font-size: 1.125rem; line-height: 1.5; font-weight: 600; }
+    p { margin: 6px 0 0; }
+    [data-measure] { display: block; white-space: normal; overflow-wrap: break-word; word-break: normal; line-break: auto; }
+    #documents { display: grid; grid-template-columns: minmax(0, 1fr); align-content: space-between; gap: 8px; list-style: none; margin: 0; padding: 0; }
+    button { color: inherit; background: light-dark(#fff, #292a2d); border: 1px solid light-dark(#b7babd, #777b80); border-radius: 4px; font: inherit; cursor: pointer; min-height: 44px; padding: 10px 12px; }
+    button:hover:not(:disabled) { background: light-dark(#f2f3f4, #36383b); }
+    button:focus-visible { outline: 3px solid light-dark(#1459a8, #9fc7ff); outline-offset: 2px; }
+    button:disabled { cursor: default; opacity: .6; }
+    .document { display: grid; align-content: center; width: 100%; text-align: start; gap: 4px; }
+    .title, .identity { display: block; }
+    .identity { font-size: .875rem; line-height: 1.5; color: light-dark(#54595f, #c2c6cc); }
+    footer { display: grid; gap: 10px; }
+    #navigation { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 10px; }
+    #next { justify-self: end; }
+    #page { text-align: center; }
+    #status { margin: 0; }
+    #status[data-error="true"] { color: light-dark(#9d2420, #ffb4ad); }
+    #retry { justify-self: start; }
+    [hidden] { display: none !important; }
+    @media (min-width: 640px) { #documents { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 480px) { #navigation { grid-template-columns: repeat(2, minmax(0, 1fr)); } #page { grid-column: 1 / -1; grid-row: 1; } #previous, #next { width: 100%; grid-row: 2; } }
+    @media (max-width: 360px) { main { padding: 12px; gap: 12px; } #navigation { gap: 6px; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main id="picker" aria-busy="true" data-measurement="pending">
+    <header>
+      <h1 data-measure>Choose a Word document</h1>
+      <p id="instruction" data-measure>Choose the document to continue writing in.</p>
+    </header>
+    <section aria-label="Open Word documents"><ul id="documents"></ul></section>
+    <footer>
+      <nav id="navigation" aria-label="Document pages" hidden>
+        <button id="previous" type="button"><span data-measure>Previous</span></button>
+        <span id="page" data-measure></span>
+        <button id="next" type="button"><span data-measure>Next</span></button>
+      </nav>
+      <p id="status" role="status" aria-live="polite" data-measure>Loading Word documents…</p>
+      <button id="retry" type="button" hidden><span data-measure>Continue writing</span></button>
+    </footer>
+  </main>
+  <script>/* WORDPLAI_SCRIPT */</script>
+</body>
+</html>

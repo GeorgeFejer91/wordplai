@@ -37,6 +37,10 @@ facts already obvious from source and tests.
   for read-only review or unrelated local changes.
 - Never force-push, rewrite shared history, bypass branch protection, bypass
   secret scanning, or publish known-broken/private material.
+- The user explicitly authorized this standalone preview with remaining
+  acceptance work handed off. Label that release as a preview, expose its
+  concrete limitations, and retain failed tests as failures. This does not
+  authorize calling the product production-ready or publishing private evidence.
 - If credentials, network, CI, conflicts, ownership, or validation block
   publication, report the exact blocker and preserve the ready local state.
 - After pushing, verify the remote SHA and applicable CI/deployment. A push by

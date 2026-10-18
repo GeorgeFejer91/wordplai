@@ -1,0 +1,52 @@
+{
+  "pretext": "0.0.8",
+  "output": "modules/word/assets/document-picker.html",
+  "sha256": "416a21c068d4a179e112b90784c385032dafb1f98d2f11e505b5d7868b5119aa",
+  "bytes": 58378,
+  "inputs": [
+    {
+      "path": "modules/word/widget/build.mjs",
+      "sha256": "8b9a3f945c2d90a316efb5206508c089ebea433c350ee9b93ed35597bb212fcf"
+    },
+    {
+      "path": "modules/word/widget/document-picker.js",
+      "sha256": "63af1d9db2ae9014cb0d18b1eedd1ac9761af1a622edcdb995736d642ee0299c"
+    },
+    {
+      "path": "modules/word/widget/document-picker.template.html",
+      "sha256": "ef3c67a0d32bcdc9a4a2c56baeb0f6170285e0dec9565d9d5f44ad39d8557da6"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/analysis.js",
+      "sha256": "31aad6e83a7faafaaae6637bd4c6e8c303c7f010d1874427cc10c5b7d143f509"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/bidi.js",
+      "sha256": "e5fd7375f9622ededb11520cb3b58f614a9044a7a9f6fa9a48dfe5820a9a72ae"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/generated/bidi-data.js",
+      "sha256": "6785c8f40c107a6d0402e6511d6ca0874b8af82fa67d982669f1c8ecfb76b3be"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/layout.js",
+      "sha256": "e4ba4c592ba903fac1996d0614c61ba9fb9fa36d938270eab5818d9f449953e8"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/line-break.js",
+      "sha256": "93f1e3c6eccd318a34895dc4c3ee7565b7db149e6941e09012d10eead4e8abd8"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/line-text.js",
+      "sha256": "71fb4fa85d06a0ec4c008e6ab0c0b412544cf8d096ea6700b44f0d6b553f875f"
+    },
+    {
+      "path": "node_modules/@chenglou/pretext/dist/measurement.js",
+      "sha256": "a5fb804247f008b8bd75ab967c1c57ba4ab0fbb45c51d9fa0b4be9228a8e69cf"
+    },
+    {
+      "path": "package-lock.json",
+      "sha256": "c20622eadf02fb813c46e7c656c7db538e24c8a0a1393cebaa93708db376f32b"
+    }
+  ]
+}

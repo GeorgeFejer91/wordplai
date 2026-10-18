@@ -1,0 +1,10 @@
+{
+  "version": "2.0.4",
+  "source": "https://github.com/openziti/zrok/releases/tag/v2.0.4",
+  "archiveUrl": "https://github.com/openziti/zrok/releases/download/v2.0.4/zrok_2.0.4_windows_amd64.tar.gz",
+  "checksumsUrl": "https://github.com/openziti/zrok/releases/download/v2.0.4/checksums.sha256.txt",
+  "archiveSha256": "8e4062a159f65c3735d67d82de0f6a6f59555e9f98a786e80c1e6ab22d92d8c9",
+  "executable": "zrok2.exe",
+  "executableSha256": "0702de65616f78cfe4ef72e06e6be463335b4f67b4e67f1f33f394a82fd23713",
+  "licenseSha256": "a1ac6968b53d0542a930420fc9933ee1ec3644bcf4278c77e8909c1876349dee"
+}

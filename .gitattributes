@@ -1,1 +1,5 @@
 * text=auto eol=lf
+# Preserve build-bound native, picker, packaging and resource bytes on checkout.
+modules/word/** -text
+modules/review/selective-editor-contract.json -text
+assets/wraiter/** -text
