@@ -29,6 +29,10 @@ namespace UnderTree.WordAddin
         private readonly GroupBox promptGroup;
         private readonly TableLayoutPanel presetChoices;
         private readonly TableLayoutPanel functionRow;
+        private readonly TableLayoutPanel spaceNotice;
+        private readonly Button spaceClose;
+        private readonly IButtonControl ruleSave;
+        private readonly IButtonControl ruleCancel;
         private readonly Dictionary<CheckBox, string> presets = new Dictionary<CheckBox, string>();
         private readonly Dictionary<RadioButton, string> lengths = new Dictionary<RadioButton, string>();
         private bool arrangingRows;
@@ -179,6 +183,8 @@ namespace UnderTree.WordAddin
             actions.Insert(0, removeMarker);
             AcceptButton = save;
             CancelButton = cancel;
+            ruleSave = save;
+            ruleCancel = cancel;
             Shell.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             Shell.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             Shell.RowStyles.Add(new RowStyle(SizeType.AutoSize));
@@ -204,11 +210,23 @@ namespace UnderTree.WordAddin
                 group.Margin = new Padding(0, 3, 0, 3);
             }
             promptGroup.Margin = Padding.Empty;
+            spaceNotice = NativeLayout.Column();
+            spaceNotice.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            spaceNotice.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            Label spaceMessage = NativeLayout.Label("More window space is needed at this text size. Enlarge the available window space or move this window to a larger display to edit the color rule. Your unsaved draft remains here until you close the window.");
+            spaceMessage.AccessibleName = "More window space needed";
+            spaceClose = NativeLayout.Button("Close", delegate { DialogResult = DialogResult.Cancel; Close(); });
+            spaceNotice.Controls.Add(spaceMessage, 0, 0);
+            spaceNotice.Controls.Add(NativeLayout.Actions(spaceClose), 0, 1);
+            spaceNotice.Visible = false;
+            Controls.Add(spaceNotice);
             presetChoices.SizeChanged += delegate { ReflowPresets(); };
             presetChoices.FontChanged += delegate { ReflowPresets(); };
             functionRow.SizeChanged += delegate { QueueGeometry(); };
             functionRow.FontChanged += delegate { QueueGeometry(); };
             SizeChanged += delegate { QueueGeometry(); };
+            LocationChanged += delegate { QueueGeometry(); };
+            MaximumSizeChanged += delegate { QueueGeometry(); };
             FontChanged += delegate { QueueGeometry(); };
             Shown += delegate { QueueGeometry(); };
             preserve.CheckedChanged += BehaviorChanged;
@@ -300,7 +318,23 @@ namespace UnderTree.WordAddin
                 int requiredHeight = Height - ClientSize.Height + Shell.Padding.Vertical;
                 for (int row = 0; row < heights.Length; row++)
                     requiredHeight += row == 6 ? promptGroup.MinimumSize.Height + promptGroup.Margin.Vertical : heights[row];
-                MinimumSize = new Size(Math.Max(RuleMinimum.Width, presetMinimumWidth), Math.Max(RuleMinimum.Height, requiredHeight));
+                Size required = new Size(Math.Max(RuleMinimum.Width, presetMinimumWidth), Math.Max(RuleMinimum.Height, requiredHeight));
+                Size available = Screen.FromControl(this).WorkingArea.Size;
+                if (MaximumSize.Width > 0) available.Width = Math.Min(available.Width, MaximumSize.Width);
+                if (MaximumSize.Height > 0) available.Height = Math.Min(available.Height, MaximumSize.Height);
+                bool fits = required.Width <= available.Width && required.Height <= available.Height;
+                Shell.Visible = fits;
+                spaceNotice.Visible = !fits;
+                AcceptButton = fits ? ruleSave : null;
+                CancelButton = fits ? ruleCancel : spaceClose;
+                if (fits) MinimumSize = required;
+                else
+                {
+                    spaceNotice.Padding = Shell.Padding;
+                    MinimumSize = new Size(Math.Min(RuleMinimum.Width, available.Width), Math.Min(RuleMinimum.Height, available.Height));
+                    Size = new Size(Math.Min(Width, available.Width), Math.Min(Height, available.Height));
+                    spaceNotice.BringToFront();
+                }
             });
         }
 

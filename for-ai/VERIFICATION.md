@@ -125,3 +125,27 @@ remote synchronization, CI/deployment state, and whether `for-ai/` changed.
 Existing drivers' actual JSON receipts and logs are retained in ignored
 `artifacts/`; they are the evidence source. The optional installed skill's
 missing report helper was not run, and no helper-produced report is claimed.
+
+## Full acceptance work — 2026-10-19
+
+The primary goal now covers every applicable scenario in `HANDOFF.md`, including
+installed and real-client surfaces. The earlier goal remains unfinished; these
+results do not imply full acceptance.
+
+- A fresh isolated Word workflow passed 209 assertions with zero drift across
+  46 inputs at snapshot `2f7dfd0`. It covered independent native conversations,
+  multiple/duplicate document names, closed/reopened choices, stale revisions,
+  direct wording, comments, green protection, protected native units and native
+  save/reopen. It used its own Word PID and disposable documents, not the
+  installed add-in or a real WebGPT session.
+- The UI candidate adds a readable no-fit state when the desktop or native
+  maximum size cannot contain the current text metrics. Hidden editing controls
+  cannot save through Enter; restoring space preserves the draft and returns
+  the editor. The new bounded-window regression failed against the old code;
+  1,368 native UI checks and 21 renders then passed locally. The final candidate,
+  including context-marker recovery, passed all 20 component gates with 1,419
+  native UI checks and 21 renders. Hosted qualification remains separate.
+- Browser control timed out twice, and the saved Wordplai connection returned
+  `FORBIDDEN`. Real WebGPT behavior and timing remain blocked pending a working
+  browser/connection; no retired connector or simulated client substitutes for
+  that acceptance evidence. No capability URLs are included in this report.

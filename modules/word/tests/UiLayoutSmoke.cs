@@ -132,9 +132,7 @@ namespace UnderTree.WordAddin
                 {
                     form.Size = size;
                     Settle(form);
-                    CheckBounds(form);
-                    CheckChoiceText(form);
-                    CheckPromptSpace(form, 4);
+                    CheckRuleGeometry(form, 4);
                 }
                 Capture(form, "color-rule-minimum");
                 TextBox outlineInput = FindText(form, "Color");
@@ -218,9 +216,7 @@ namespace UnderTree.WordAddin
                 form.Font = new Font(form.Font.FontFamily, form.Font.SizeInPoints * 2);
                 form.Size = new Size(1600, 884);
                 Settle(form);
-                CheckBounds(form);
-                CheckChoiceText(form);
-                CheckPromptSpace(form, 3);
+                CheckRuleGeometry(form, 3);
                 Capture(form, "color-rule-enlarged-text");
             }
             using (RuleDialog form = new RuleDialog(Dispatch, rules[1], "synthetic-ui-document", "mark-0"))
@@ -228,16 +224,17 @@ namespace UnderTree.WordAddin
                 Open(form);
                 form.Size = form.MinimumSize;
                 Settle(form);
-                CheckBounds(form);
-                CheckPromptSpace(form, 4);
+                CheckRuleGeometry(form, 4);
                 Capture(form, "color-rule-context-marker");
                 form.Font = new Font(form.Font.FontFamily, form.Font.SizeInPoints * 2);
                 form.Size = new Size(1600, 884);
                 Settle(form);
-                CheckBounds(form);
-                CheckChoiceText(form);
-                CheckPromptSpace(form, 3);
+                CheckRuleGeometry(form, 3);
                 Capture(form, "color-rule-context-marker-enlarged");
+                form.Font = SystemFonts.MessageBoxFont;
+                form.Size = new Size(760, 755);
+                Settle(form);
+                CheckRuleGeometry(form, 4);
                 FindButton(form, "Remove this marker").PerformClick();
                 var removed = calls.Last(call => call.Item1 == "remove_mark").Item2;
                 Require(UiState.Text(removed, "id") == "mark-0" && UiState.Text(removed, "documentId") == "synthetic-ui-document",
@@ -250,11 +247,49 @@ namespace UnderTree.WordAddin
                 form.Font = enlarged;
                 form.Size = new Size(760, 755);
                 Settle(form);
-                CheckBounds(form);
-                CheckChoiceText(form);
-                CheckPromptSpace(form, 4);
+                CheckRuleGeometry(form, 4);
                 Capture(form, "color-rule-reported-size");
             }
+            using (RuleDialog form = new RuleDialog(Dispatch, rules[1]))
+            {
+                Open(form);
+                TextBox draft = FindText(form, "Custom prompt");
+                draft.Text = "Keep this unsaved draft exactly.";
+                int saves = calls.Count(call => call.Item1 == "save_rule");
+                form.MaximumSize = new Size(760, 720);
+                form.Font = new Font(form.Font.FontFamily, form.Font.SizeInPoints * 2);
+                Settle(form);
+                CheckRuleGeometry(form, 3);
+                Require(Descendants(form).Any(control => control.Visible && control.AccessibleName == "More window space needed"),
+                    "A bounded window shows a readable no-fit state instead of overlapping editing controls.");
+                Require(draft.Text == "Keep this unsaved draft exactly." && calls.Count(call => call.Item1 == "save_rule") == saves,
+                    "The no-fit state retains the exact unsaved draft without assigning a rule.");
+                Capture(form, "color-rule-no-fit");
+                form.MaximumSize = Size.Empty;
+                form.Font = SystemFonts.MessageBoxFont;
+                form.Size = new Size(760, 755);
+                Settle(form);
+                CheckRuleGeometry(form, 4);
+                Require(draft.Visible && draft.Text == "Keep this unsaved draft exactly."
+                    && !Descendants(form).Any(control => control.Visible && control.AccessibleName == "More window space needed"),
+                    "Removing the space constraint restores the editor and preserves the unsaved draft.");
+                Require(calls.Count(call => call.Item1 == "save_rule") == saves,
+                    "No-fit recovery does not save or change the rule.");
+            }
+        }
+
+        private static void CheckRuleGeometry(Form form, int promptLines)
+        {
+            CheckBounds(form);
+            CheckChoiceText(form);
+            if (Descendants(form).Any(control => control.Visible && control.AccessibleName == "More window space needed"))
+            {
+                Require(!FindText(form, "Custom prompt").Visible && !FindButton(form, "Save color rule").Visible
+                    && form.AcceptButton == null && form.CancelButton != null,
+                    "The no-fit state hides editing controls, disables Enter-to-save and keeps a close action.");
+                return;
+            }
+            CheckPromptSpace(form, promptLines);
         }
 
         private static void CheckRibbon()
@@ -422,7 +457,8 @@ namespace UnderTree.WordAddin
 
         private static void CheckRuleOutline(RuleDialog form, string color)
         {
-            TableLayoutPanel shell = form.Controls.OfType<TableLayoutPanel>().Single();
+            TableLayoutPanel shell = form.Controls.OfType<TableLayoutPanel>().Single(panel =>
+                panel.Controls.OfType<GroupBox>().Any(group => group.Text == "Custom prompt"));
             using (Bitmap bitmap = new Bitmap(shell.Width, shell.Height))
             {
                 shell.DrawToBitmap(bitmap, shell.ClientRectangle);

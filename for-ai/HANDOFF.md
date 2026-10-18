@@ -74,8 +74,12 @@ responses do not close the live-host gap.
 **Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
 transport and autosave checks but failed the native WinForms containment gate.
 The Custom prompt GroupBox required 166 pixels in a 115-pixel-high TableLayout
-cell at the tested size. The corresponding local 1,322-check run passed; the
-hosted font/DPI/layout cause is not yet established. Preserve the failing gate,
+cell at the tested size. The corresponding local 1,322-check run passed. A
+fresh hosted capture identified a 1024×720 working area, 18.875pt text and a
+screen-clamped minimum that could not contain the required controls. A candidate
+now exposes a readable no-fit state, preserves the open draft and restores
+editing when space returns; local regression checks pass, while hosted candidate
+qualification is still required. Preserve the failing gate,
 reproduce the exact runner/font/DPI/minimum-size case and verify every supported
 dialog allocation before an installed UI claim. This is separate from the
 ChatGPT picker and the earlier JSON property-order assertion correction.
