@@ -25,6 +25,7 @@ $inputs = @($sources) + $widgetInputs + @(Get-ChildItem -LiteralPath $branding -
     (Join-Path $PSScriptRoot 'THIRD-PARTY.md'), (Join-Path $repo 'package.json'), (Join-Path $PSScriptRoot 'packaging/installer.nsi'),
     (Join-Path $PSScriptRoot 'packaging/zrok-LICENSE'), (Join-Path $PSScriptRoot 'packaging/zrok.json'), (Join-Path $PSScriptRoot 'packaging/fetch-zrok.ps1'))
 $sourceSnapshot = @($inputs | ForEach-Object { [ordered]@{path=[IO.Path]::GetRelativePath($repo,$_);sha256=(Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash.ToLowerInvariant()} })
+$packageVersion = (Get-Content -Raw -LiteralPath (Join-Path $repo 'package.json') | ConvertFrom-Json).version
 function Assert-SourceSnapshot {
     foreach ($entry in $sourceSnapshot) {
         if ((Get-FileHash -LiteralPath (Join-Path $repo $entry.path) -Algorithm SHA256).Hash.ToLowerInvariant() -ne $entry.sha256) {
@@ -65,7 +66,7 @@ Copy-Item -LiteralPath (Join-Path $branding 'icon.ico') -Destination (Join-Path 
 $payloadFiles = @('wrAIter.Word.dll','README.md','THIRD-PARTY.md','zrok-LICENSE','wrAIter.ico')
 if (Test-Path -LiteralPath (Join-Path $runtime 'zrok.exe')) { $payloadFiles += 'runtime/zrok.exe' }
 Assert-SourceSnapshot
-$manifest = [ordered]@{ product='wordplai';version='0.1.0-preview.1';platform='Windows desktop Word';
+$manifest = [ordered]@{ product='wordplai';version=$packageVersion;platform='Windows desktop Word';
     inputs=$sourceSnapshot;
     tunnel=$(if(Test-Path -LiteralPath $bundledZrok){$zrokPin}else{$null});
     files=@($payloadFiles | ForEach-Object { $payload=Get-Item -LiteralPath (Join-Path $OutputDirectory $_); [ordered]@{path=$_;bytes=$payload.Length;sha256=(Get-FileHash -LiteralPath $payload.FullName -Algorithm SHA256).Hash.ToLowerInvariant()} }) }
@@ -78,7 +79,7 @@ if ($Installer) {
         throw 'Install NSIS and put makensis.exe on PATH, or pass -NsisExecutable with its full path.'
     }
     $setup = Join-Path (Split-Path $OutputDirectory -Parent) 'wordplai-setup.exe'
-    & $nsis '/V2' "/DPAYLOAD=$OutputDirectory" "/DOUTPUT=$setup" (Join-Path $PSScriptRoot 'packaging/installer.nsi')
+    & $nsis '/V2' "/DPAYLOAD=$OutputDirectory" "/DOUTPUT=$setup" "/DVERSION=$packageVersion" (Join-Path $PSScriptRoot 'packaging/installer.nsi')
     if ($LASTEXITCODE -ne 0) { throw 'Word installer build failed.' }
     Assert-SourceSnapshot
     Get-Item -LiteralPath $setup | Select-Object FullName,Length

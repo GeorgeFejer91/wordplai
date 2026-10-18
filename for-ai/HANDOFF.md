@@ -76,12 +76,14 @@ transport and autosave checks but failed the native WinForms containment gate.
 The Custom prompt GroupBox required 166 pixels in a 115-pixel-high TableLayout
 cell at the tested size. The corresponding local 1,322-check run passed. A
 fresh hosted capture identified a 1024×720 working area, 18.875pt text and a
-screen-clamped minimum that could not contain the required controls. A candidate
-now exposes a readable no-fit state, preserves the open draft and restores
-editing when space returns; local regression checks pass, while hosted candidate
-qualification is still required. Preserve the failing gate,
-reproduce the exact runner/font/DPI/minimum-size case and verify every supported
-dialog allocation before an installed UI claim. This is separate from the
+screen-clamped minimum that could not contain the required controls. Commit
+`9ce27dc` fixes this with a readable no-fit state, preserves the open draft and
+restores editing when space returns. The regression fails against the old code;
+all 20 component gates pass locally and in hosted run `39175387165`, including
+1,419 local and 1,373 hosted native UI checks with 21 renders in each run.
+The original failures remain retained. Published preview.1 does not contain
+this fix; preview.2 is built but not installed or released. Installed UI and
+physical interaction qualification remain open. This is separate from the
 ChatGPT picker and the earlier JSON property-order assertion correction.
 
 ## Prioritized scenario matrix
@@ -93,7 +95,7 @@ effect. Reuse existing fixtures before adding a new harness.
 | Priority / scenario | Expected observable outcome | Evidence and timing points |
 | --- | --- | --- |
 | P0 — standalone build and package | Clean checkout builds with its own pinned tooling and local contract; installer includes the intended tunnel binary and licenses. No UnderTree checkout, private profile or account state is required. | Exact source, dependency-lock, picker, DLL and installer hashes; build exit codes; verify installed DLL against the package before any installed claim. |
-| P0 — native dialog containment across Windows environments | Custom prompt and every other native control fit their allocated table cells at supported sizes, fonts and DPI, without clipping, internal scrolling or overlap. | Reproduce hosted Windows run 39126772674 (166px group in 115px cell), retain its actual failure, compare the passing local environment and verify rendered geometry after a scoped fix. Do not skip the native UI gate or count browser picker tests as evidence. |
+| P0 — native dialog containment across Windows environments | Custom prompt and every other visible native control fit their allocated cells without clipping, internal scrolling or overlap. When the available desktop cannot fit readable editing controls, a readable Close state preserves the draft, disables hidden Save and restores editing when space returns. | Source regression, local and hosted containment now pass; preserve the original hosted failures and require installed/physical evidence separately. Do not skip the native UI gate or count browser picker tests as evidence. |
 | P0 — direct wording and foreground | One authorized paragraph changes directly, with no native revisions, one rationale and immediate green protection. Word typing/focus refusal makes no edit and returns control promptly. Preserve and unmarked neighbors remain exact. | Request sent, dispatch admitted, first native text change, first visible rationale/green, response and later autosave. Exercise foreground Word, another foreground app and a retained inactive target without focus/input injection. |
 | P0 — visible permission versus stale metadata | Unambiguous surviving owned anchors reconcile to the current visible permission; missing, ambiguous, revoked or genuinely stale restrictive authority refuses precisely. No remove/reapply workaround is counted as automatic repair. | Full read and failed/successful tool result, current native range/text/paint, marker status and revision. Distinguish each actual rejection reason; preserve protected text exactly. |
 | P0 — requested colors and rule ownership | Fresh RGB is neutral; uniquely matching RGB or exact existing identity extends the unchanged rule for every supported action. Ambiguous same-RGB identities require an exact choice. Local assignment and later reuse behave consistently. | Exact requested/native RGB, new marker identity/ranges and before/after rules, text and formatting. Exercise citations and ordinary prose; no citation-specific shortcut. |
@@ -140,15 +142,22 @@ Keep unsanitized evidence private; do not overwrite it with a redacted copy.
 
 ## Readiness and next action
 
-1. Finish standalone dependency/build/documentation extraction, then qualify the
-   exact installer and its source/payload binding. Confirm the stable Download
-   page points to the observed standalone release asset and checksum. The bundled
-   tunnel is Windows AMD64; test the installer's 32-bit/ARM OS refusal and supported
-   x64 clean-machine installation separately from Office bitness.
+1. Standalone extraction, component gates, local browser checks, build and
+   source/payload binding pass. Preview.2's installer and exact DLL are ready
+   for qualification; see `VERIFICATION.md` for their hashes. The preview.2
+   Word-open refusal passes without modifying the installed payload. Save and
+   close existing Word documents before a real upgrade; do not close them on
+   the user's behalf. Keep the stable Download page on the observed preview.1
+   release until a replacement is qualified. The bundled tunnel is Windows
+   AMD64; unsupported-OS, clean-machine, upgrade/uninstall and Office-bitness
+   variants remain separate checks.
 2. Run the P0 safety scenarios against the installed package and retain all
    failures. Resolve or prominently disclose foreground and host-rendering gaps;
    preview publication does not establish those acceptance criteria.
-3. Run the two fresh minimal-invocation web sessions, both independent targets,
+3. Restore supported browser control and the current connector first: Chrome
+   control times out, while the saved connector returns `FORBIDDEN` even though
+   the installed local/tunnel status reports running. This is not a confirmed
+   root cause. Run the two fresh minimal-invocation web sessions, both independent targets,
    cold/reloaded picker paths and physical double-click. Repeat only affected
    checks after a fix, with one demonstrated negative control for new behavior.
 4. Claim a scenario verified only when the actual named surface passed with

@@ -2,6 +2,9 @@ Unicode true
 !include "MUI2.nsh"
 !include "LogicLib.nsh"
 !include "x64.nsh"
+!ifndef VERSION
+!error "Build through modules/word/build.ps1 to supply the package version."
+!endif
 Name "wordplai"
 OutFile "${OUTPUT}"
 InstallDir "$LOCALAPPDATA\Programs\wrAIter Word"
@@ -13,7 +16,7 @@ SetCompressor /SOLID lzma
 VIProductVersion "0.1.0.0"
 VIAddVersionKey "ProductName" "wordplai"
 VIAddVersionKey "FileDescription" "wordplai for Microsoft Word installer"
-VIAddVersionKey "FileVersion" "0.1.0-preview.1"
+VIAddVersionKey "FileVersion" "${VERSION}"
 VIAddVersionKey "LegalCopyright" "UnderTree contributors"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
@@ -83,7 +86,7 @@ File "${PAYLOAD}\runtime\zrok.exe"
 SetRegView 64
 WriteRegStr HKCU "Software\wrAIterWord" "InstallDir" "$INSTDIR"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "DisplayName" "wordplai"
-WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "DisplayVersion" "0.1.0-preview.1"
+WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "DisplayVersion" "${VERSION}"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "Publisher" "GeorgeFejer91"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "InstallLocation" "$INSTDIR"
 WriteRegStr HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\wrAIterWord" "DisplayIcon" "$INSTDIR\wrAIter.ico"

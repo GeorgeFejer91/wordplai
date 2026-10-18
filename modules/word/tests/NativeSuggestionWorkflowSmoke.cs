@@ -62,6 +62,12 @@ internal static partial class NativeSuggestionWorkflowSmoke
             editor = new WordEditor((object)application, marshal, Path.Combine(output, "profile"), Path.Combine(output, "unused-zrok.exe"));
             Local("connection_local");
             string scenario = args.Length < 3 ? "all" : args[2];
+            if (scenario == "background-save-only")
+            {
+                BackgroundTimerSave(); WriteResult("PASS", null);
+                Console.WriteLine("PASS " + checks.Count + " native background-timer save assertions.");
+                return 0;
+            }
             if (scenario == "direct-comments-only") DirectCommentAnchors();
             if (scenario == "all" || scenario == "concurrency-only") { ConcurrentMcpClients(); NativeFinalizerRecovery(); }
             if (scenario != "protected-only" && scenario != "concurrency-only" && scenario != "direct-comments-only")
@@ -358,6 +364,33 @@ internal static partial class NativeSuggestionWorkflowSmoke
         }
     }
 
+    private static void BackgroundTimerSave()
+    {
+        ChoiceFixture a = null, b = null;
+        try
+        {
+            a = AddChoiceFixture("timer-a.docx", Original);
+            b = AddChoiceFixture("timer-b.docx", "Another document stays unchanged.");
+            UseChoiceFixture(a); ((dynamic)b.Document).Activate();
+            int request = 0;
+            foreach (var edit in new[] {
+                Tuple.Create(Original, "Document A states its point clearly."),
+                Tuple.Create(Outside, "A freshly reviewed tail keeps its meaning."),
+                Tuple.Create(ReopenedChoiceSource, "Document A remains clear after reopening.") })
+            {
+                var context = SessionReview("native-background-A", "read_manuscript", Values("manuscript_id", a.Id));
+                TimedSuggestion(ContextRequest("timer-direct-" + request++, context, edit.Item1, edit.Item2), "native-background-A");
+            }
+            BackgroundDirectSave(a, b);
+        }
+        finally
+        {
+            if (a != null) CloseChoiceFixture(a);
+            if (b != null) CloseChoiceFixture(b);
+            document = null; documentId = null;
+        }
+    }
+
     private static void BackgroundDirectSave(ChoiceFixture a, ChoiceFixture b)
     {
         SessionReview("native-background-B", "read_manuscript", Values("manuscript_id", b.Id));
@@ -374,8 +407,6 @@ internal static partial class NativeSuggestionWorkflowSmoke
         using (var autosave = new WordAutoSave((object)application, () => true,
             target => editor.RefreshReviewDocument(target), failures.Add, () => editor.BackgroundReviewDocuments()))
         {
-            DateTime now = DateTime.UtcNow;
-            autosave.Pulse(now); autosave.Pulse(now.AddSeconds(1));
             WaitBackgroundSaved(a, autosave, failures);
             Check(FileHash(a.Path) != beforeA && FileHash(b.Path) == beforeB && ChoiceNativeIdentity(b) == nativeB &&
                 WordSnapshot.Identity((object)application.ActiveDocument) == WordSnapshot.Identity(b.Document) &&
@@ -414,6 +445,8 @@ internal static partial class NativeSuggestionWorkflowSmoke
         Check(failures.Count == 0 && autosave.LastError == null && (bool)((dynamic)fixture.Document).Saved &&
             (int)application.BackgroundSavingStatus == 0,
             "The production inactive-document coordinator completes a confirmed native save: " + String.Join("; ", failures));
+        selectionObservations.Add(new { scenario = "production-background-save-timer", elapsedMilliseconds = watch.Elapsed.TotalMilliseconds,
+            trigger = "Production timer; no manual Pulse or Save call." });
     }
 
     private static string[] BackgroundGreenIds(ChoiceFixture fixture, string expected)
@@ -427,7 +460,7 @@ internal static partial class NativeSuggestionWorkflowSmoke
             marks.Any(mark => mark.Quote == "Document A remains clear after reopening.") &&
             marks.Any(mark => mark.Quote == "Document A states its point clearly.") &&
             marks.Any(mark => mark.Quote == "A freshly reviewed tail keeps its meaning."),
-            "Without refreshing local state, native saved metadata proves both accepted paragraphs are protected.");
+            "Without refreshing local state, native saved metadata proves the accepted paragraphs are protected.");
         Check(marks.All(mark => (bool)((dynamic)fixture.Document).Bookmarks.Exists(mark.Id) &&
             (string)((dynamic)fixture.Document).Bookmarks.Item(mark.Id).Range.Text == mark.Quote &&
             (int)((dynamic)fixture.Document).Bookmarks.Item(mark.Id).Range.Font.Shading.BackgroundPatternColor == 10795380 &&

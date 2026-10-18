@@ -24,3 +24,15 @@ modules. Do not operate on unrelated open Word documents.
 | Async sizing hides an unstable result | Observe actual native geometry convergence; retain the failure rather than adding a sleep or weakening bounds. |
 | Sizing change alters rule authority | Existing native UI dispatch/Save/Cancel assertions and complete component suite. |
 | A simulated check is mistaken for installed behavior | Keep isolated, installed, physical and real-client results separate under the canonical handoff. |
+
+After the UI fix passes hosted CI, prepare the next preview candidate for
+installed-package qualification. This owns `package.json`, its lock, the widget
+input manifest, `modules/word/build.ps1` and `packaging/installer.nsi`. Derive
+installer metadata from the package version and retain source/payload hashes.
+Building a candidate does not establish installation or live-client success.
+
+The next focused coverage change owns `NativeSuggestionWorkflowSmoke.cs` and
+its existing PowerShell driver: remove manual pulses from the background-save
+scenario and observe the real production timer. Reuse its owned Word fixtures,
+selected-document provider and save/reopen assertions. A copied disabled-timer
+control must fail; installed add-in wiring remains a separate gate.

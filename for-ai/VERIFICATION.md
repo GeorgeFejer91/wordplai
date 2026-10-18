@@ -144,8 +144,66 @@ results do not imply full acceptance.
   the editor. The new bounded-window regression failed against the old code;
   1,368 native UI checks and 21 renders then passed locally. The final candidate,
   including context-marker recovery, passed all 20 component gates with 1,419
-  native UI checks and 21 renders. Hosted qualification remains separate.
+  native UI checks and 21 renders. Hosted run `39175387165` at `9ce27dc`
+  subsequently passed all 20 gates, with 1,373 native UI checks and 21 renders
+  on its smaller desktop. This qualifies the source fix, not preview.1's
+  installed UI or physical gestures.
 - Browser control timed out twice, and the saved Wordplai connection returned
   `FORBIDDEN`. Real WebGPT behavior and timing remain blocked pending a working
   browser/connection; no retired connector or simulated client substitutes for
   that acceptance evidence. No capability URLs are included in this report.
+
+### Fresh isolated Word and browser evidence
+
+All native drivers below used separately spawned, PID-bound Word instances and
+synthetic documents. Each completed with unchanged captured inputs. The normal
+Word process and its user documents stayed open. These checks do not qualify
+the installed add-in or actual ChatGPT/Claude behavior. Counts overlap and must
+not be added into a single total.
+
+| Driver / focus | Observed result | Scope limit |
+| --- | --- | --- |
+| `test-native-suggestion-workflow.ps1` | PASS 209; independent conversations, duplicate document names, target retention, direct edits, native units, comments and reopen | Snapshot `2f7dfd0`; its original autosave path used manual coordinator pulses. |
+| `test-native-highlighting.ps1 -RecolorStress` | PASS 208; exact current paint, atomic refusals, stale identities, bounded inspection and recovery | Isolated source runtime. |
+| `test-native-highlighting.ps1 -ColorStress` | PASS 46; neutral RGB, unchanged local-rule extension, ambiguity, batch limit and 82-marker reopen | No physical color picker interaction. |
+| `test-autosave.ps1 -NativeWord` | PASS 19 native checks, component checks and four effective copied controls | Controlled clock/manual coordinator pulses. |
+| `test-native-suggestion-workflow.ps1 -BackgroundSaveOnly -MutationCheck` | PASS 15; actual production timer saved an inactive selected document in 1,924.927ms, preserved its three green identities through reopen and left the active neighbor unchanged; disabled-timer copy failed the expected assertion | No manual Pulse or Save call after timer start; installed coordinator wiring still unrun. |
+| `test-native-uncertain-outcomes.ps1 -MutationCheck` | PASS four native scenarios; three effective rollback/persistence controls | Copied fault seams, original runtime unchanged. |
+| `test-native-precommit-conflict.ps1` | PASS; intervening native user edit retained, no staged paint/marker, stale witness revoked | Injected conflict in an owned fixture. |
+| `test-native-accepted-changes.ps1` | PASS 63; complete acceptance, partial review, rejection, local rule changes and protected green wording | Isolated native review state. |
+| `test-native-double-click.ps1 -NavigationOnly` | PASS 15; current range navigation and precise stale refusals | No physical double-click or native input event qualification. |
+| `test-native-color-input.ps1 -RunNative` | PASS 11 cases, 180 outcome and 75 sampler-seam assertions; two unsafe-Undo copies failed the expected assertions | Injected input samples do not qualify the real foreground/Win32 input probe. |
+| `test-native-highlighting.ps1 -DirectMode` | PASS 53; direct wording, rationale, green protection, exact fields/links and reopen | Isolated native source runtime. |
+| `test-native-review.ps1` | PASS 326; marking, review, protected neighbors, stale refusals and saved-byte preservation | Installed package and public tunnel unrun. |
+| Existing widget state and browser drivers | PASS; 32-document fixture, bounded pages, 12 cancellation/late-response cases, legacy and standard bridges, four widths and no browser errors | Synthetic host; no real ChatGPT iframe/bridge receipt. |
+| `node site/test.mjs` | PASS 313; both routes, published preview.1 metadata, text geometry and readable fallbacks | Fresh local headless Chrome; live deployment is a separate observation. |
+
+The background timer's first new fixture failed because it prepared only one
+of the three paragraphs required by the existing reopen assertions. The fixture
+was corrected to prepare all three; the assertions and deadline were retained.
+Its failing receipt and the old-code UI failures remain in ignored evidence.
+Native workflow request-to-return timings ranged from about 0.82 to 5.12 seconds;
+the focused timer fixture's three edits took about 0.93 to 1.38 seconds each.
+These exclude upstream model delay and do not measure first-visible WebGPT edits.
+
+### Next installer candidate
+
+- `VERIFIED`: preview.2 builds with version metadata derived from `package.json`.
+  Its 67 captured source inputs and six payload files match the build manifest.
+  Its exact DLL passes 536 COM ABI assertions and the effective dispatch-only
+  negative control. All 20 component gates pass with the candidate packaging
+  inputs, including 1,419 native UI checks and 21 renders.
+- Candidate `wordplai-setup.exe`: 23,874,145 bytes; SHA-256
+  `8811ea09bd33f3add56549ef3bbcb6938f244d8b40121790dcb6f4d1515c43b7`.
+  DLL SHA-256: `0c691c88a445d6d769654c23902267f64896f58c05ed83feae5c7a74008a3811`.
+- `VERIFIED`: silent execution with Word open exits 2 and leaves all seven
+  installed payload hashes, uninstall version and the original Word process
+  unchanged. This observes the early refusal only, not installation.
+- `NOT RUN`: preview.2 installation/upgrade, installed runtime and UI,
+  uninstall/clean-machine/Office-bitness/unsupported-OS variants, physical
+  gestures and real WebGPT behavior/timing. Preview.2 remains a local candidate;
+  the published release and stable download still identify preview.1.
+
+Fresh private receipts are under ignored
+`artifacts/word/qualification-20261019/`. Retain full source/harness manifests,
+exact failures and native observations there; publish only this sanitized scope.

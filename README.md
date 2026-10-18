@@ -31,8 +31,10 @@ Connection/account setup remains yours, and no connection credentials are shippe
 This is an unsigned early build. The existing direct-edit guard can refuse while
 Word is the foreground application. Fresh WebGPT timing, host picker rendering,
 physical gestures and clean-machine installer/upgrade cases are not fully qualified.
-The hosted Windows component run also found a color-dialog sizing failure;
-the native UI gate remains failing until that environment difference is resolved.
+The published preview has a color-dialog sizing failure on small desktops with
+enlarged text. The source fix passes local and hosted containment checks and
+preserves the draft in a readable no-fit state. Its next installer candidate
+still needs installed-package qualification.
 The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
 ## Build and test
