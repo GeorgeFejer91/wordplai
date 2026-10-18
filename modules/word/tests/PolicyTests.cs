@@ -21,6 +21,7 @@ internal static class PolicyTests
         try
         {
             contract = File.ReadAllText(arguments.Length > 0 ? arguments[0] : "modules/review/selective-editor-contract.json");
+            StateComparisonControls();
             FixedWordEditing();
             SharedRangeCases();
             SharedPreservationCases();
@@ -223,12 +224,12 @@ internal static class PolicyTests
         string token = engine.ReadContext(DocumentId, Revision, Text, Snapshot);
         Denied(() => engine.Submit(Request("rgb_fresh_no_edit", 9, 13, "beta", "changed"), token, Text, Snapshot),
             "A new RGB cannot authorize wording changes until the local user assigns it a function.");
-        string unchanged = Json.Serialize(engine.ExportState());
+        string unchanged = StateJson(engine);
         Equal(receipt.ColorId, engine.Highlight(request, Text, Snapshot).ColorId, "A lost RGB marking reply replays its exact neutral identity.");
-        Equal(unchanged, Json.Serialize(engine.ExportState()), "RGB replay creates no extra rules, marks or receipts.");
+        Equal(unchanged, StateJson(engine), "RGB replay creates no extra rules, marks or receipts.");
         var changed = RgbMarking("rgb_replay", "#123ABC"); changed.ContextId = request.ContextId;
         Denied(() => engine.Highlight(changed, Text, Snapshot), "Reusing a request ID with another RGB is rejected.");
-        Equal(unchanged, Json.Serialize(engine.ExportState()), "Changed RGB replay cannot recolor any existing mark.");
+        Equal(unchanged, StateJson(engine), "Changed RGB replay cannot recolor any existing mark.");
         var reuse = new HighlightRequest { DocumentId = DocumentId, Revision = Revision, RequestId = "rgb_neutral_reuse",
             ContextId = engine.ReadContext(DocumentId, Revision, Text, Snapshot), ColorId = receipt.ColorId,
             Ranges = new List<HighlightRange> { new HighlightRange { From = 9, To = 13, Quote = "beta" } } };
@@ -236,9 +237,9 @@ internal static class PolicyTests
         reuse.RequestId = "rgb_assignment_race"; reuse.ContextId = engine.ReadContext(DocumentId, Revision, Text, Snapshot);
         engine.AddOrUpdateRule(new ColorRule { Id = receipt.ColorId, Label = "Locally protected beta", Color = "#008000",
             Action = "protect", Prompt = "", AccessMode = "suggestions" });
-        unchanged = Json.Serialize(engine.ExportState());
+        unchanged = StateJson(engine);
         Denied(() => engine.Highlight(reuse, Text, Snapshot), "A local assignment invalidates an outstanding neutral-color request.");
-        Equal(unchanged, Json.Serialize(engine.ExportState()), "A stale pre-assignment witness cannot extend or alter the new rule.");
+        Equal(unchanged, StateJson(engine), "A stale pre-assignment witness cannot extend or alter the new rule.");
         reuse.ContextId = engine.ReadContext(DocumentId, Revision, Text, Snapshot);
         string assigned = Json.Serialize(engine.Rules.Single(rule => rule.Id == receipt.ColorId));
         Equal(receipt.ColorId, engine.Highlight(reuse, Text, Snapshot).ColorId, "A fresh witness can extend the newly assigned local rule.");
@@ -261,9 +262,9 @@ internal static class PolicyTests
         {
             var engine = new PolicyEngine(contract); engine.Share(DocumentId);
             var request = RgbMarking("rgb_invalid", color); request.ContextId = engine.ReadContext(DocumentId, Revision, Text, Snapshot);
-            string unchanged = Json.Serialize(engine.ExportState());
+            string unchanged = StateJson(engine);
             Denied(() => engine.Highlight(request, Text, Snapshot), "Invalid requested RGB must be rejected: " + Json.Serialize(color));
-            Equal(unchanged, Json.Serialize(engine.ExportState()), "Invalid RGB allocates no rule, mark or replay receipt.");
+            Equal(unchanged, StateJson(engine), "Invalid RGB allocates no rule, mark or replay receipt.");
         }
     }
 
@@ -320,9 +321,9 @@ internal static class PolicyTests
         Equal(64, engine.Marks.Count, "A sixty-four-range batch creates every requested marker once.");
         Equal(true, engine.Marks.All(mark => mark.To == mark.From + 1 && mark.From % 2 == 0 && mark.From < 128 && mark.Quote == "x" && mark.RuleId == receipt.ColorId),
             "Every maximum-batch marker has the requested exact geometry and selected rule.");
-        string unchanged = Json.Serialize(engine.ExportState());
+        string unchanged = StateJson(engine);
         engine.Highlight(request, text, Snapshot);
-        Equal(unchanged, Json.Serialize(engine.ExportState()), "Replaying the maximum batch creates no extra markers or receipt.");
+        Equal(unchanged, StateJson(engine), "Replaying the maximum batch creates no extra markers or receipt.");
         request.RequestId = "rgb_batch_65"; request.Ranges.Add(new HighlightRange { From = 128, To = 129, Quote = "x" });
         request.ContextId = engine.ReadContext(DocumentId, Revision, text, Snapshot);
         DeniedHighlightUnchanged(engine, request, text, "A sixty-five-range batch is refused atomically.");
@@ -384,9 +385,9 @@ internal static class PolicyTests
 
     private static void DeniedHighlightUnchanged(PolicyEngine engine, HighlightRequest request, string text, string message)
     {
-        string before = Json.Serialize(engine.ExportState());
+        string before = StateJson(engine);
         Denied(() => engine.Highlight(request, text, Snapshot), message);
-        Equal(before, Json.Serialize(engine.ExportState()), "Refusal preserves every rule, marker and replay receipt exactly.");
+        Equal(before, StateJson(engine), "Refusal preserves every rule, marker and replay receipt exactly.");
     }
 
     private static void SharedRangeCases()
@@ -756,6 +757,38 @@ internal static class PolicyTests
     {
         engine.Share(DocumentId);
         return engine.ReadContext(DocumentId, Revision, text, Snapshot);
+    }
+
+    private static string StateJson(PolicyEngine engine)
+    {
+        return CanonicalJson(Json.DeserializeObject(Json.Serialize(engine.ExportState())));
+    }
+
+    private static string CanonicalJson(object value)
+    {
+        var fields = value as IDictionary<string, object>;
+        if (fields != null)
+            return "{" + String.Join(",", fields.OrderBy(pair => pair.Key, StringComparer.Ordinal)
+                .Select(pair => Json.Serialize(pair.Key) + ":" + CanonicalJson(pair.Value))) + "}";
+        var items = value as object[];
+        if (items != null) return "[" + String.Join(",", items.Select(CanonicalJson)) + "]";
+        return Json.Serialize(value);
+    }
+
+    private static void StateComparisonControls()
+    {
+        // Reflection property order can differ between Framework builds; list order and every value still matter.
+        string baseline = CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[1,2]}"));
+        Equal(baseline, CanonicalJson(Json.DeserializeObject("{\"Marks\":[1,2],\"Request\":{\"From\":1,\"Id\":\"a\"}}")),
+            "State comparison ignores only object property ordering, including nested requests.");
+        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"b\",\"From\":1},\"Marks\":[1,2]}")),
+            "State comparison detects a changed native identity.");
+        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":2},\"Marks\":[1,2]}")),
+            "State comparison detects changed range geometry.");
+        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[2,1]}")),
+            "State comparison preserves list order.");
+        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\"},\"Marks\":[1,2]}")),
+            "State comparison detects a missing field.");
     }
 
     private static void Equal<T>(T expected, T actual, string message)

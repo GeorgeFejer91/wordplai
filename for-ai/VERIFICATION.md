@@ -98,10 +98,17 @@ remote synchronization, CI/deployment state, and whether `for-ai/` changed.
 - Final installer: `wordplai-setup.exe`, 23,874,671 bytes; SHA-256
   `923d6645b171e68d48930232b93eb738a4cb7530b16d198a9031b349e5aa6ccc`.
   DLL SHA-256: `0bd765fc5a23c02fe84815f2f347d39c9e2691d0eaf936ee4e1a60e7a562c19a`.
-- `VERIFIED`: the initial unavailable-download site branch passed 313 rendered
-  checks in a fresh headless Chrome with real bundled Pretext/fonts. Final
-  metadata, live deployment and public-download evidence are recorded after
-  publication; this local check alone does not prove those surfaces.
+- `VERIFIED`: both unavailable and metadata-ready site branches separately
+  passed 313 rendered checks in fresh headless Chrome with real bundled
+  Pretext/fonts. Version, exact asset URL, checksum and size match the published
+  preview. An anonymous HTTPS download returned the exact qualified installer.
+- The first hosted Windows component run failed on a serialized-state string
+  comparison: the expected and actual values matched recursively, but nested
+  JSON property order differed. The test now canonicalizes object keys while
+  preserving all values, fields and list order. Five effective comparison
+  controls and all 355 policy assertions pass locally. No runtime code or
+  installer input changed for this test correction; hosted requalification is
+  tracked by the repository's required workflow result.
 - `NOT RUN`: installing this preview, clean-machine upgrade/uninstall, actual
   unsupported-OS refusal, Office bitness variants and physical native gestures.
   The installer is unsigned. Current foreground refusal, real WebGPT latency
