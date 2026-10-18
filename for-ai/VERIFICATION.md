@@ -109,6 +109,14 @@ remote synchronization, CI/deployment state, and whether `for-ai/` changed.
   controls and all 355 policy assertions pass locally. No runtime code or
   installer input changed for this test correction; hosted requalification is
   tracked by the repository's required workflow result.
+- `FAIL`: hosted Windows run `39126772674` passed policy, COM, dispatch,
+  transport and autosave, then failed native UI containment: the Custom prompt
+  GroupBox required 166px in a 115px table cell. The local native UI pass does
+  not override this failure. The gate remains enabled; no runtime or test
+  predicate was relaxed. Reproduction and acceptance are in `HANDOFF.md`.
+- `VERIFIED`: Pages deployment `39126772649` and 86 independent live-browser
+  checks at commit `073f0d5` observed both public routes, navigation, local
+  fonts/Pretext, no overflow/errors and exact published release metadata.
 - `NOT RUN`: installing this preview, clean-machine upgrade/uninstall, actual
   unsupported-OS refusal, Office bitness variants and physical native gestures.
   The installer is unsigned. Current foreground refusal, real WebGPT latency

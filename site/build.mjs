@@ -65,6 +65,7 @@ const description = `
       <p>Windows 10 or 11 x64 (Intel/AMD), desktop Microsoft Word, and .NET Framework 4.8. An AI client that supports MCP is needed to connect a writing assistant.</p>
       <h2>Current limits</h2>
       <p>This is an early, unsigned build. Word’s foreground editing guard can refuse an edit. Real WebGPT edit timing, the document picker’s appearance inside ChatGPT, and physical click and keyboard interactions still need acceptance testing.</p>
+      <p>A fresh hosted Windows component run found a native color-dialog sizing failure. That failing UI check and the remaining acceptance cases are recorded in the repository’s For-AI handoff.</p>
       <p>See <a href="/wordplai/download/">Download</a> for the installer and its release details.</p>`;
 
 const action = ready
@@ -84,7 +85,7 @@ const download = `
       </dl>
       <h2>Before you install</h2>
       <p>Save and close your Word documents before running the installer. The add-in appears in Word after installation. Source code and setup notes are in the <a href="https://github.com/GeorgeFejer91/wordplai#readme">repository README</a>.</p>
-      <p class="muted">Early build: foreground edit refusals are possible. Real WebGPT timing, ChatGPT’s picker rendering, and physical interactions remain unverified.</p>`;
+      <p class="muted">Early build: foreground edit refusals are possible. Native dialog sizing failed on the hosted Windows runner and remains unresolved. Real WebGPT timing, ChatGPT’s picker rendering, and physical interactions remain unverified. See the <a href="https://github.com/GeorgeFejer91/wordplai/blob/main/for-ai/HANDOFF.md">remaining-test handoff</a>.</p>`;
 
 await mkdir(join(dist, 'assets'), { recursive: true });
 await mkdir(join(dist, 'download'), { recursive: true });
