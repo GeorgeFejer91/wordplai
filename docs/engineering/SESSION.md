@@ -1,38 +1,26 @@
-# Current implementation scope
+# Current qualification scope
 
-The user requested completion of the entire standalone acceptance matrix.
-Start from the existing public repository; preserve the preview's evidence and
-all unrelated applications and documents.
+The user asked to continue the standalone acceptance checks and fix concrete
+gaps. Preserve the published preview and all unrelated applications/documents.
 
-The first change owns native rule-dialog geometry and its existing UI tests:
-`modules/word/src/RuleDialog.cs`, `modules/word/tests/UiLayoutSmoke.cs`, the
-component CI evidence step if needed, and their narrow For-AI status updates.
-Shared native layout changes require evidence that the same defect lives there.
+This pass owns the existing native document-choice fixture and its sanitized
+verification/handoff updates. The 2026-10-19 focused Word run passed 50
+assertions with zero drift across 46 captured source/harness inputs. It used
+its separately spawned Word process and disposable documents; the installed
+add-in and real ChatGPT connector were not involved. No code defect surfaced.
 
-Initial state: clean `main`, commit `4ac5828`. Pre-existing failure: hosted
-native UI allocates 115px to a 166px Custom prompt group; local UI previously
-passed. Foreground editing, live host behavior, physical gestures and installer
-qualification remain separate acceptance work.
+Do not operate on the user's open Word documents. Preview.2 is still a local
+candidate; install only after the user confirms Word is saved and closed.
+Continue to distinguish source fixtures, installed Word, physical gestures
+and real-client behavior.
 
-Keep permission, coloring, direct-edit, protection, transaction and replay
-contracts unchanged by the geometry fix. Do not edit UnderTree or other product
-modules. Do not operate on unrelated open Word documents.
+Chrome side-session inspection reaches a fresh ChatGPT page, but the API does
+not expose the Chrome toolbar avatar or profile selector. The page's ChatGPT
+account icon showed orange initials, which does not confirm the yellow-figure
+Chrome profile the user identified. Do not claim real-client qualification
+until the requested profile and connector are available.
 
 | Risk | Verification |
 | --- | --- |
-| Native controls overrun their cells or actions | Existing containment and readable-prompt assertions, added font/DPI/form metrics, retained renders, local and hosted runs. |
-| Async sizing hides an unstable result | Observe actual native geometry convergence; retain the failure rather than adding a sleep or weakening bounds. |
-| Sizing change alters rule authority | Existing native UI dispatch/Save/Cancel assertions and complete component suite. |
-| A simulated check is mistaken for installed behavior | Keep isolated, installed, physical and real-client results separate under the canonical handoff. |
-
-After the UI fix passes hosted CI, prepare the next preview candidate for
-installed-package qualification. This owns `package.json`, its lock, the widget
-input manifest, `modules/word/build.ps1` and `packaging/installer.nsi`. Derive
-installer metadata from the package version and retain source/payload hashes.
-Building a candidate does not establish installation or live-client success.
-
-The next focused coverage change owns `NativeSuggestionWorkflowSmoke.cs` and
-its existing PowerShell driver: remove manual pulses from the background-save
-scenario and observe the real production timer. Reuse its owned Word fixtures,
-selected-document provider and save/reopen assertions. A copied disabled-timer
-control must fail; installed add-in wiring remains a separate gate.
+| A source fixture is mistaken for installed behavior | Keep isolated, installed, physical and real-client evidence separate in `for-ai/VERIFICATION.md`. |
+| Wrong Chrome profile is used for live-client checks | Confirm the yellow-figure profile is active before using the real connector. |

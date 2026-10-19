@@ -148,10 +148,14 @@ results do not imply full acceptance.
   subsequently passed all 20 gates, with 1,373 native UI checks and 21 renders
   on its smaller desktop. This qualifies the source fix, not preview.1's
   installed UI or physical gestures.
-- Browser control timed out twice, and the saved Wordplai connection returned
-  `FORBIDDEN`. Real WebGPT behavior and timing remain blocked pending a working
-  browser/connection; no retired connector or simulated client substitutes for
-  that acceptance evidence. No capability URLs are included in this report.
+- `VERIFIED`: Chrome side-session control opened a fresh ChatGPT page, and its
+  browser inventory exposed one profile. The API does not expose the Chrome
+  toolbar avatar or profile selector. The ChatGPT page account icon showed
+  orange initials, which does not confirm the yellow-figure Chrome profile the
+  user identified. The requested profile and real WebGPT behavior/timing
+  remain `BLOCKED`; the saved Wordplai connection previously returned
+  `FORBIDDEN`. No retired connector or simulated client substitutes for that
+  evidence. No account names, chat links or capability URLs are included here.
 
 ### Fresh isolated Word and browser evidence
 
@@ -164,6 +168,7 @@ not be added into a single total.
 | Driver / focus | Observed result | Scope limit |
 | --- | --- | --- |
 | `test-native-suggestion-workflow.ps1` | PASS 209; independent conversations, duplicate document names, target retention, direct edits, native units, comments and reopen | Snapshot `2f7dfd0`; its original autosave path used manual coordinator pulses. |
+| `test-native-suggestion-workflow.ps1 -DocumentChoiceOnly` | PASS 50; eight open documents, duplicate titles, conversation-local targets, inactive edits, copy detection, close/reopen rebinding, 64-conversation capacity and production inactive-document save/reopen; zero drift across 46 captured inputs | Fresh isolated Word process and disposable files; no installed add-in, normal Word session, physical interaction or real client. Receipt: `artifacts/word/qualification-20261019/native-choice-followup/manifest.json`. |
 | `test-native-highlighting.ps1 -RecolorStress` | PASS 208; exact current paint, atomic refusals, stale identities, bounded inspection and recovery | Isolated source runtime. |
 | `test-native-highlighting.ps1 -ColorStress` | PASS 46; neutral RGB, unchanged local-rule extension, ambiguity, batch limit and 82-marker reopen | No physical color picker interaction. |
 | `test-autosave.ps1 -NativeWord` | PASS 19 native checks, component checks and four effective copied controls | Controlled clock/manual coordinator pulses. |
@@ -221,17 +226,22 @@ exact failures and native observations there; publish only this sanitized scope.
 - `VERIFIED`: hosted component workflow `39245471487` passed on
   `d2c95301134ee556d0ef126344a3dea41b8f5d0b`; workflow `39245802605` passed on
   `34c7f54f99fc98a9a528f14cd1f4b4e9f68b57c8`; workflow `39246178304` passed
-  on `b74a1755a17e6f44b5df2276cfd03c260bc01329`. These docs-only handoff
-  runs exercised the configured component, widget and control-plane gates;
-  they do not qualify installed Word, physical gestures, or real ChatGPT.
+  on `b74a1755a17e6f44b5df2276cfd03c260bc01329`; latest workflow `39246916923`
+  passed on `2946052355b5b3e3b294e7d919218d8a0f37010d`, the then-current
+  `main` tip. That run completed `npm ci`, widget state, Word component/transport
+  checks without Office, retained native UI evidence and the For-AI structure
+  gate. These component runs do not qualify installed Word, physical gestures,
+  or real ChatGPT.
 - A fresh read-only Secret Tunnel availability call returned
   `UNAVAILABLE` / `invalid_mcp_response` after an HTTP 404 SSE response. This
   is distinct from the earlier saved Wordplai connector `FORBIDDEN`; cause is
-  unconfirmed. The endpoint is deliberately omitted. Browser control remains
-  unavailable, and no real-client check ran.
-- The latest passed component run above is bound to
-  `b74a1755a17e6f44b5df2276cfd03c260bc01329` on `main`. This verification
-  record has since had documentation-only clarifications; no product source,
-  installer, release asset, or site file changed. The last observed Pages
-  workflow remains `39177712979` at
+  unconfirmed. The endpoint is deliberately omitted. Chrome side-session
+  control can open a fresh ChatGPT page, but cannot inspect or select the
+  browser profile; the requested yellow-figure profile remains unconfirmed,
+  and no real-client check ran.
+- At verification time, remote `main` resolved to the source SHA tested by
+  workflow `39246916923`: `2946052355b5b3e3b294e7d919218d8a0f37010d`. The latest
+  Pages workflow remains `39177712979` at
   `0b1cfc54fde09c4c852cbceb6656478a4db84657`; it still serves preview.1.
+  Local documentation-only evidence updates do not alter product source,
+  installer, release asset or site files.
