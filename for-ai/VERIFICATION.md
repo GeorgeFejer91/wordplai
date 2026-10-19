@@ -302,3 +302,20 @@ exact failures and native observations there; publish only this sanitized scope.
   Word component/transport checks without Office, retained synthetic native UI
   evidence and passed the For-AI structure/safety gate. This does not qualify
   the installed preview.2, physical gestures or a real ChatGPT client.
+
+## Artifact and public-state recheck — 2026-10-19
+
+- `VERIFIED`: the local preview.2 installer and DLL still match their recorded
+  SHA-256 values. `test-com-contract.ps1` against the exact preview.2 payload
+  passed 536 ABI assertions; the dispatch-only mutant was refused before native
+  invocation. Receipt: `artifacts/word/qualification-20261019/preview2-turn-recheck/com-contract/result.json`.
+  This checks COM metadata and callbacks, not a running Word host.
+- `VERIFIED`: the live `/wordplai/download/` route returned HTTP 200 and named
+  preview.1 without mentioning preview.2. The public preview.1 installer
+  returned HTTP 200; a fresh download measured 23,874,671 bytes and matched the
+  published SHA-256 `923d6645b171e68d48930232b93eb738a4cb7530b16d198a9031b349e5aa6ccc`.
+  The binary and sanitized response receipt are under ignored
+  `artifacts/word/qualification-20261019/public-release-recheck-turn2/`.
+- These package checks do not qualify preview.2 in installed Word. The open
+  Word process, unconfirmed yellow-figure Chrome profile, real-client behavior
+  and physical interaction remain outstanding.
