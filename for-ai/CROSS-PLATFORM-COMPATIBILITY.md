@@ -4,7 +4,7 @@
 
 LibrAI is the LibreOffice Writer counterpart to [WordPlai](https://github.com/GeorgeFejer91/wordplai). These repositories have one shared product promise: every user-facing writing-assistant function offered by either sibling must be available in the other with equivalent user outcomes. This requirement applies in both directions as either product grows.
 
-The host applications may require different implementations, UI, storage formats, APIs, packaging, and validation protocols. Do not force shared code or identical interaction when a host-native implementation is safer or more reliable. Preserve equivalent behavior, user control, protection, and evidence quality.
+The host applications may require different implementation protocols, user interfaces, storage formats, APIs, packaging, and validation protocols. Do not force shared code or identical interaction when a host-native implementation is safer or more reliable. Preserve equivalent behavior, user control, protection, and evidence quality.
 
 A capability is not complete for cross-platform release until both projects implement and verify its behavioral contract on their own supported host. A documented platform gap remains `NOT AT PARITY`; it must not be presented as a completed feature. Do not remove or permanently waive a capability in one sibling without the user's explicit decision recorded in both repositories.
 
