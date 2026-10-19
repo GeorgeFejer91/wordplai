@@ -5,6 +5,13 @@ This is a sanitized continuation contract for the standalone project, prepared
 that publication completes that work. Record new results in
 [`VERIFICATION.md`](VERIFICATION.md); keep private raw evidence out of Git.
 
+The source-linked test strategy and risk-ranked stress shortlist are in
+[`WORD-STRESS-TEST-RESEARCH.md`](WORD-STRESS-TEST-RESEARCH.md). Its three
+complementary layers are state/transaction tests with retained fault controls,
+isolated interactive Word fixtures, and installed/live-client observation with
+accessibility and human gesture checks. They qualify distinct boundaries; do
+not promote evidence from one layer to another.
+
 ## What must stay true
 
 - Word wording has one mode: eligible locally marked `prompt` passages edit
