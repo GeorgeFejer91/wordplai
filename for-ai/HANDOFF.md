@@ -84,6 +84,21 @@ Plain host/answer-load failures were also observed without a proven common root
 cause. Keep these surfaces separate. Local widget tests and successful HTTP
 responses do not close the live-host gap.
 
+**Installed package identity:** the currently connected registered Word add-in
+reports assembly `wrAIter.Word, Version=0.1.0.0` and uninstall display version
+`0.1.0`. `test-installed.ps1` passed 69 checks on its synthetic document while
+six existing Word documents remained open. The preservation audit retained the
+original document set and saved/revision/comment state, kept the local
+connection and Word process, closed the synthetic test document, and restored
+the original active window. The first cleanup wrapper attempt failed on a COM
+by-reference argument; the failed receipt and successful targeted cleanup are
+both retained. The registered DLL SHA-256
+`1df260fbd4b4517b4aa7ebd422fedf42d952084e30bd325ddf8c7769cc5ed7ec` matches
+neither packaged preview.1 nor preview.2. These installed checks are a local
+baseline and do not qualify either release package. Install and test preview.2
+only after the user's Word documents are saved and closed; do not close them on
+the user's behalf.
+
 **Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
 transport and autosave checks but failed the native WinForms containment gate.
 The Custom prompt GroupBox required 166 pixels in a 115-pixel-high TableLayout
@@ -157,16 +172,19 @@ Keep unsanitized evidence private; do not overwrite it with a redacted copy.
 
 1. Standalone extraction, component gates, local browser checks, build and
    source/payload binding pass. Preview.2's installer and exact DLL are ready
-   for qualification; see `VERIFICATION.md` for their hashes. The preview.2
-   Word-open refusal passes without modifying the installed payload. Save and
-   close existing Word documents before a real upgrade; do not close them on
-   the user's behalf. Keep the stable Download page on the observed preview.1
-   release until a replacement is qualified. The bundled tunnel is Windows
+   for qualification; see `VERIFICATION.md` for their hashes. The current
+   registered installed DLL does not match either packaged preview.1 or
+   preview.2. The preview.2 Word-open refusal passes without modifying the
+   installed payload. Save and close existing Word documents before a real
+   upgrade; do not close them on the user's behalf. Keep the stable Download
+   page on the observed preview.1 release until a replacement is qualified.
+   The bundled tunnel is Windows
    AMD64; unsupported-OS, clean-machine, upgrade/uninstall and Office-bitness
    variants remain separate checks.
-2. Run the P0 safety scenarios against the installed package and retain all
-   failures. Resolve or prominently disclose foreground and host-rendering gaps;
-   preview publication does not establish those acceptance criteria.
+2. After installing and hash-verifying the exact preview.2 package, run the P0
+   safety scenarios against that installed candidate and retain all failures.
+   Resolve or prominently disclose foreground and host-rendering gaps; preview
+   publication does not establish those acceptance criteria.
 3. The Chrome side-session opens a fresh ChatGPT page and exposes one browser
    profile, but the API cannot inspect the Chrome toolbar avatar or select a
    profile. The page's ChatGPT account icon showed orange initials; that does

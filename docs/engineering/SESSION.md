@@ -16,7 +16,11 @@ suite passed 337, and a copied `RefreshMarks` mutation failed at the expected
 denial while preserving the original runtime source. Commit
 `9da41535cf626e4860205f72eb9e7467b4963490` passed hosted workflow
 `39294629741`. The remaining installed, physical and real-client gaps are still
-open.
+open. A subsequent installed smoke run passed 69 checks on the currently
+registered `0.1.0.0` add-in. Its registered DLL hash matches neither packaged
+preview.1 nor preview.2. The synthetic test document was closed and the
+original Word window and six-document state were restored; the first cleanup
+wrapper failure remains retained with the corrected cleanup evidence.
 Preserve the MCP request/response contract and assert the actual edit plus
 native text, review state, local rules and saved-file effects. No product
 runtime, installer, release, site, connector configuration or user document

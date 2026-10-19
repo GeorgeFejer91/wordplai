@@ -180,6 +180,7 @@ not be added into a single total.
 | `test-native-color-input.ps1 -RunNative` | PASS 11 cases, 180 outcome and 75 sampler-seam assertions; two unsafe-Undo copies failed the expected assertions | Injected input samples do not qualify the real foreground/Win32 input probe. |
 | `test-native-highlighting.ps1 -DirectMode` | PASS 53; direct wording, rationale, green protection, exact fields/links and reopen | Isolated native source runtime. |
 | `test-native-review.ps1` | PASS 337; marking, review, protected neighbors, stale refusals, saved-byte preservation, and stale cached prompt-marker recovery through a complete `context_changed` response and same-ID retry | Isolated synthetic Word process; installed package and public tunnel unrun. |
+| `test-installed.ps1` | PASS 69; installed direct edits, rationale, autosave, save/reopen, protected text, revocation and refusal paths | Registered add-in `0.1.0.0`; its DLL hash matches neither packaged preview.1 nor preview.2. Public tunnel unrun. |
 | Existing widget state and browser drivers | PASS; 32-document fixture, bounded pages, 12 cancellation/late-response cases, legacy and standard bridges, four widths and no browser errors | Synthetic host; no real ChatGPT iframe/bridge receipt. |
 | `node site/test.mjs` | PASS 313; both routes, published preview.1 metadata, text geometry and readable fallbacks | Fresh local headless Chrome; live deployment is a separate observation. |
 
@@ -197,6 +198,21 @@ Final focused, mutation-control and full-suite receipts are in ignored
 `artifacts/word/qualification-20261019/stale-marker-mcp-recovery-4/`,
 `stale-marker-mcp-mutation-control-2/` and
 `native-review-full-stale-marker/`, respectively.
+
+The installed Word driver passed 69 checks against the currently registered
+`wrAIter.Word` assembly (`0.1.0.0`, uninstall display version `0.1.0`). Its
+registered DLL SHA-256 is
+`1df260fbd4b4517b4aa7ebd422fedf42d952084e30bd325ddf8c7769cc5ed7ec`, which
+matches neither packaged preview.1 (`0bd765fc...`) nor preview.2
+(`0c691c88...`). This run is therefore an installed baseline, not evidence for
+either release package. It used a synthetic saved/reopened document while six
+existing Word documents remained open. The preservation audit retained all six
+documents and their saved/revision/comment state, preserved local connection
+state, closed the synthetic document, and restored the original active Word
+window. The first cleanup wrapper attempt failed on COM by-reference argument
+binding; the failed receipt is retained alongside the successful targeted
+cleanup and final state receipt under ignored
+`artifacts/word/qualification-20261019/installed-current-word-smoke/`.
 
 The background timer's first new fixture failed because it prepared only one
 of the three paragraphs required by the existing reopen assertions. The fixture
@@ -219,6 +235,11 @@ These exclude upstream model delay and do not measure first-visible WebGPT edits
 - `VERIFIED`: silent execution with Word open exits 2 and leaves all seven
   installed payload hashes, uninstall version and the original Word process
   unchanged. This observes the early refusal only, not installation.
+- `VERIFIED`: the currently registered connected add-in passed 69 installed
+  Word checks on a synthetic document. Its registered DLL hash
+  (`1df260fbd4b4517b4aa7ebd422fedf42d952084e30bd325ddf8c7769cc5ed7ec`)
+  matches neither packaged preview.1 nor preview.2, so this result qualifies
+  that local installation only.
 - `NOT RUN`: preview.2 installation/upgrade, installed runtime and UI,
   uninstall/clean-machine/Office-bitness/unsupported-OS variants, physical
   gestures and real WebGPT behavior/timing. Preview.2 remains a local candidate;
