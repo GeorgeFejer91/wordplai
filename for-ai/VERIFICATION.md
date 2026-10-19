@@ -232,6 +232,10 @@ exact failures and native observations there; publish only this sanitized scope.
   checks without Office, retained native UI evidence and the For-AI structure
   gate. These component runs do not qualify installed Word, physical gestures,
   or real ChatGPT.
+- `VERIFIED`: workflow `39291340698` passed on `a3161f2429b6c5c8e900eac89e48364c56efc1ba`.
+  All steps passed, including 22-file native UI artifact upload via the pinned
+  `actions/upload-artifact` v6.0.0 Node 24 action. The run log contains no
+  deprecated Node 20 runtime warning.
 - A fresh read-only Secret Tunnel availability call returned
   `UNAVAILABLE` / `invalid_mcp_response` after an HTTP 404 SSE response. This
   is distinct from the earlier saved Wordplai connector `FORBIDDEN`; cause is
@@ -240,7 +244,7 @@ exact failures and native observations there; publish only this sanitized scope.
   browser profile; the requested yellow-figure profile remains unconfirmed,
   and no real-client check ran.
 - At verification time, remote `main` resolved to the source SHA tested by
-  workflow `39246916923`: `2946052355b5b3e3b294e7d919218d8a0f37010d`. The latest
+  workflow `39291340698`: `a3161f2429b6c5c8e900eac89e48364c56efc1ba`. The latest
   Pages workflow remains `39177712979` at
   `0b1cfc54fde09c4c852cbceb6656478a4db84657`; it still serves preview.1.
   Local documentation-only evidence updates do not alter product source,
