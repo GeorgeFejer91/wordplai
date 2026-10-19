@@ -163,9 +163,13 @@ Keep unsanitized evidence private; do not overwrite it with a redacted copy.
    preview publication does not establish those acceptance criteria.
 3. Restore supported browser control and the current connector first: Chrome
    control times out, while the saved connector returns `FORBIDDEN` even though
-   the installed local/tunnel status reports running. This is not a confirmed
-   root cause. Run the two fresh minimal-invocation web sessions, both independent targets,
-   cold/reloaded picker paths and physical double-click. Repeat only affected
+   the installed local/tunnel status reports running. A separate read-only
+   Secret Tunnel MCP availability probe on 2026-10-19 returned
+   `UNAVAILABLE` / `invalid_mcp_response` after an HTTP 404 SSE response; this
+   differs from the earlier `FORBIDDEN` and does not establish a root cause.
+   Do not publish its endpoint. Run the two fresh minimal-invocation web
+   sessions, both independent targets, cold/reloaded picker paths and physical
+   double-click after supported access is restored. Repeat only affected
    checks after a fix, with one demonstrated negative control for new behavior.
 4. Claim a scenario verified only when the actual named surface passed with
    unchanged inputs. Credential exposure, cross-document mutation, lost
