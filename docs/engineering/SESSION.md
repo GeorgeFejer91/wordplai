@@ -3,11 +3,12 @@
 The user asked to continue the standalone acceptance checks and fix concrete
 gaps. Preserve the published preview and all unrelated applications/documents.
 
-This pass owns the existing native document-choice fixture and its sanitized
-verification/handoff updates. The 2026-10-19 focused Word run passed 50
-assertions with zero drift across 46 captured source/harness inputs. It used
-its separately spawned Word process and disposable documents; the installed
-add-in and real ChatGPT connector were not involved. No code defect surfaced.
+This pass owns the existing native document-choice fixture, the verification
+workflow's artifact-action runtime pin, and the sanitized verification/handoff
+updates. The 2026-10-19 focused Word run passed 50 assertions with zero drift
+across 46 captured source/harness inputs. It used its separately spawned Word
+process and disposable documents; the installed add-in and real ChatGPT
+connector were not involved. No product runtime defect surfaced.
 
 Do not operate on the user's open Word documents. Preview.2 is still a local
 candidate; install only after the user confirms Word is saved and closed.
@@ -24,3 +25,4 @@ until the requested profile and connector are available.
 | --- | --- |
 | A source fixture is mistaken for installed behavior | Keep isolated, installed, physical and real-client evidence separate in `for-ai/VERIFICATION.md`. |
 | Wrong Chrome profile is used for live-client checks | Confirm the yellow-figure profile is active before using the real connector. |
+| Artifact upload action runs on a deprecated runtime | Pin the official Node 24 action release and retain the existing artifact behavior; verify hosted upload and the full component workflow. |
