@@ -67,7 +67,13 @@ make a demo pass.
 **Original stale highlight report:** visible editing permission and a stale MCP
 marker disagreed. The original failed edit's exact tool-error payload was not
 captured, so stale metadata was a suspected cause, not a proven rejection cause.
-Owned-bookmark remapping has since received focused qualification. Reproduce
+Owned-bookmark remapping has since received focused qualification. A controlled
+native-MCP fixture with an exact surviving bookmark and visible direct-prompt
+color, but stale cached marker metadata, returned `context_changed` with
+`request_applied=false` and a complete current context. It made no native or
+saved-file changes; retrying the same request identity with that context applied
+the exact wording, rationale and green protection. This verifies recovery for
+that controlled state, not that it matches the original user trigger. Reproduce
 the original user-visible discrepancy on a disposable fixture and retain the
 entire actual error before attributing it to a particular subsystem.
 

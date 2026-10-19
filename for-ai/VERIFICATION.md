@@ -179,9 +179,24 @@ not be added into a single total.
 | `test-native-double-click.ps1 -NavigationOnly` | PASS 15; current range navigation and precise stale refusals | No physical double-click or native input event qualification. |
 | `test-native-color-input.ps1 -RunNative` | PASS 11 cases, 180 outcome and 75 sampler-seam assertions; two unsafe-Undo copies failed the expected assertions | Injected input samples do not qualify the real foreground/Win32 input probe. |
 | `test-native-highlighting.ps1 -DirectMode` | PASS 53; direct wording, rationale, green protection, exact fields/links and reopen | Isolated native source runtime. |
-| `test-native-review.ps1` | PASS 326; marking, review, protected neighbors, stale refusals and saved-byte preservation | Installed package and public tunnel unrun. |
+| `test-native-review.ps1` | PASS 337; marking, review, protected neighbors, stale refusals, saved-byte preservation, and stale cached prompt-marker recovery through a complete `context_changed` response and same-ID retry | Isolated synthetic Word process; installed package and public tunnel unrun. |
 | Existing widget state and browser drivers | PASS; 32-document fixture, bounded pages, 12 cancellation/late-response cases, legacy and standard bridges, four widths and no browser errors | Synthetic host; no real ChatGPT iframe/bridge receipt. |
 | `node site/test.mjs` | PASS 313; both routes, published preview.1 metadata, text geometry and readable fallbacks | Fresh local headless Chrome; live deployment is a separate observation. |
+
+The focused `test-native-review.ps1 -StaleMarkerOnly` passed 19 assertions.
+It observed the actual MCP refusal return `request_applied=false` and a complete
+fresh context after repairing the still-visible prompt marker; the same request
+identity then applied the exact wording, rationale comment and green protection.
+The refusal preserved native state and saved DOCX bytes. A copied mutation with
+the production `RefreshMarks` call removed failed at the intended
+`marker_permission_unresolved` assertion and confirmed no native or saved-file
+mutation; the original source hash stayed unchanged. Three earlier exploratory
+receipts record harness assertions corrected against observed context shape and
+marker multiplicity; they are retained as failed attempts, not passing evidence.
+Final focused, mutation-control and full-suite receipts are in ignored
+`artifacts/word/qualification-20261019/stale-marker-mcp-recovery-4/`,
+`stale-marker-mcp-mutation-control-2/` and
+`native-review-full-stale-marker/`, respectively.
 
 The background timer's first new fixture failed because it prepared only one
 of the three paragraphs required by the existing reopen assertions. The fixture
@@ -236,6 +251,11 @@ exact failures and native observations there; publish only this sanitized scope.
   All steps passed, including 22-file native UI artifact upload via the pinned
   `actions/upload-artifact` v6.0.0 Node 24 action. The run log contains no
   deprecated Node 20 runtime warning.
+- The required For-AI context gate initially reported a false remote failure
+  under PowerShell 7.6.5 because `Select-Object` ran before `$LASTEXITCODE` was
+  captured. The script now captures Git's output and exit code first, then
+  filters the output. A rerun passed the required remote check; its expected
+  working-tree warning remains until this change is committed.
 - A fresh read-only Secret Tunnel availability call returned
   `UNAVAILABLE` / `invalid_mcp_response` after an HTTP 404 SSE response. This
   is distinct from the earlier saved Wordplai connector `FORBIDDEN`; cause is

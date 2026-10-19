@@ -61,23 +61,30 @@ internal static class NativeReviewSmoke
             editor = new WordEditor((object)application, action => action(), Path.Combine(output, "profile"), Path.Combine(output, "unused-zrok.exe"));
             Local("connection_local");
 
-            if(args.Length < 3 || args[2] != "manual-marking-only")
+            string scenario = args.Length < 3 ? "all" : args[2];
+            if (scenario == "stale-marker-only") StaleCachedPromptMarkerRecoversFromCurrentContext();
+            else if (scenario == "all" || scenario == "manual-marking-only")
             {
-            AutomaticConnectionReading();
-            CurrentNativeMarkerPermissions();
-            ShiftedOverlappingPermission();
-            TrackedParagraphAndNativeApproval();
-            PreserveWinsAndParagraphBoundaries();
-            DirectModeAndRevocation();
-            CommentFeedbackAndFollowUp();
-            CommentAnchorBoundaries();
-            SavedReviewReopensWithoutSharing();
-            UnrelatedLocalRevisionIsNotSuperseded();
-            NativeRemovalCanBeRejected();
-            NativeUndoRedoRevokesAndRetainsReceipts();
-            LocalPolicyChangesSurviveNativeUndo();
+                if (scenario == "all")
+                {
+                    AutomaticConnectionReading();
+                    CurrentNativeMarkerPermissions();
+                    StaleCachedPromptMarkerRecoversFromCurrentContext();
+                    ShiftedOverlappingPermission();
+                    TrackedParagraphAndNativeApproval();
+                    PreserveWinsAndParagraphBoundaries();
+                    DirectModeAndRevocation();
+                    CommentFeedbackAndFollowUp();
+                    CommentAnchorBoundaries();
+                    SavedReviewReopensWithoutSharing();
+                    UnrelatedLocalRevisionIsNotSuperseded();
+                    NativeRemovalCanBeRejected();
+                    NativeUndoRedoRevokesAndRetainsReceipts();
+                    LocalPolicyChangesSurviveNativeUndo();
+                }
+                ManualParagraphColoring();
             }
-            ManualParagraphColoring();
+            else throw new ArgumentException("Unknown native review scenario.");
 
             WriteResult("PASS", null);
             Console.WriteLine("PASS " + checks.Count + " native Word assertions. Installed package and public tunnel NOT RUN.");
@@ -174,6 +181,91 @@ internal static class NativeReviewSmoke
                 "An unresolved marker denial leaves the entire document unchanged.");
             NoSave();
         }
+    }
+
+    private static void StaleCachedPromptMarkerRecoversFromCurrentContext()
+    {
+        NewFixture("stale-cache-visible-prompt", Paragraph);
+        SaveRule("cached_direct", "prompt", "direct", "Shorten the paragraph.");
+        Mark(Paragraph, "cached_direct");
+        var client = new NativeMcpClient(Text(Local("connection_status"), "localMcpUrl"), "stale-marker-qualification");
+        Dictionary<string, object> context = Obj(client.Call("read_manuscript", Values("manuscript_id", documentId))["structuredContent"]);
+        var reviews = (IDictionary)typeof(WordEditor).GetField("documents", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(editor);
+        WordDocumentReview review = reviews.Values.Cast<WordDocumentReview>().Single(value => value.Id == documentId);
+        PassageMark marker = review.Policy.Marks.Single(mark => mark.RuleId == "cached_direct");
+        string ruleBefore = Json.Serialize(review.Policy.Rules.Single(rule => rule.Id == "cached_direct"));
+        WordSnapshot before = WordSnapshot.Capture(document);
+        string beforeNative = review.NativeEdit.NativeIdentity(document, before);
+        dynamic nativeMarker = document.Bookmarks.Item(marker.Id).Range;
+        int promptColor = 170 | (204 << 8) | (255 << 16);
+        Check((bool)document.Bookmarks.Exists(marker.Id) && (string)nativeMarker.Text == Paragraph &&
+            (int)nativeMarker.Font.Shading.BackgroundPatternColor == promptColor && (int)nativeMarker.HighlightColorIndex == 0,
+            "The fixture has a live exact native marker and visible color for its direct prompt rule.");
+        marker.Stale = true;
+        var request = Request("stale-cache-current-permission", context, Paragraph, Replacement);
+        Dictionary<string, object> response;
+        try
+        {
+            response = client.Call("suggest_text", request);
+            File.WriteAllText(Path.Combine(output, "stale-cache-mcp-response.json"), Json.Serialize(response));
+        }
+        catch (Exception error)
+        {
+            File.WriteAllText(Path.Combine(output, "stale-cache-mcp-response.json"), Json.Serialize(new { transportError = error.ToString() }));
+            throw;
+        }
+        Dictionary<string, object> result;
+        Dictionary<string, object> current;
+        if (response.ContainsKey("isError") && Convert.ToBoolean(response["isError"]))
+        {
+            Dictionary<string, object> error = Obj(Obj(response["structuredContent"])["error"]);
+            Dictionary<string, object> details = Obj(error["details"]);
+            bool unchanged = review.NativeEdit.NativeIdentity(document) == beforeNative &&
+                WordSnapshot.Capture(document).MainText == before.MainText && (int)document.Revisions.Count == 0 &&
+                (int)document.Comments.Count == 0 && FileHash(savedPath) == savedHash;
+            if (Text(error, "code") != "context_changed" || !details.ContainsKey("current_context"))
+            {
+                Check(unchanged, "A stale-marker denial preserves exact native state and saved bytes.");
+                throw new InvalidOperationException("Expected context_changed with a fresh recovery context; received " + Text(error, "code") + ". See stale-cache-mcp-response.json.");
+            }
+            current = Obj(details["current_context"]);
+            Check(!(bool)details["request_applied"] && (bool)current["complete"] && Text(current, "text") == Text(context, "text") &&
+                Text(current, "context_id") != Text(context, "context_id") &&
+                Rows(current["highlights"]).Any(mark => Text(mark, "id") == marker.Id && !(bool)mark["stale"]),
+                "The actual MCP refusal returns a complete fresh context after reconciling the still-visible prompt marker.");
+            Check(unchanged, "The context_changed response confirms no native or saved-file mutation.");
+            response = client.Call("suggest_text", Request("stale-cache-current-permission", current, Paragraph, Replacement));
+            File.WriteAllText(Path.Combine(output, "stale-cache-recovery-response.json"), Json.Serialize(response));
+            Check(!Convert.ToBoolean(response["isError"]), "The same request identity resumes from the returned current context.");
+            result = Obj(response["structuredContent"]);
+        }
+        else
+        {
+            File.WriteAllText(Path.Combine(output, "stale-cache-recovery-response.json"), Json.Serialize(response));
+            result = Obj(response["structuredContent"]);
+        }
+        Check(Text(result, "status") == "applied" && (bool)result["applied"] && !(bool)result["requiresApproval"],
+            "The real MCP request reconciles stale cached metadata and applies the current direct prompt permission.");
+        current = Obj(result["current_context"]);
+        string expected = Replace(before.MainText, Paragraph, Replacement);
+        int currentMainLength = Number(current, "main_body_length");
+        Check((bool)current["complete"] && Text(current, "manuscript_id") == documentId &&
+            Text(current, "text").Length == Number(current, "total") && currentMainLength == expected.Length &&
+            Text(current, "text").Substring(0, currentMainLength) == expected &&
+            WordSnapshot.Capture(document).MainText == expected && (int)document.Revisions.Count == 0 && (int)document.Comments.Count == 1,
+            "The response contains the exact committed paragraph, rationale and complete successor context.");
+        var state = Local("state");
+        Dictionary<string, object> greenRule = Rows(state["rules"]).Single(rule => Text(rule, "action") == "protect" &&
+            String.Equals(Text(rule, "color"), "#74b9a4", StringComparison.OrdinalIgnoreCase));
+        Dictionary<string, object> green = Rows(state["marks"]).Single(mark => Text(mark, "ruleId") == Text(greenRule, "id") &&
+            Text(mark, "quote") == Replacement && !(bool)mark["stale"]);
+        int from = Number(green, "from"), to = Number(green, "to");
+        Check(Text(greenRule, "action") == "protect" && (string)document.Bookmarks.Item(Text(green, "id")).Range.Text == Replacement &&
+            (int)document.Bookmarks.Item(Text(green, "id")).Range.Shading.BackgroundPatternColor == 10795380 &&
+            to - from == Replacement.Length && Json.Serialize(review.Policy.Rules.Single(rule => rule.Id == "cached_direct")) == ruleBefore,
+            "Direct wording becomes exact visible green protection without changing the user's prompt rule.");
+        CheckRationaleComments(1);
+        NoSave();
     }
 
     private static void ShiftedOverlappingPermission()

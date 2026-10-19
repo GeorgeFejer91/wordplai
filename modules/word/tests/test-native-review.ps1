@@ -1,5 +1,7 @@
-param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly)
+param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly, [switch]$StaleMarkerOnly)
 $ErrorActionPreference = 'Stop'
+$modes = @($ManualMarkingOnly, $StaleMarkerOnly).Where({ $_ }).Count
+if ($modes -gt 1) { throw 'Choose only one focused native review scenario.' }
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repo ('artifacts/word/native-review-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
@@ -17,6 +19,7 @@ $test = Join-Path $OutputDirectory 'NativeReviewSmoke.exe'
 if ($LASTEXITCODE -ne 0) { throw 'Native review harness compilation failed.' }
 $nativeArguments = @($WordExecutable, (Join-Path $OutputDirectory 'native'))
 if ($ManualMarkingOnly) { $nativeArguments += 'manual-marking-only' }
+if ($StaleMarkerOnly) { $nativeArguments += 'stale-marker-only' }
 & $test @nativeArguments 2>&1 | Tee-Object -FilePath (Join-Path $OutputDirectory 'native.log')
 $code = $LASTEXITCODE
 foreach ($entry in $snapshot) {
