@@ -229,8 +229,9 @@ exact failures and native observations there; publish only this sanitized scope.
   is distinct from the earlier saved Wordplai connector `FORBIDDEN`; cause is
   unconfirmed. The endpoint is deliberately omitted. Browser control remains
   unavailable, and no real-client check ran.
-- The current source checkout is `b74a1755a17e6f44b5df2276cfd03c260bc01329`
-  on `main`, matching `origin/main`; the working tree was clean after the
-  documentation update. No product source, installer, release asset, or site
-  file changed. The last observed Pages workflow remains `39177712979` at
+- The latest passed component run above is bound to
+  `b74a1755a17e6f44b5df2276cfd03c260bc01329` on `main`. This verification
+  record was then committed as `2d7663b6993855e0f43e7c8e515f5a17b1b31736`;
+  no product source, installer, release asset, or site file changed. The last
+  observed Pages workflow remains `39177712979` at
   `0b1cfc54fde09c4c852cbceb6656478a4db84657`; it still serves preview.1.
