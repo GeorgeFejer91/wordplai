@@ -269,3 +269,10 @@ exact failures and native observations there; publish only this sanitized scope.
   `0b1cfc54fde09c4c852cbceb6656478a4db84657`; it still serves preview.1.
   Local documentation-only evidence updates do not alter product source,
   installer, release asset or site files.
+- Follow-up commit `9da41535cf626e4860205f72eb9e7467b4963490` adds the focused
+  stale-marker regression and fixes remote-status capture in the context gate.
+  `VERIFIED`: hosted workflow `39294629741` passed all steps on that exact SHA.
+  The local isolated Word review suite passed 337 assertions, its focused case
+  passed 19, and the copied mutation control failed at the expected denial.
+  The installed preview.2, physical gestures and real-client checks remain
+  unrun; the open user Word document was left untouched.

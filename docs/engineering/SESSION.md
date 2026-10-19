@@ -11,6 +11,12 @@ Expected files are this session scope, `modules/word/tests/NativeReviewSmoke.cs`
 `for-ai/VERIFICATION.md`, and `for-ai/HANDOFF.md`.
 The gate's remote check must retain Git's exit code before filtering its output;
 PowerShell 7.6.5 leaves `$LASTEXITCODE` unset after the current pipeline.
+The focused stale-marker run passed 19 assertions, the integrated native review
+suite passed 337, and a copied `RefreshMarks` mutation failed at the expected
+denial while preserving the original runtime source. Commit
+`9da41535cf626e4860205f72eb9e7467b4963490` passed hosted workflow
+`39294629741`. The remaining installed, physical and real-client gaps are still
+open.
 Preserve the MCP request/response contract and assert the actual edit plus
 native text, review state, local rules and saved-file effects. No product
 runtime, installer, release, site, connector configuration or user document
