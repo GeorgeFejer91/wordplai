@@ -297,3 +297,8 @@ exact failures and native observations there; publish only this sanitized scope.
   passed 19, and the copied mutation control failed at the expected denial.
   The installed preview.2, physical gestures and real-client checks remain
   unrun; the open user Word document was left untouched.
+- `VERIFIED`: hosted workflow `39297358857` passed all steps on documentation-
+  only commit `e428820c9f29064c4b7f73fded401e2489e56da8`. It ran the widget,
+  Word component/transport checks without Office, retained synthetic native UI
+  evidence and passed the For-AI structure/safety gate. This does not qualify
+  the installed preview.2, physical gestures or a real ChatGPT client.
