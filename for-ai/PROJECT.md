@@ -6,10 +6,10 @@ A standalone Microsoft Word add-in that connects AI writing assistants to locall
 
 ## Primary goal
 
-Finish the full standalone acceptance matrix in `HANDOFF.md`, correcting
-defects and retaining actual evidence for every applicable scenario. The public
-repository, installer and two-page site already exist. Publication alone does
-not complete this goal.
+Finish the full standalone acceptance matrix in `HANDOFF.md` and maintain
+feature parity with LibrAI, correcting defects and retaining actual evidence on
+each host. The public repository, installer and two-page site already exist.
+Publication alone does not complete either goal.
 
 Completion requires passing component and hosted CI, native dialog geometry,
 installed Word behavior, independent real WebGPT document sessions, cold/reloaded
@@ -17,6 +17,10 @@ picker rendering, physical navigation, measured edit latency and saved/reopened
 state. Verify final packaging, downloads, Pages and remote synchronization.
 Failed, blocked or unrun required cases remain incomplete; never substitute a
 simulation or a component result for the named real surface.
+
+## Cross-platform goal
+
+Maintain feature parity with [LibrAI](https://github.com/GeorgeFejer91/LibrAI): every user-facing function in either sibling must have an equivalent user outcome on both supported hosts. LibreOffice may require a different native implementation protocol. The shared behavior, user authority, safeguards, and verification bar are defined in [`CROSS-PLATFORM-COMPATIBILITY.md`](./CROSS-PLATFORM-COMPATIBILITY.md); platform-specific implementation details remain with their own source and tests.
 
 ## Non-goals
 

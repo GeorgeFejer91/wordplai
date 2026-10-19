@@ -5,6 +5,7 @@ Mark passages in Word, assign their color a writing prompt, and ask your connect
 assistant to use Wordplai. The native add-in applies authorized wording directly,
 adds a short rationale comment, and marks completed wording green/protected.
 
+[LibreOffice counterpart: LibrAI](https://github.com/GeorgeFejer91/LibrAI) ·
 [Description](https://georgefejer91.github.io/wordplai/) ·
 [Download](https://georgefejer91.github.io/wordplai/download/) ·
 [Preview releases](https://github.com/GeorgeFejer91/wordplai/releases)

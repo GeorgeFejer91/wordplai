@@ -62,6 +62,10 @@ Run proportionate build, test, lint, type, runtime, visual, device, security,
 and compatibility checks for every affected boundary. Do not run an expensive
 or irrelevant full matrix for a documentation-only edit.
 
+## Cross-platform parity gate
+
+For any change to a shared capability, update the contract in both repositories when needed and run the affected behavior checks independently on Word and Writer. A pass on one host does not qualify the other. A parity release is blocked while a shared capability is missing or unverified on either supported host; see [`CROSS-PLATFORM-COMPATIBILITY.md`](./CROSS-PLATFORM-COMPATIBILITY.md).
+
 ## Gate 4: publication
 
 1. Review status and diff; preserve unrelated changes.
