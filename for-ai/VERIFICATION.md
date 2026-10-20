@@ -11,6 +11,39 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Exact RGB recolor qualification — 2026-10-20
+
+- `VERIFIED`: the existing policy recolors exact green `#00FF00` to red
+  `#FF0000`, retaining ranges, text, unrelated marks/prompts and all prior rules.
+  Fresh and existing neutral red have empty prompts; existing Reject red is
+  reused unchanged. The expanded policy suite passes 201 assertions. A copied
+  implicit-Reject mutation fails the intended new neutral-red assertion.
+- `VERIFIED`: the new MCP-instruction regression fails against the prior
+  guidance, then the updated guidance passes all 2,116 loopback transport
+  assertions. Instructions and tool discovery explicitly permit neutral red
+  without an editing-prompt question; no tool or permission schema changed.
+- `VERIFIED`: `test-native-highlighting.ps1 -RecolorStress` passes 217 recolor
+  assertions (221 including setup) in its own Word process. This includes exact
+  green-to-neutral-red paint, empty prompt, replay, unchanged neighboring marks,
+  text/fonts/rules/annotations and save/reopen, plus the existing overlap,
+  refusal, Undo/Redo and inspection-budget scenarios. Its manifest has no input
+  drift. Afterward, only the three test files' original LF endings were restored;
+  `test-line-endings.json` retains before/after hashes for this formatting-only
+  difference. Runtime source bytes were not changed by that restoration.
+- Receipts and retained failures are private under
+  `.for-ai-local/recolor-20261020/`. The first ad hoc policy compile used relative
+  paths rejected by csc; its corrected absolute-path invocation passed.
+  Installed/public-client behavior, physical UI and Writer parity are `NOT RUN`
+  in this follow-up. No installer, release or site deployment was performed.
+- `VERIFIED`: the final `modules/word/test.ps1` run passes all 21 component
+  gates with the final source bytes: build, CLI, policy, concurrency, uncertain
+  outcomes, recoloring, native review/mapping/input, COM/dispatch, transport
+  negative controls, autosave, 1,419 native UI checks with 21 renders, and
+  architecture. The driver's overall `PARTIAL` correctly leaves installed and
+  public-client scopes unrun. Context structure/safety checks also pass, with
+  existing oversized-document and dirty-tree warnings. Evidence is in
+  `components-final/`; this is a local source checkpoint, not a deployment.
+
 ## Gate 0: bootstrap readiness
 
 From the repository root:

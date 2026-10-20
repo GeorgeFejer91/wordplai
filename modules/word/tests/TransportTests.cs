@@ -134,6 +134,8 @@ internal static partial class TransportTests
                 "A color request immediately applies existing configured colors or requested RGB without changing their local rules.");
             Assert(instructions.Contains("Neutral coloration grants no wording, protect or discard authority") &&
                 instructions.Contains("only the local user assigns color functions"), "Visual colors cannot grant themselves editing or protection functions.");
+            Assert(instructions.Contains("#00FF00 to #FF0000") && instructions.Contains("red may remain neutral with an empty prompt") &&
+                instructions.Contains("Do not ask for an editing prompt"), "Recolor discovery explicitly allows neutral red without an editing-prompt question.");
             object[] tools = (object[])Result(Post(service.LocalAddress, "tools/list", new { }))["tools"];
             var tool = (IDictionary<string, object>)tools[3];
             var schema = (IDictionary<string, object>)tool["inputSchema"];

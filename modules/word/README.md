@@ -70,6 +70,10 @@ remains neutral. Partial ranges, stale identities, unresolved tracked reviews
 and recolors that would discard a saved passage prompt are refused with a
 specific reason. Word Undo/Redo restores the corresponding visible colors and
 bindings; later local rule decisions retain priority.
+For example, changing green `#00FF00` marks to unused red `#FF0000` keeps the
+text and exact ranges and creates neutral red with an empty prompt. Red needs
+no editing prompt. If red already has a local rule, that rule is reused
+unchanged; a color name or RGB never assigns a function by itself.
 Repeated or overlapping marks can be recolored together by supplying every
 affected marker's exact range and ID, sorted by range start.
 MCP coloring verifies the actual character shading before confirming success;

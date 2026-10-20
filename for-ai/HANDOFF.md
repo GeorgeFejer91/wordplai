@@ -1,5 +1,25 @@
 # Remaining Word and real-client qualification
 
+## Exact RGB recolor follow-up — 2026-10-20
+
+The existing recolor authority supports green `#00FF00` to red `#FF0000` with
+unchanged text/ranges and existing rules. MCP guidance now explicitly permits
+neutral red with an empty prompt and forbids inferring a function from hue or
+asking for an editing prompt for a visual request. Existing red rules retain
+their local meaning. Focused policy checks pass 201 assertions, including fresh
+and existing neutral red and unchanged Reject red; transport checks pass 2,116.
+The isolated native suite passes 217 recolor assertions, including exact paint,
+other-marker preservation, replay and save/reopen. The final component driver
+passes all 21 gates, including 1,419 native UI checks and 21 renders. Its overall
+`PARTIAL` retains the installed/public-client evidence boundary. See the scoped
+results and test-source line-ending receipt in `VERIFICATION.md`.
+Receipts are private under `.for-ai-local/recolor-20261020/`; installed/live AI
+clients and Writer parity are not qualified by these checks. Preserve the
+pre-existing preview.4 CLI work, now independently committed as `0aeb646`.
+This local change is based on `b79108a` on main; no installer or publication was
+performed. Next acceptance remains installed/live-client qualification under
+the existing checklist below; the overall goal remains open.
+
 This is a sanitized continuation contract for the standalone project, prepared
 2026-10-18. It describes unfinished acceptance work, not a transcript or a claim
 that publication completes that work. Record new results in

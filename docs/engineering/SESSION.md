@@ -1,5 +1,18 @@
 # Current CLI implementation scope
 
+## Highlight recolor follow-up
+
+Qualify exact green `#00FF00` to red `#FF0000` recoloring through the existing
+policy/native owners. Preserve text, exact ranges, other markers and all existing
+rule definitions. Red may be neutral with an empty prompt; hue never assigns an
+editing function. Clarify MCP discovery guidance and extend existing policy,
+transport and native recolor checks. No new tools, rule migration, UI, installer
+or publication changes. The CLI changes listed below predate this task and must
+be preserved. Use owned isolated native fixtures only; installed/live-client and
+Writer parity evidence remain separate. Initial branch is main at `3f6e18a`,
+with the pre-existing CLI/product/documentation changes uncommitted. No new
+failure has yet been observed for the requested color behavior.
+
 The user requests CLI functions to automate add-in testing without desktop input.
 Start from clean main `3f6e18ad6096011992091c592d01ec23c7348646`.
 Reuse the native local COM authority and existing test drivers. Add explicit

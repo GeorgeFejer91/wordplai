@@ -19,6 +19,7 @@ internal static class PolicyRecolorTests
         {
             contract = File.ReadAllText(args[0]);
             GreenToRedAndReplay();
+            ExactRgbRedHasNoImplicitFunction();
             OverlappingCurrentSelections();
             NeutralTargetPreservesInstructions();
             MixedExistingActions();
@@ -103,6 +104,41 @@ internal static class PolicyRecolorTests
         Equal(definitions, Json.Serialize(reopened.Rules), "Reopening retains the unchanged local definitions.");
         reopened.Share(Document);
         Denied(reopened, request, Text, "A reopened process cannot replay the prior native operation.");
+    }
+
+    private static void ExactRgbRedHasNoImplicitFunction()
+    {
+        foreach (string action in new string[] { null, "neutral", "reject" })
+        {
+            var engine = Engine();
+            engine.AddOrUpdateRule(Rule("green", "#00FF00", "protect"));
+            if (action != null) engine.AddOrUpdateRule(Rule("exact_red", "#FF0000", action));
+            PassageMark source = Add(engine, "Wrai_rgb_source", "green", "beta");
+            PassageMark neighbor = Add(engine, "Wrai_rgb_neighbor", "yellow", "delta", "Keep this term.");
+            string definitions = Json.Serialize(engine.Rules), neighboring = Json.Serialize(neighbor);
+            var request = Change(Recolor(engine, "exact_rgb_red", null, source), "Color", "#ff0000");
+            HighlightReceipt receipt = engine.Highlight(request, Text, Snapshot);
+            ColorRule red = engine.Rules.Single(rule => rule.Id == receipt.ColorId);
+            Equal("#FF0000", red.Color, "The exact requested red RGB is retained.");
+            Equal(action ?? "neutral", red.Action, "Red has only its existing local function, or is neutral when fresh.");
+            Equal("", red.Prompt, "Red requires no editing prompt.");
+            Equal(definitions, Json.Serialize(engine.Rules.Where(rule => action != null || rule.Id != red.Id).ToArray()),
+                "Exact RGB recoloring preserves all pre-existing color rules.");
+            PassageMark replacement = engine.Marks.Single(mark => mark.Id == receipt.MarkIds.Single());
+            Equal(true, Replaced(receipt).SequenceEqual(new[] { source.Id }) && replacement.From == source.From && replacement.To == source.To &&
+                replacement.Quote == source.Quote && replacement.Prompt == "" && replacement.RuleId == red.Id && engine.Marks.Count == 2,
+                "Green-to-red replaces only the selected binding while preserving its exact text and range.");
+            Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Other highlights and passage prompts remain exact.");
+            Equal(0, engine.Proposals.Count, "Visual recoloring creates no editing proposal.");
+            string saved = PolicyStateJson.Serialize(engine.ExportState());
+            Equal(receipt.MarkIds.Single(), engine.Highlight(request, Text, Snapshot).MarkIds.Single(), "Exact RGB replay returns the same red marker.");
+            Equal(saved, PolicyStateJson.Serialize(new PolicyEngine(contract, engine.ExportState()).ExportState()),
+                "Neutral or functional red, exact marker geometry and unchanged rules survive reopening.");
+            string context = engine.ReadContext(Document, Revision, Text, Snapshot);
+            Refused(() => engine.Submit(new Proposal { Id = "red_no_wording", DocumentId = Document, Revision = Revision,
+                From = source.From, To = source.To, Quote = source.Quote, Replacement = "changed", Rationale = "" }, context, Text, Snapshot),
+                "A neutral or Reject red recolor grants no wording permission.");
+        }
     }
 
     private static void OverlappingCurrentSelections()

@@ -17,6 +17,7 @@ internal static partial class NativeHighlightingSmoke
         string id = null;
         try
         {
+            ExactNeutralRedRecolor(application, editor, address, output, evidence);
             InheritedSameRgbRecolor(application, editor, address, output, evidence);
             ExposedColorRecolor(application, editor, address, output, evidence);
             OverlappingRecolor(application, editor, address, output, evidence);
@@ -133,6 +134,55 @@ internal static partial class NativeHighlightingSmoke
         finally
         {
             File.WriteAllText(Path.Combine(output, "recoloring-events.json"), McpEndpoint.Json().Serialize(evidence));
+            if (document != null) document.Close(0);
+            if (id != null && File.Exists(RecolorSidecar(id))) File.Delete(RecolorSidecar(id));
+        }
+    }
+
+    private static void ExactNeutralRedRecolor(dynamic application, WordEditor editor, string address, string output, List<object> evidence)
+    {
+        dynamic document = application.Documents.Add();
+        string id = null, path = Path.Combine(output, "exact-neutral-red.docx");
+        try
+        {
+            document.Content.Text = "Alpha beta gamma delta.\r";
+            document.Activate(); document.SaveAs2(path, 16);
+            id = UiState.Text(UiState.Map(Local(editor, "state")["document"]), "id");
+            Local(editor, "save_rule", new { documentId = id, id = "protect", label = "Green protection", color = "#00FF00",
+                action = "protect", prompt = "", accessMode = "suggestions" });
+            Local(editor, "save_rule", new { documentId = id, id = "neutral_red", label = "Red color only", color = "#FF0000",
+                action = "neutral", prompt = "", accessMode = "suggestions" });
+            string original = WordSnapshot.Capture(document).FullText;
+            object[] ranges = new[] { ExactColorRange(original, "beta"), ExactColorRange(original, "delta") };
+            var context = Share(editor, address, id);
+            var seed = Tool(address, "highlight_text", ColorRequest(id, "exact_green_seed", context, "#00FF00", null, ranges));
+            string[] greenIds = RecolorIds(seed, "markIds");
+            var state = Local(editor, "state");
+            string rules = McpEndpoint.Json().Serialize(state["rules"]), fonts = RecolorFonts(document);
+            string neighbor = McpEndpoint.Json().Serialize(UiState.Records(state, "marks").Single(mark => UiState.Text(mark, "id") == greenIds[1]));
+            string neighborPaint = WordSnapshot.FormattingSignature(document.Range(17, 22));
+            context = Share(editor, address, id);
+            var request = RecolorRequest(id, "exact_green_to_neutral_red", context, "#FF0000", null, ranges.Take(1).ToArray(), greenIds.Take(1).ToArray());
+            var receipt = Tool(address, "highlight_text", request);
+            string[] redIds = RecolorIds(receipt, "markIds");
+            Check(UiState.Text(receipt, "colorId") == "neutral_red" && UiState.Text(receipt, "action") == "neutral" &&
+                UiState.Text(receipt, "color") == "#FF0000", "Exact green-to-red uses the existing neutral red without an editing prompt.");
+            AssertRecolorBindings(editor, document, redIds, greenIds.Take(1).ToArray(), ranges.Take(1).ToArray(), "neutral_red", "#FF0000", "Exact neutral red", 2);
+            var replay = Tool(address, "highlight_text", request);
+            Check(UiState.Flag(replay, "replayed") && RecolorIds(replay, "markIds").SequenceEqual(redIds), "Neutral red replay creates no duplicate marker.");
+            document.Save(); document.Close(0); document = null;
+            document = application.Documents.Open(path, ReadOnly: false, Visible: false); document.Activate();
+            state = Local(editor, "state");
+            AssertRecolorBindings(editor, document, redIds, greenIds.Take(1).ToArray(), ranges.Take(1).ToArray(), "neutral_red", "#FF0000", "Reopened neutral red", 2);
+            Check(McpEndpoint.Json().Serialize(state["rules"]) == rules && UiState.Text(UiState.Records(state, "rules").Single(rule => UiState.Text(rule, "id") == "neutral_red"), "prompt") == "" &&
+                WordSnapshot.Capture(document).FullText == original && RecolorFonts(document) == fonts &&
+                McpEndpoint.Json().Serialize(UiState.Records(state, "marks").Single(mark => UiState.Text(mark, "id") == greenIds[1])) == neighbor &&
+                WordSnapshot.FormattingSignature(document.Range(17, 22)) == neighborPaint && (int)document.Comments.Count == 0 && (int)document.Revisions.Count == 0,
+                "Save/reopen preserves neutral red, all rules, exact text, fonts, other highlights and native annotations.");
+            evidence.Add(new { operation = "exact_green_to_neutral_red_reopened", request = request, receipt = receipt, state = state, documentSha256 = FileDigest(path) });
+        }
+        finally
+        {
             if (document != null) document.Close(0);
             if (id != null && File.Exists(RecolorSidecar(id))) File.Delete(RecolorSidecar(id));
         }
