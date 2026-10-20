@@ -557,9 +557,11 @@ namespace UnderTree.WordAddin
             if (page.Text == "Overview")
             {
                 string text = String.Join(" ", Descendants(page).OfType<Label>().Select(label => label.Text));
-                Require(text.Contains("MCP address in your AI client") && text.Contains("whole active document")
-                    && text.Contains("unsaved text") && text.Contains("Color rules") && text.Contains("tracked suggestions with comments") && text.Contains("Stop / revoke ends access"),
-                    "Overview explains automatic full-document reading, highlighted edit rules and stopping access.");
+                Require(text.Contains("MCP address in your AI client") && text.Contains("Choose a document")
+                    && text.Contains("unsaved text") && text.Contains("Color rules") && text.Contains("apply directly")
+                    && text.Contains("rationale comment") && text.Contains("green protection") && text.Contains("Stop / revoke ends access")
+                    && !text.Contains("tracked suggestions with comments") && !text.Contains("whole active document"),
+                    "Overview explains explicit document choice, direct edits with rationale and protection, and stopping access.");
             }
             if (page.Text == "Setup")
             {

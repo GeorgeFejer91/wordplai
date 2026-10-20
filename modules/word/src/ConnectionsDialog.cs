@@ -51,7 +51,7 @@ namespace UnderTree.WordAddin
             overviewBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Public MCP address"), address,
                 NativeLayout.Actions(copy)), 0, 0);
             overviewBody.Controls.Add(NativeLayout.Stack(status, NativeLayout.Actions(details)), 0, 1);
-            overviewBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Add this MCP address in your AI client. Connecting reads the whole active document, including unsaved text. Color rules control edits to highlighted passages. Edits appear as tracked suggestions with comments. Stop / revoke ends access."),
+            overviewBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Add this MCP address in your AI client. Connecting allows reading open documents, including unsaved text. Choose a document in your AI client. Color rules limit wording edits. Authorized edits apply directly with a rationale comment and green protection. Stop / revoke ends access."),
                 NativeLayout.Actions(start, stop)), 0, 2);
             overview.Controls.Add(overviewBody);
 
