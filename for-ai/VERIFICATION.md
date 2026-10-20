@@ -679,7 +679,8 @@ UI, host reopen or Mac results. Local sharing is stopped after owned tests.
   removed, not qualified. Normal installer registration restoration was used;
   no Office security, profile ownership or production guard was weakened.
 
-Preview.4 was a local installed candidate; the public release/site remain preview.3.
+At the preview.4 checkpoint it was a local installed candidate; the public
+release/site were preview.3.
 Subsequent WebGPT preparation exposes its local-only background autosave gap:
 `local-autosave-installed-red-2/` fails the unchanged fifteen-second timer gate
 before any MCP read. The prior 36 checks qualified saving after MCP selection.
@@ -763,8 +764,51 @@ UI, full real WebGPT, clean-machine and Mac acceptance remain open.
   `39488997403`. Anonymous Description, Download, release metadata and manifest
   return HTTP 200; the three rendered documents match local tested bytes, and
   all twelve deployed source hashes match the published Git blobs. Hosted
-  verification `39488997631` remains running at this update; recheck its result
-  and subsequent documentation-only publication state separately.
+  verification `39488997631` subsequently passes. Documentation checkpoint
+  `b81eebfde6d46d9469ff20279e3b132378471939` passes verification `39489600126`.
+  Recheck subsequent evidence-only publication state separately.
+
+### Preview.5 real-client interleaving and reopen continuation
+
+Private evidence: `artifacts/word/webgpt-cli-interleave/qualification-result.json`.
+The overall packet is `PARTIAL` because the remaining host/platform scopes stay
+open. Production sources, package, dependencies and persistent permissions are
+unchanged; DLL/CLI hashes remain those above.
+
+- `VERIFIED`: four actual Chrome/Instant requests interleave G/H neutral colors,
+  including exact green `#00FF00` to existing neutral red `#FF0000` with empty
+  prompt and unchanged rule definitions. Each operation passes eleven saved-
+  DOCX assertions: exact wording/Unicode, unaffected marks/rules and rationale,
+  native RGB, one receipt and the other conversation's exact saved bytes.
+  Retained snapshots are bound to the executed audit hash in each result.
+- `VERIFIED`, scoped refusal/recovery: after one-time host approval for the
+  disposable protected-ending attempt, the client reports `INVALID_ARGUMENT`
+  requiring native-identity preservation mapping. Both files remain byte exact;
+  native observation still finds one rationale/no revisions/Saved=true each.
+  A different valid color operation succeeds afterward. The raw tool envelope
+  and original request identity were not captured; this does not qualify
+  same-ID retry or real-client revocation.
+- `VERIFIED`: the same installed Word process closes/reopens only owned G/H,
+  hidden, without explicit Save or mouse/keyboard input. Eleven lifecycle checks,
+  sixteen native/CLI semantic comparisons and two in-memory RGB checks pass.
+  Review identities, text, comment content/author/date/scope, rules, marks,
+  applied receipts and Saved state persist. The post-run audit preserves five
+  open original documents and all six known saved original files.
+- Retained harness failures: raw rationale XML equality fails because Word
+  renumbers its export comment ID; the parsed difference is retained. Only that
+  volatile ID is normalized, with full comment attributes/content and exact
+  mapped body-anchor locations required. The missing-neutral-color observation
+  control fails its intended predicate. Initial Close uses a value where this
+  PowerShell COM binding requires a reference; it fails before either fixture
+  closes. Both remain saved/open before the corrected fresh run. Neither failure
+  is silently promoted to a pass or attributed to the add-in.
+- `VERIFIED`, public resource boundary only: actual installed HTTPS initialize,
+  resources/list and resources/read return HTTP 200 in 266/156/375ms. MIME is
+  `text/html;profile=mcp-app`; returned HTML is exactly 58,378 bytes with SHA-256
+  `416a21c068d4a179e112b90784c385032dafb1f98d2f11e505b5d7868b5119aa`.
+  ChatGPT's Open app in tab fallback still reports could-not-display. Host
+  receipt, iframe delivery and bridge/render initialization are unproven;
+  resource HTTP success does not identify the cause or qualify a picker fix.
 
 Physical dialog, clean-machine, usable host picker and additional real-client
 qualification remain open. Mac implementation is deferred to the existing

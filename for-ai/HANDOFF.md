@@ -16,9 +16,9 @@ results and test-source line-ending receipt in `VERIFICATION.md`.
 Receipts are private under `.for-ai-local/recolor-20261020/`; installed/live AI
 clients and Writer parity are not qualified by these checks. Preserve the
 pre-existing preview.4 CLI work, now independently committed as `0aeb646`.
-This local change is based on `b79108a` on main; no installer or publication was
-performed. Next acceptance remains installed/live-client qualification under
-the existing checklist below; the overall goal remains open.
+At that recolor checkpoint, the change was based on `b79108a` and no installer
+or publication was performed. Subsequent integrated preview.5 qualification is
+recorded below; the overall goal remains open.
 
 This is a sanitized continuation contract for the standalone project, prepared
 2026-10-18. It describes unfinished acceptance work, not a transcript or a claim
@@ -226,8 +226,11 @@ audit lifecycle changes. Overall acceptance remains open.
   interaction. No dialog Save was performed. Native control was stopped by Escape.
 - [x] Reconnect an equivalent ChatGPT test app and run the first named-document
   real WebGPT edit; verify actual native/saved results and original preservation.
-- [ ] Run a second independent conversation, cold/reloaded picker, independent
-  targets, safe refusal/retry, revocation and first-visible-edit timing.
+- [x] Run two independent real conversations and interleave color operations;
+  verify protected-edit refusal, valid post-refusal recovery and native
+  save/reopen with independent targets and original preservation.
+- [ ] Qualify a usable cold/reloaded picker, real-chat revocation/original-ID
+  recovery and first-visible-wording timing.
 - [x] Prepare the future Mac agent handoff in `MACOS-COMPATIBILITY.md`.
 - [ ] Future Mac agent: implement, package and independently qualify Word-on-Mac
   support. No Mac support or installer is currently claimed.
@@ -278,10 +281,34 @@ preservation still passes. Client task times are nineteen seconds for G and
 eleven seconds for H's fallback; first-visible-edit latency remains unmeasured.
 Browser control then detaches during preparation of a G-only color request;
 no Send was performed, and both saved files match their pre-attempt hashes.
-Interleaving, safe refusal/revocation and a usable real-host picker remain open.
-Public sharing remains running for continuation. Keep all private capability
-and browser evidence outside Git. Never repeat an uncertain writing request
-under a new identity. See `artifacts/word/webgpt-cli-qualification-3/` privately.
+That detachment was recovered in fresh targets under the same Chrome browser.
+The continuation in `artifacts/word/webgpt-cli-interleave/` privately qualifies
+four color operations across G/H: neutral exact red and blue, then G red to
+exact green and back to the existing neutral red rule. Forty-four saved-file
+assertions confirm exact wording, other bindings/rules, native paint and
+independent saved-byte isolation. A protected-ending attempt receives one-time
+host approval and the client reports `INVALID_ARGUMENT` for missing native
+preservation mapping; both saved files remain byte exact. The raw tool envelope
+was not captured. A different valid color request then succeeds.
+
+Only the two saved owned documents are closed/reopened hidden through the same
+Word process. Eleven lifecycle checks, sixteen semantic comparisons and two
+actual in-memory RGB checks pass: identities, native text/comments, rules,
+markers, applied receipts and Saved state persist. Five open/six saved originals
+remain unchanged. Retain the initial PowerShell Close binding failure, which
+stopped before either fixture closed, and the initial comment XML byte check:
+only volatile export IDs changed; complete content/attributes and mapped body
+anchors compare exactly. The missing-neutral-color observation control fails
+its intended predicate.
+
+The public picker resource initializes/lists/reads with HTTP 200 and returns
+the exact packaged 58,378-byte HTML. This does not prove ChatGPT receipt or
+bridge/render initialization. The offered Open app in tab fallback also reports
+could-not-display. No picker cause or code fix is inferred from those facts.
+Real-chat revocation/original-ID recovery, usable picker, first-visible timing,
+physical UI and Mac scopes remain open. Public sharing was observed running;
+recheck it before continuation. Keep private capabilities/browser evidence out
+of Git and never retry an uncertain write under a new identity.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -410,7 +437,9 @@ publication metadata and observed limits; local rendering passes 313 checks.
 Its pushed SHA `3e9c7681c589103339baa3d8de297e32dace816d` passes Pages
 `39488997403`; anonymous Description, Download and release metadata exactly
 match local tested bytes. All twelve deployed manifest inputs match that Git
-commit. Hosted verification `39488997631` is still running at this update;
-recheck its conclusion and any following documentation checkpoint's Git state.
+commit. Hosted verification `39488997631` subsequently passes. Documentation
+checkpoint `b81eebfde6d46d9469ff20279e3b132378471939` is pushed and passes
+verification `39489600126`. Recheck the following evidence-only checkpoint's
+Git/CI state; production/package/site inputs are unchanged.
 The package stays bound to the release target. Keep the overall goal active for
 the remaining real-host picker, interleaving, timing, physical and Mac scopes.
