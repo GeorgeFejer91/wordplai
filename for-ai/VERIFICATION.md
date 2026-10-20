@@ -543,6 +543,17 @@ All receipts in this section are under ignored
   Locked Pretext/fonts, keyboard navigation and readable fallbacks remain covered.
   See `preview3-release/site-published-metadata-results.json`; this local render
   does not establish Pages deployment or the ChatGPT picker.
+- `VERIFIED`, preview.3 deployment: hosted verification `39433032039` and Pages
+  `39433031883` both pass on `25a992f0a1a838c7b262d25a75e4f933f288b76c`.
+  Anonymous Description, Download and release JSON return HTTP 200 and match the
+  locally tested output exactly. All twelve deployed build-manifest inputs match
+  that published Git commit. The first raw local-manifest equality assertion
+  failed: five text inputs differ only by Windows CRLF versus published LF.
+  Both the failure and explicit normalized-byte/Git-blob diagnosis are retained;
+  no file content or check was silently discarded. Anonymous manifest/checksum
+  assets also match the release staging files. See
+  `preview3-release/deployed-pages-result.json`, `deployed-manifest-diagnosis.json`,
+  `deployed-line-endings-diagnosis.json` and `anonymous-metadata-result.json`.
 - `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
   qualification. The user has no Mac and requested a future-agent handoff;
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,

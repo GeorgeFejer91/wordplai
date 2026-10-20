@@ -203,7 +203,7 @@ audit lifecycle changes. Overall acceptance remains open.
   support. No Mac support or installer is currently claimed.
 - [x] Publish Windows preview.3 as an unsigned prerelease with explicit remaining
   limits; verify all three asset digests and an anonymous installer download.
-- [ ] Verify the updated stable download page and exact remote CI/deployment
+- [x] Verify the updated stable download page and exact remote CI/deployment
   after publication. Overall acceptance and Mac qualification remain open.
 
 Chrome extension browser access was observed and one real connection-only
@@ -283,8 +283,11 @@ corrects test reporting, and `40ba956` records qualification and the Mac handoff
 They, the shared-skill update, test-only comparer correction `7034ff0` and
 installed evidence `6c455db` are pushed on `main`. Hosted verification
 `39431955158` passed on `6c455db`, the preview.3 release target. The installer
-remains bound to the unchanged 67 inputs and six payloads. Recheck remote SHA,
-CI and Pages for the subsequent site/metadata publication checkpoint.
+remains bound to the unchanged 67 inputs and six payloads. Site/metadata checkpoint
+`25a992f` passed verification `39433032039` and Pages `39433031883`. Anonymous
+Description, Download and release metadata match tested output; all twelve
+deployed manifest inputs match that published Git commit. Recheck remote SHA and
+applicable CI after subsequent changes.
 
 Preview.3 is published at
 https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.3.
