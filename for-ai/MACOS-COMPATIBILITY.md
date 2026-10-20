@@ -52,6 +52,7 @@ that an API shown in the preview reference is available in the intended host.
 | `WordAutoSave`, `WordReviewStore` | Actual save/reopen, safe deferral, durable receipts, expiry/revocation and OS-appropriate protected storage. Windows DPAPI is not a Mac storage implementation. |
 | `ConnectionService`, tunnel supervision | Real Mac-compatible connection binary, process ownership/cleanup and unchanged security boundaries. The bundled Windows AMD64 zrok executable is not a Mac runtime. |
 | Native ribbon/dialogs | Mac-native or supported Office add-in controls, keyboard/focus/accessibility, resizing, full text access and equivalent user outcomes. |
+| `WordAutomation`, `modules/word/cli/` | Equivalent local CLI outcomes without desktop input: explicit document identities, JSON file/stdin requests, state/context, local rule/marker/review commands and connection lifecycle. Exercise AI writes through the same four MCP tools with separate session credentials, complete-read witnesses and original request identities. Windows COM/PID binding and the `.exe` are not Mac implementations. |
 
 ## Smallest qualification sequence
 
@@ -99,6 +100,12 @@ missing or unsafe host implementation.
 - Real Chrome-extension WebGPT results on the Mac, including cold/reloaded picker,
   explicit choice, independent targets, safe failure recovery and measured first
   visible edit. Component tests and manifest sideloading cannot replace these.
+- Installed CLI checks without mouse/keyboard input, including exact UTF-16
+  targets/quotes, stale and closed-target refusal, independent sessions, native
+  selection preservation and timer saving of local-only inactive changes before
+  any MCP read. Local mutation must not grant remote authority. Reuse the Windows
+  command/reference and scenario contracts while adapting their host binding;
+  retain the separate physical and visual acceptance scopes.
 - Updated existing verification/handoff owners, coherent commits, exact remote CI
   and download/deployment checks if publication is authorized. Publish sanitized
   evidence only; keep credentials, document identities and raw captures private.

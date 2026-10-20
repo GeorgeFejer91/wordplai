@@ -759,8 +759,12 @@ UI, full real WebGPT, clean-machine and Mac acceptance remain open.
   installer URL, SHA-256 and byte count. Updated release/limit copy retains
   existing layout and locked Pretext; the rendered matrix passes 313 checks.
   Minimum-width Description and 200%-text Download captures were inspected.
-  Verify the following site checkpoint's hosted CI/Pages and deployed bytes
-  separately; a local render does not establish deployment.
+  Site checkpoint `3e9c7681c589103339baa3d8de297e32dace816d` passes Pages
+  `39488997403`. Anonymous Description, Download, release metadata and manifest
+  return HTTP 200; the three rendered documents match local tested bytes, and
+  all twelve deployed source hashes match the published Git blobs. Hosted
+  verification `39488997631` remains running at this update; recheck its result
+  and subsequent documentation-only publication state separately.
 
 Physical dialog, clean-machine, usable host picker and additional real-client
 qualification remain open. Mac implementation is deferred to the existing

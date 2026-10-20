@@ -407,6 +407,10 @@ and eight payloads; anonymous downloads match all three uploaded assets.
 Release: https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.5.
 The following site-only checkpoint updates the stable page with its actual
 publication metadata and observed limits; local rendering passes 313 checks.
-Recheck that checkpoint's remote SHA, CI/Pages and anonymous deployed bytes.
+Its pushed SHA `3e9c7681c589103339baa3d8de297e32dace816d` passes Pages
+`39488997403`; anonymous Description, Download and release metadata exactly
+match local tested bytes. All twelve deployed manifest inputs match that Git
+commit. Hosted verification `39488997631` is still running at this update;
+recheck its conclusion and any following documentation checkpoint's Git state.
 The package stays bound to the release target. Keep the overall goal active for
 the remaining real-host picker, interleaving, timing, physical and Mac scopes.
