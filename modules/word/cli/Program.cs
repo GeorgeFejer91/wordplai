@@ -17,7 +17,7 @@ namespace Wordplai.Cli
             { "rule-save", "save_rule" }, { "mark", "mark_range" }, { "unmark", "remove_mark" },
             { "accept", "accept" }, { "reject", "reject" }, { "revoke", "revoke_context" } };
         private static readonly Dictionary<string, string> Connections = new Dictionary<string, string> {
-            { "status", "connection_status" }, { "connect-local", "connection_local" },
+            { "status", "connection_status" }, { "diagnostics", "connection_diagnostics" }, { "connect-local", "connection_local" },
             { "connect-public", "connection_start" }, { "stop", "connection_stop" } };
 
         [STAThread]
@@ -198,7 +198,7 @@ namespace Wordplai.Cli
         {
             Console.WriteLine("wordplai <command> [--document ID] [--input FILE|-] [--word-pid PID] [--include-secrets]");
             Console.WriteLine("Commands: documents, state, context, rule-save, mark, unmark, accept, reject, revoke,");
-            Console.WriteLine("          status, connect-local, connect-public, stop, mcp");
+            Console.WriteLine("          status, diagnostics, connect-local, connect-public, stop, mcp");
             Console.WriteLine("mcp also requires --method METHOD --session-file FILE. Each file retains one MCP session.");
             Console.WriteLine("Document commands require an exact ID. Mutations require the current snapshot in JSON input.");
             Console.WriteLine("Word must already be open with the add-in connected. No Word launch, mouse, keyboard or focus injection.");

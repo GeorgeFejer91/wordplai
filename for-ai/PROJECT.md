@@ -63,6 +63,10 @@ the add-in. It provides explicit document-ID local automation and an MCP client;
 it adds no remote tools or direct AI-write bypass. Local range marking shares
 the native marking implementation. CLI tests require no mouse/keyboard input;
 they do not replace physical-gesture, pixel or real WebGPT acceptance evidence.
+Local `diagnostics` exposes numeric in-memory HTTP/RPC/resource counters for
+testing resource delivery. It records no payloads or identities, requires no
+document choice, and adds no remote tool. A completed response write does not
+prove client receipt or widget bridge initialization.
 Successful local CLI mutations enroll their explicitly chosen inactive document
 in the existing native autosave path without sharing MCP authority. Reads and
 refused mutations do not enroll it; ordinary named/writable, busy and input/save

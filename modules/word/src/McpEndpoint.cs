@@ -38,6 +38,7 @@ namespace UnderTree.WordAddin
         private readonly string localHost;
         private readonly McpCoordination coordination = new McpCoordination();
         private readonly Action<string> revokeClient;
+        private readonly McpResourceDiagnostics diagnostics = new McpResourceDiagnostics();
 
         internal McpEndpoint(Func<string, IDictionary<string, object>, object> dispatch,
             Func<Func<object>, object> marshal, string ownerId, Action<string> revokeClient)
@@ -60,6 +61,7 @@ namespace UnderTree.WordAddin
         internal string LocalAddress { get; private set; }
         internal string Path { get { return "/t/" + capability + "/mcp"; } }
         internal bool Active { get { return active; } }
+        internal object Diagnostics { get { return diagnostics.Snapshot(); } }
         internal void SetPublicHost(string host) { publicHost = host; }
 
         private void AcceptClients()
@@ -93,11 +95,15 @@ namespace UnderTree.WordAddin
                 string method, path;
                 try { ReadHeaders(stream, out method, out path, out headers); }
                 catch (InvalidDataException) { WriteResponse(stream, 400, null); return; }
+                diagnostics.HttpRequested();
                 string host, origin;
                 if (!active || !headers.TryGetValue("Host", out host) ||
                     (host != localHost && (publicHost == null || host != publicHost)) ||
                     headers.TryGetValue("Origin", out origin) || !SamePath(path, Path))
-                { WriteResponse(stream, 403, null); return; }
+                {
+                    if (headers.ContainsKey("Origin")) diagnostics.OriginRefused();
+                    WriteResponse(stream, 403, null); return;
+                }
                 string sessionId;
                 headers.TryGetValue("Mcp-Session-Id", out sessionId);
                 if (method == "DELETE")
@@ -163,12 +169,16 @@ namespace UnderTree.WordAddin
                 catch (Exception) { WriteResponse(stream, 503, null); return; }
                 if (!request.TryGetValue("id", out id) || id == null)
                 { WriteResponse(stream, 202, null); return; }
-                WriteResponse(stream, 200, Process(request, id, session), initialize ? session.Id : null);
+                bool resourceResult;
+                object response = Process(request, id, session, out resourceResult);
+                if (WriteResponse(stream, 200, response, initialize ? session.Id : null) == 200 && resourceResult)
+                    diagnostics.ResponseWritten();
             }
         }
 
-        private object Process(IDictionary<string, object> request, object id, McpClientSession session)
+        private object Process(IDictionary<string, object> request, object id, McpClientSession session, out bool resourceResult)
         {
+            resourceResult = false;
             try
             {
                 object supplied;
@@ -190,8 +200,12 @@ namespace UnderTree.WordAddin
                     case "ping": result = new { }; break;
                     case "tools/list": result = new { tools = Catalogue() }; break;
                     case "tools/call": result = Call(parameters, session, out callScope); break;
-                    case "resources/list": result = WordDocumentPicker.List(); break;
-                    case "resources/read": result = WordDocumentPicker.Read(parameters); break;
+                    case "resources/list": diagnostics.ResourceListed(); result = WordDocumentPicker.List(); break;
+                    case "resources/read":
+                        diagnostics.ReadStarted();
+                        try { result = WordDocumentPicker.Read(parameters); diagnostics.ReadSucceeded(); }
+                        catch { diagnostics.ReadFailed(); throw; }
+                        break;
                     default: throw new McpOperationException("Unknown MCP method.");
                 }
                 if (!active || !coordination.IsActive(session) || callScope != null && !coordination.IsActive(callScope))
@@ -202,12 +216,13 @@ namespace UnderTree.WordAddin
                     if (sanitized == null) throw new McpOperationException("Word connection access was revoked.");
                     result = sanitized;
                 }
+                resourceResult = Object.Equals(request["method"], "resources/read");
                 return new { jsonrpc = "2.0", id = id, result = result };
             }
             catch (McpOperationException error)
-            { return new { jsonrpc = "2.0", id = id, error = new { code = -32602, message = error.Message } }; }
+            { resourceResult = false; diagnostics.RpcFailed(); return new { jsonrpc = "2.0", id = id, error = new { code = -32602, message = error.Message } }; }
             catch (Exception)
-            { return new { jsonrpc = "2.0", id = id, error = new { code = -32603, message = "Word request failed. Review the connection locally." } }; }
+            { resourceResult = false; diagnostics.RpcFailed(); return new { jsonrpc = "2.0", id = id, error = new { code = -32603, message = "Word request failed. Review the connection locally." } }; }
         }
 
         private object Call(IDictionary<string, object> parameters, McpClientSession session, out McpCallScope callScope)
@@ -402,18 +417,20 @@ namespace UnderTree.WordAddin
         private static bool SupportedVersion(string version) { return version == "2025-03-26" || version == "2025-06-18"; }
         internal static JavaScriptSerializer Json() { return new JavaScriptSerializer { MaxJsonLength = ResponseLimit, RecursionLimit = 64 }; }
 
-        private static void WriteResponse(NetworkStream stream, int status, object value, string sessionId = null)
+        private int WriteResponse(NetworkStream stream, int status, object value, string sessionId = null)
         {
             byte[] payload;
             try { payload = value == null ? new byte[0] : Encoding.UTF8.GetBytes(Json().Serialize(value)); }
             catch (InvalidOperationException) { status = 413; payload = new byte[0]; }
             catch (ArgumentException) { status = 400; payload = new byte[0]; }
             if (payload.Length > ResponseLimit) { status = 413; payload = new byte[0]; }
+            if (status != 200 && status != 202) diagnostics.HttpRefused();
             string reason = status == 200 ? "OK" : status == 202 ? "Accepted" : status == 403 ? "Forbidden" : status == 404 ? "Not Found" : status == 405 ? "Method Not Allowed" : status == 413 ? "Payload Too Large" : status == 415 ? "Unsupported Media Type" : status == 429 ? "Too Many Requests" : status == 503 ? "Service Unavailable" : "Bad Request";
             byte[] header = Encoding.ASCII.GetBytes("HTTP/1.1 " + status + " " + reason + "\r\nContent-Type: application/json\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nConnection: close\r\n" +
                 (sessionId == null ? "" : "Mcp-Session-Id: " + sessionId + "\r\n") + "Content-Length: " + payload.Length.ToString(CultureInfo.InvariantCulture) + "\r\n\r\n");
             stream.Write(header, 0, header.Length);
             stream.Write(payload, 0, payload.Length);
+            return status;
         }
 
         private const string Instructions = "You are wordplai, the writing assistant in Word. Word is the primary workspace. Requests such as 'use wordplai MCP' alone, 'use MCP, edit text', 'edit', 'write' or 'improve this' are complete writing tasks: after the full read, apply the saved color and passage prompts immediately; do not ask the user to repeat them or specify what to change. " +

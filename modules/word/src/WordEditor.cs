@@ -166,6 +166,7 @@ namespace UnderTree.WordAddin
         {
             args = args ?? new Dictionary<string, object>();
             if (operation == "automation") return Automation(args);
+            if (operation == "connection_diagnostics") { OnlyKeys(args); return connections.Diagnostics; }
             if (args.ContainsKey("documentId") && Text(args, "documentId") != (automationTarget ?? ActiveDocumentReview()).Id)
                 throw new InvalidOperationException("The active document changed. Refresh the selective editor before continuing.");
             switch (operation)

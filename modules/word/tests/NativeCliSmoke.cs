@@ -47,6 +47,14 @@ internal static partial class NativeReviewSmoke
         int selectionStart = (int)application.Selection.Start, selectionEnd = (int)application.Selection.End;
         IntPtr foreground = CliForegroundWindow();
 
+        var diagnostics = Local("connection_diagnostics");
+        Check(Object.Equals(diagnostics["active"], true) && Obj(diagnostics["counters"]).Count == 9,
+            "Local diagnostics expose the current endpoint counters through the native dispatcher.");
+        Check((string)target.Content.Text == targetText && (string)document.Content.Text == neighborText &&
+            WordSnapshot.Identity((object)application.ActiveDocument) == WordSnapshot.Identity((object)document) &&
+            (int)application.Selection.Start == selectionStart && (int)application.Selection.End == selectionEnd && CliForegroundWindow() == foreground,
+            "Reading local diagnostics preserves document text, active selection and desktop foreground.");
+
         var listed = Rows(Automation("documents")["documents"]);
         Check(listed.Length == 2 && listed.Any(row => Text(row, "documentId") == targetId), "CLI discovery lists exact open document identities.");
         AutomationDenied("state", null, Values(), "Missing documentId");

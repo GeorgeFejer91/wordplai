@@ -41,6 +41,7 @@ try {
     Check-Command 'oversized-input' @('state','--document','A','--input',$large,'--word-pid','2147483647') 2 'exceeds 131072'
     Check-Command 'missing-mcp-session' @('mcp','--method','tools/list') 2 'session-file'
     Check-Command 'no-pid-fallback' @('documents','--word-pid','2147483647') 3 'not running'
+    Check-Command 'diagnostics-read-only' @('diagnostics','--word-pid','2147483647') 3 'not running'
     if ($MutationCheck) {
         $mutant = Join-Path $OutputDirectory 'oversized-mutant'
         New-Item -ItemType Directory -Path $mutant | Out-Null

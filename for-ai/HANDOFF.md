@@ -385,10 +385,39 @@ the exact installed catalogue and packaged 58,378-byte picker. This does not pro
 ChatGPT resource receipt or bridge initialization and is not an identified picker
 cause. Private receipts/screenshots are under `preview6/`. Preview.6 is not
 published; the public Description/Download bytes still match preview.5.
-Next: trace the real host's resource request/delivery and bridge initialization
-through the existing diagnostic owners. Preserve annotations/permissions and
-retain the picker failure. Qualify remaining installed writes when the existing
-foreground guard admits them. Other three output schemas and Mac remain open.
+Version checkpoint `51098c3` is pushed and passes verification `39504215085` and
+Pages `39504215244`. Anonymous page/release bytes match local output; all twelve
+deployed manifest hashes match that exact Git commit. Retain the initial wrong
+comparison against Windows checkout bytes and the corrected tag-label assertion.
+The Git-byte audit's changed-source-hash control fails as intended.
+
+### Resource diagnostics source follow-up — 2026-10-21
+
+Source adds local read-only `diagnostics`, through the existing CLI/COM owner,
+with nine numeric HTTP/RPC/resource counters. It distinguishes pre-dispatch
+refusals, generated resource results and completed successful response writes.
+There are no payloads, header values, document/client identities or capabilities.
+An inactive endpoint reports unavailable counters; a new endpoint starts fresh.
+This does not prove client receipt or bridge initialization. The four remote
+tools and their schemas/annotations, HTTP guards and HTML/bridge stay unchanged.
+
+All twenty-one source component gates, 2,134 transport assertions, fifteen CLI
+checks and forty source-native Word checks pass. Two copied faults prove that
+omitting successful-write or HTTP-refusal observations is detected. The initial
+CLI recognition failure and malformed empty-lock fault build remain retained.
+A fresh audit preserves all seven open documents and six known saved originals.
+Private receipts are in `artifacts/word/resource-diagnostics/`. These diagnostics
+are not installed in preview.6; no live-host counter trace is claimed.
+
+Next: build a distinctly versioned preview.7 candidate with matching CLI/add-in,
+qualify its package, await normal Stop cleanup before closing the preserved
+session, then install/reopen through the existing guarded lifecycle. Capture
+diagnostics before connector discovery, after discovery and around cold/reloaded
+Chrome picker actions. A cached resource may be fetched during discovery, so do
+not infer absence from a later flat delta alone. Run manual probes separately
+from those baselines. Keep raw results private and preserve the existing four-tool
+reconnect authorization. Qualify remaining installed writes when the foreground
+guard admits them. Other three output schemas, usable picker and Mac remain open.
 
 ## Continuing test constraints and public release
 
@@ -415,9 +444,10 @@ metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
 `39488997403`; anonymous Description, Download and release JSON matched local
 bytes and all twelve deployed inputs. This is distinct from local preview.6.
 
-The latest observed source checkpoint before this version update is `3eed2b6`,
-with successful hosted verification `39500996679`. Recheck the following
-candidate-version checkpoint's own remote/CI and Pages state before any release.
+The latest observed verified version checkpoint before the diagnostics source
+follow-up is `51098c3`, with successful hosted verification `39504215085` and
+Pages `39504215244`. Recheck the following diagnostics checkpoint's own remote/CI
+state before packaging its changed source.
 Retain preview.5 assets and disclose the remaining preview limits. The overall
 shipment goal remains active for usable host picker, timing, physical,
 clean-machine, remaining installed and future Mac scopes.

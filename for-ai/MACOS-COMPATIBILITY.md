@@ -106,6 +106,10 @@ missing or unsafe host implementation.
   any MCP read. Local mutation must not grant remote authority. Reuse the Windows
   command/reference and scenario contracts while adapting their host binding;
   retain the separate physical and visual acceptance scopes.
+- Equivalent read-only local diagnostics for HTTP/RPC/resource delivery: numeric
+  counters only, unavailable when stopped, reset with endpoint lifetime. Compare
+  before/after real host actions; a completed server write is not client receipt
+  or bridge initialization. The Windows source implementation is not Mac proof.
 - Updated existing verification/handoff owners, coherent commits, exact remote CI
   and download/deployment checks if publication is authorized. Publish sanitized
   evidence only; keep credentials, document identities and raw captures private.

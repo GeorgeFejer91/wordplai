@@ -11,6 +11,30 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Local resource diagnostics — source only, 2026-10-21
+
+- `VERIFIED`: final source component run passes all twenty-one gates, including
+  2,134 transport assertions and two effective diagnostic fault controls. Fifteen
+  CLI checks pass, with the earlier unknown-command regression retained. Forty
+  isolated native Word assertions verify local dispatch and preservation of text,
+  active selection and foreground. Existing safety/transport controls remain in
+  the component run. The aggregate `PARTIAL` leaves installed/public scope open.
+- Counters cover parsed HTTP requests, HTTP refusals, RPC protocol errors,
+  refusals carrying Origin, resource lists, read attempts/results/errors and
+  completed successful resource response writes. Tests cover numeric-only data,
+  unavailable/zero state, URI/Origin/protocol refusals, notifications, concurrent
+  reads, stable local observation and lifecycle reset. A socket write is not
+  proof of client receipt or widget bridge initialization.
+- `VERIFIED`: native/disk audit after source tests preserves seven open documents
+  and all six known saved originals. Evidence is private under
+  `artifacts/word/resource-diagnostics/` and the preview.6 audit owner. The initial
+  fault control failed compilation after removing its lock body; the corrected
+  copied fault compiles and fails the intended observation predicate. The earlier
+  six-counter prototype is not substituted for the final nine-counter result.
+- `NOT RUN`: this command on a newly installed candidate and real Chrome counter
+  baselines. Installed preview.6 lacks it. Source adds no remote tool, permission,
+  persisted logs or HTML/bridge change; no installer or release changed here.
+
 ## Picker output declaration and installed preview.6 — 2026-10-20
 
 - `VERIFIED`: missing-schema regression fails against the prior source. The

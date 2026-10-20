@@ -35,6 +35,12 @@ internal static partial class TransportTests
         actor.SetApartmentState(ApartmentState.STA); actor.IsBackground = true; actor.Start();
         try
         {
+            if (arguments.Length > 2 && arguments[2] == "diagnostics-only")
+            {
+                ResourceDiagnostics(Path.Combine(root, "resource-diagnostics"), fake);
+                Console.WriteLine("PASS: " + checks + " resource-diagnostic HTTP assertions; no Word process or document dispatch.");
+                return 0;
+            }
             if (arguments.Length > 2 && arguments[2] == "logical-only")
             {
                 LogicalConversationContinuity();
@@ -57,6 +63,7 @@ internal static partial class TransportTests
             }
             VisualHighlights(Path.Combine(root, "visual-highlights"), fake);
             LocalEndpoint(Path.Combine(root, "local"), fake);
+            ResourceDiagnostics(Path.Combine(root, "resource-diagnostics"), fake);
             TunnelLifecycle(Path.Combine(root, "tunnel"), fake);
             ForeignSharePreserved(Path.Combine(root, "foreign"), fake);
             ChildDeath(Path.Combine(root, "death"), fake);
@@ -114,6 +121,81 @@ internal static partial class TransportTests
                 new { markers = new[] { new { id = "Wrai_test", ruleId = "protect", reason = "native_bookmark_missing" } }, recovery = "Inspect the named passage in Word." });
             return new { manuscripts = new object[0], supplied = values.ContainsKey("quote") ? values["quote"] : null };
         }, delegate { Interlocked.Increment(ref revoked); }, Marshal, directory, fake);
+    }
+
+    private static IDictionary<string, object> Diagnostics(ConnectionService service)
+    { return (IDictionary<string, object>)Json.DeserializeObject(Json.Serialize(service.Diagnostics)); }
+
+    private static IDictionary<string, object> ResourceCounters(ConnectionService service)
+    { return (IDictionary<string, object>)Diagnostics(service)["counters"]; }
+
+    private static void ResourceDiagnostics(string directory, string fake)
+    {
+        using (var service = Create(directory, fake))
+        {
+            var inactive = Diagnostics(service);
+            Assert(inactive.Count == 2 && Object.Equals(inactive["active"], false) && inactive["counters"] == null,
+                "Inactive local diagnostics report unavailable counters rather than invented observations.");
+            service.StartLocal();
+            string address = service.LocalAddress;
+            var counters = ResourceCounters(service);
+            string[] names = { "httpRequests", "httpRefusals", "rpcErrors", "originRefusals", "resourceLists", "resourceReadAttempts", "resourceReadResults", "resourceReadErrors", "resourceResponsesWritten" };
+            Assert(counters.Keys.OrderBy(value => value).SequenceEqual(names.OrderBy(value => value)) &&
+                counters.Values.All(value => (value is int || value is long) && Convert.ToInt64(value) == 0),
+                "A new endpoint exposes only nine zero numeric diagnostic counters with no request data.");
+            Post(address, "resources/list", new { });
+            var resource = Result(Post(address, "resources/read", new { uri = WordDocumentPicker.Uri }));
+            Assert(((object[])resource["contents"]).Length == 1, "Diagnostic resource reads still return the actual embedded resource.");
+            Wait(() => Convert.ToInt64(ResourceCounters(service)["resourceResponsesWritten"]) == 1,
+                "successful resource response write observation");
+            counters = ResourceCounters(service);
+            Assert(Convert.ToInt64(counters["resourceLists"]) == 1 && Convert.ToInt64(counters["resourceReadAttempts"]) == 1 &&
+                Convert.ToInt64(counters["resourceReadResults"]) == 1 && Convert.ToInt64(counters["resourceReadErrors"]) == 0,
+                "Successful listing and resource generation are distinguished from completed HTTP writes.");
+            string rejected = Post(address, "resources/read", new { uri = "file:///PRIVATE-RESOURCE-PAYLOAD" });
+            Assert(rejected.Contains("Unknown Word UI resource"), "Diagnostic observation preserves resource URI refusal.");
+            int status;
+            Post(address, "resources/read", new { uri = WordDocumentPicker.Uri }, out status, "https://PRIVATE-ORIGIN", null, false);
+            counters = ResourceCounters(service);
+            Assert(status == 403 && Convert.ToInt64(counters["originRefusals"]) == 1 &&
+                Convert.ToInt64(counters["httpRequests"]) == 5 && Convert.ToInt64(counters["httpRefusals"]) == 1 && Convert.ToInt64(counters["rpcErrors"]) == 1 &&
+                Convert.ToInt64(counters["resourceReadAttempts"]) == 2 && Convert.ToInt64(counters["resourceReadErrors"]) == 1 &&
+                Convert.ToInt64(counters["resourceReadResults"]) == 1 && Convert.ToInt64(counters["resourceResponsesWritten"]) == 1,
+                "Refused URI reads and Origin admission failures cannot masquerade as successful resource writes.");
+            string protocolError = Post(address, "resources/read", new object[0]);
+            counters = ResourceCounters(service);
+            Assert(protocolError.Contains("Method arguments must be an object") && Convert.ToInt64(counters["rpcErrors"]) == 2 &&
+                Convert.ToInt64(counters["httpRequests"]) == 6 && Convert.ToInt64(counters["resourceReadAttempts"]) == 2,
+                "A protocol refusal remains observable before resource argument admission without inventing a resource read.");
+            string diagnostic = Json.Serialize(Diagnostics(service));
+            Assert(!diagnostic.Contains("PRIVATE") && !diagnostic.Contains("/t/") && !diagnostic.Contains("://"),
+                "Local counters retain no supplied resource, Origin, endpoint capability or request payload.");
+            Post(address, "resources/read", new { uri = WordDocumentPicker.Uri }, out status, null, null, true);
+            var notified = ResourceCounters(service);
+            Assert(status == 202 && Convert.ToInt64(notified["httpRequests"]) == 7 &&
+                names.Where(name => name != "httpRequests").All(name => Object.Equals(notified[name], counters[name])),
+                "Resource notifications neither execute a resource read nor invent a completed resource response.");
+            var statuses = new int[4];
+            System.Threading.Tasks.Parallel.For(0, 4, index => {
+                Post(address, "resources/read", new { uri = WordDocumentPicker.Uri }, out statuses[index], null, null, false);
+            });
+            Wait(() => Convert.ToInt64(ResourceCounters(service)["resourceResponsesWritten"]) == 5,
+                "concurrent resource write observations");
+            counters = ResourceCounters(service);
+            Assert(statuses.All(value => value == 200) && Convert.ToInt64(counters["resourceReadAttempts"]) == 6 &&
+                Convert.ToInt64(counters["httpRequests"]) == 11 && Convert.ToInt64(counters["httpRefusals"]) == 1 && Convert.ToInt64(counters["rpcErrors"]) == 2 &&
+                Convert.ToInt64(counters["resourceReadResults"]) == 5 && Convert.ToInt64(counters["resourceReadErrors"]) == 1,
+                "Concurrent resource requests retain exact completed and refused event totals.");
+            diagnostic = Json.Serialize(Diagnostics(service));
+            Assert(Json.Serialize(Diagnostics(service)) == diagnostic, "Reading local diagnostics does not change its event counters.");
+            service.Stop();
+            inactive = Diagnostics(service);
+            Assert(Object.Equals(inactive["active"], false) && inactive["counters"] == null,
+                "Stopping access makes the retired endpoint counters unavailable.");
+            service.StartLocal();
+            Assert(ResourceCounters(service).Values.All(value => Convert.ToInt64(value) == 0),
+                "Starting a new endpoint resets observations without reviving a retired request history.");
+        }
     }
 
     private static void VisualHighlights(string directory, string fake)

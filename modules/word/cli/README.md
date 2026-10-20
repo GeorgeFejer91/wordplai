@@ -12,6 +12,7 @@ From PowerShell after installation:
 $cli = "$env:LOCALAPPDATA/Programs/wrAIter Word/wordplai.exe"
 & $cli help
 & $cli status
+& $cli diagnostics
 & $cli documents
 & $cli state --document DOCUMENT_ID
 & $cli context --document DOCUMENT_ID
@@ -23,6 +24,17 @@ for a missing, closed or ambiguous target. With multiple Word processes, pass
 refusal, 2 usage/input error, and 3 runtime/transport failure. Capability URLs are
 redacted unless `--include-secrets` is supplied. Keep raw output private because
 state/context includes document data.
+
+`diagnostics` is available in source builds after preview.6. It reports read-only
+counters for the current MCP endpoint: parsed HTTP requests, HTTP refusals, RPC
+protocol errors, refusals carrying an Origin header, resource lists, resource
+read attempts/results/errors and completed successful resource response writes.
+Resource read attempts start after HTTP/session and method-argument admission;
+earlier refusals remain visible in the HTTP/RPC counters. Counters contain only
+numbers. An inactive endpoint returns `active: false` and `counters: null`;
+starting a new endpoint resets its counters. Compare snapshots before and after
+one client action to trace resource delivery. A completed socket write does not
+prove that ChatGPT received the resource or initialized the widget bridge.
 
 ## Local rules and markers
 

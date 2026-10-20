@@ -1,5 +1,28 @@
 # Current CLI implementation scope
 
+## Resource delivery diagnostics — 2026-10-21
+
+Start from clean main `51098c3`. Preview.6 still fails cold/reloaded ChatGPT
+picker rendering, while direct probes and explicit native document reads work.
+Add local read-only `diagnostics` through the existing CLI/COM connection owner.
+Expose bounded in-memory counters for parsed HTTP requests/refusals, RPC errors,
+Origin refusals, resource listing, read
+attempts/results/errors and completed HTTP response writes. Reset counters only
+with the existing endpoint lifetime; an inactive endpoint reports unavailable,
+not fabricated zero observations. Store no request bodies, headers, paths,
+document identities, URLs, credentials or client identifiers. A completed socket
+write does not prove host receipt or bridge initialization.
+
+Allowed scope: `McpEndpoint.cs`, a focused resource-counter owner,
+`ConnectionService.cs`, the local dispatch case in `WordEditor.cs`, CLI mapping/
+help/reference, and the existing transport/CLI/native test owners and compile
+inputs. Preserve the four remote tools, HTTP/security/session/uncertainty guards,
+all current result schemas, the unchanged HTML/bridge, and document/native editing
+behavior. Qualify recognition, unavailable/zero state, successful/refused reads,
+completed writes, concurrent counters and lifecycle reset with effective faults.
+Do not claim a live-host trace until these bytes are independently installed and
+the actual Chrome scenario is observed. Mac stays with its existing handoff.
+
 ## Picker result contract follow-up
 
 Start from clean main `6272942`. The installed picker remains blank on ChatGPT;

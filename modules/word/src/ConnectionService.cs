@@ -61,6 +61,17 @@ namespace UnderTree.WordAddin
 
         public string LocalAddress { get { lock (gate) return endpoint != null && endpoint.Active ? endpoint.LocalAddress : ""; } }
         public string PublicAddress { get { return Status.PublicAddress; } }
+        internal object Diagnostics
+        {
+            get
+            {
+                lock (gate)
+                {
+                    bool active = !disposed && endpoint != null && endpoint.Active;
+                    return new { active = active, counters = active ? endpoint.Diagnostics : null };
+                }
+            }
+        }
 
         public ConnectionStatus Status
         {

@@ -18,7 +18,7 @@ if (-not (Test-Path -LiteralPath $wordCompiler)) {
 $wordCommon = @('/nologo', '/target:exe', '/langversion:5', '/r:System.Web.Extensions.dll', '/r:System.Core.dll', '/r:System.Security.dll',
     "/resource:$(Join-Path $wordRepository 'modules/word/assets/document-picker.html'),wordplai.DocumentPicker",
     "/resource:$(Join-Path $wordRepository 'modules/review/selective-editor-contract.json'),SelectiveEditorContract")
-$wordSources = @('ConnectionService.cs', 'ConnectionProfile.cs', 'McpEndpoint.cs', 'McpCoordination.cs', 'WordDocumentPicker.cs', 'WordNativeOutcome.cs', 'TunnelProcess.cs', 'TunnelSupervisor.cs') |
+$wordSources = @('ConnectionService.cs', 'ConnectionProfile.cs', 'McpEndpoint.cs', 'McpResourceDiagnostics.cs', 'McpCoordination.cs', 'WordDocumentPicker.cs', 'WordNativeOutcome.cs', 'TunnelProcess.cs', 'TunnelSupervisor.cs') |
     ForEach-Object { Join-Path $wordRepository "modules\word\src\$_" }
 $wordFake = Join-Path $wordOutput 'FakeZrok.exe'
 $wordTest = Join-Path $wordOutput 'TransportTests.exe'
@@ -64,6 +64,26 @@ if (-not $LogicalOnly) {
 }
 
 if ($MutationCheck) {
+    foreach ($wordDiagnosticCase in @(
+        @{name='resource-write-counter-mutation';needle='resourceResponsesWritten++;';failure='Timeout: successful resource response write observation'},
+        @{name='http-refusal-counter-mutation';needle='httpRefusals++;';failure='Refused URI reads and Origin admission failures cannot masquerade as successful resource writes.'}
+    )) {
+        $wordDiagnosticMutation = Join-Path $wordOutput $wordDiagnosticCase.name
+        New-Item -ItemType Directory -Path $wordDiagnosticMutation | Out-Null
+        $wordDiagnosticOriginal = [IO.File]::ReadAllText((Join-Path $wordRepository 'modules/word/src/McpResourceDiagnostics.cs'))
+        if (-not $wordDiagnosticOriginal.Contains($wordDiagnosticCase.needle)) { throw 'Resource diagnostic mutation no longer matches production.' }
+        $wordDiagnosticSource = Join-Path $wordDiagnosticMutation 'McpResourceDiagnostics.cs'
+        [IO.File]::WriteAllText($wordDiagnosticSource, $wordDiagnosticOriginal.Replace($wordDiagnosticCase.needle, ';'))
+        $wordDiagnosticSources = $wordSources | Where-Object { [IO.Path]::GetFileName($_) -ne 'McpResourceDiagnostics.cs' }
+        $wordDiagnosticTest = Join-Path $wordDiagnosticMutation 'TransportTests.exe'
+        & $wordCompiler @wordCommon "/out:$wordDiagnosticTest" @wordDiagnosticSources $wordDiagnosticSource @wordTestSources *> (Join-Path $wordDiagnosticMutation 'compile.log')
+        if ($LASTEXITCODE -ne 0) { throw 'The resource diagnostic mutation did not compile.' }
+        & $wordDiagnosticTest (Join-Path $wordDiagnosticMutation 'profiles') $wordFake 'diagnostics-only' *> (Join-Path $wordDiagnosticMutation 'transport.log')
+        if ($LASTEXITCODE -eq 0 -or -not ([IO.File]::ReadAllText((Join-Path $wordDiagnosticMutation 'transport.log')).Contains($wordDiagnosticCase.failure))) {
+            throw 'Resource diagnostics failed to detect the intended omitted observation.'
+        }
+        Write-Output "PASS: $($wordDiagnosticCase.name) rejects the intended omitted observation in a copied build."
+    }
     $wordMutation = Join-Path $wordOutput 'mutation'
     New-Item -ItemType Directory -Path $wordMutation | Out-Null
     $wordMutatedSource = Join-Path $wordMutation 'McpEndpoint.cs'
