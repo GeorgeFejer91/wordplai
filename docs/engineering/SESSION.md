@@ -37,3 +37,9 @@ Mac implementation stays deferred to its existing future-agent handoff.
 CI follow-up permits a test-only fix in `site/test.mjs`: wait for missing-font
 fallback labels to initialize before checking geometry. Preserve the actual
 fallback assertions and rendering; retain the original hosted failure.
+
+Installed CLI continuation adds opt-in two-session isolation, cross-client
+witness refusal, local revocation, closed-target refusal and timer-saved DOCX
+checks to the existing driver. Change only that driver and narrow CLI test
+documentation/evidence. Use the exact installed candidate, owned hidden fixtures
+and explicit existing Word PID; preserve concurrent recolor work and originals.

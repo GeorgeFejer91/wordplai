@@ -58,6 +58,12 @@ edit is skipped when that Word process holds foreground focus; the existing
 input guard still applies. Fresh-process source tests are also documented in the
 CLI reference.
 
+Add `-IsolationCases` to test two independent MCP clients, cross-client context
+refusal, revocation recovery, timer-saved files and closed targets. When using
+the desktop during a run, `-AllowForegroundChanges` lets the behavior checks
+continue and records changed-foreground comparisons as unqualified; any such
+comparison makes the result `PARTIAL`. Native edit guards still apply.
+
 Build tooling: Windows, PowerShell 7, .NET Framework C# compiler, Node.js 22 or
 newer, and NSIS for the installer. See [the Word module](modules/word/README.md)
 for exact standalone commands and pinned runtime provisioning. Dependency

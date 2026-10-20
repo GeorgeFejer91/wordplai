@@ -231,6 +231,11 @@ audit lifecycle changes. Overall acceptance remains open.
   Native 33 assertions, client 14 checks and installed 16 checks pass. Upgrade,
   uninstall/reinstall and six-original preservation pass. The candidate is
   installed locally; preview.3 remains the public release. See `VERIFICATION.md`.
+- [x] Extend installed CLI qualification with two sessions, unnamed choice,
+  cross-client witness refusal, revocation/recovery, timer persistence and closed
+  targets: 36 checks pass, with zero unqualified foreground comparisons. Twelve
+  saved-file checks and effective copied session/rationale controls pass; all six
+  originals retain native state and file hashes. Preserve the earlier failures.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -301,6 +306,14 @@ repeatable native/MCP behavior tests without desktop input. The driver requires
 an already running, connected Word instance; it creates and closes only its own
 fixtures. A fresh-process installed launcher was dropped after retained startup
 and third-party-template failures. Source-native isolated tests remain available.
+Use `-IsolationCases` for the expanded installed cases. Foreground drift can be
+diagnosed with explicit `-AllowForegroundChanges`; any unqualified comparison
+keeps the result PARTIAL. The final 36-check run qualified all comparisons.
+Chrome extension access is restored and the current qualification connector's
+settings are readable. Its saved endpoint is obsolete after Stop. Reconnect the
+same four tools under the existing user authorization, prepare fresh owned prompt
+fixtures, and exercise two actual WebGPT chats. Browser session setup and native
+foreground checks must run serially. No new WebGPT writing request has been sent.
 Resume physical
 UI work only after restored access. Prepare fresh owned
 prompt documents; C was changed by the failed UI interaction and must not be
@@ -335,6 +348,12 @@ failure `39470433033`; local site verification passes 313 checks. Concurrent
 recolor work in the current scope, module README, MCP guidance and three existing
 test files is preserved outside the CLI commit. Recheck exact remote CI after
 the follow-up. Preview.4 remains a local candidate.
+The follow-up `b79108a` subsequently passes both hosted verification
+`39471037155` and Pages `39471037096`. Local recolor checkpoint `c9ba419`
+is above that observed remote head. The expanded CLI tests are a local-only
+continuation; publishing them must preserve the separate recolor scope. Their
+36 installed checks cover the unchanged earlier candidate DLL/CLI, not a fresh
+build of the newer MCP guidance. Rebind and qualify any new packaged candidate.
 
 Preview.3 is published at
 https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.3.

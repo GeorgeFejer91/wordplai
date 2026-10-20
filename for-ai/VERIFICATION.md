@@ -598,6 +598,34 @@ Private evidence root: `artifacts/word/cli-qualification/`. CLI commands use loc
 COM authority for rules/markers and the existing four MCP tools for AI edits.
 No desktop input or new remote authority is introduced.
 
+Installed continuation: `test-installed-cli.ps1 -IsolationCases
+-AllowForegroundChanges` passes 36 checks on the same installed candidate
+(`installed-isolation-active-desktop/`), with zero unqualified foreground checks.
+This covers two actual loopback sessions, unnamed choice before text, retained
+independent targets, cross-client witness refusal, same-ID recovery, direct edits
+and replay in both documents, revocation/recovery, actual timer autosave and
+closed-target refusal. The copied CLI session-routing fault fails the intended
+unnamed-client isolation predicate after sixteen successful prefix checks.
+Independent saved-DOCX audits pass twelve checks for exact Unicode, unchanged
+neighbors, no revisions, one exact rationale/body anchor and green shading; a
+copied rationale-content fault fails its exact predicate. The post-control audit
+again preserves all six originals, including native state and file hashes.
+See `isolation-qualification-result.json`, `session-identity-negative-control.json`
+and `isolation-completed-originals-result.json` under the private evidence root.
+
+Retained failures: the first extension assumed one marker after direct editing;
+the actual state retains both original and Preserve bindings. The correction
+compares every marker/rule before and after revocation. Later traces locate the
+native position change at the harness's own Word Close call; CLI requests retain
+the document/selection before closure and the native position after closure.
+Transient closing windows and ChatGPT/Brave foreground changes are recorded.
+Strict focus assertions remain the default. Explicit `-AllowForegroundChanges`
+records any changed-foreground comparison as unqualified and makes the result
+PARTIAL; it never relaxes wording, isolation or native edit guards. The final
+36-check run used that diagnostic option but qualified all focus comparisons.
+These are installed CLI/native and saved-file observations, not WebGPT, physical
+UI, host reopen or Mac results. Local sharing is stopped after owned tests.
+
 - `VERIFIED`, source-native: `test-native-review.ps1 -CliOnly` passes 33
   assertions (`native-final/`): exact/closed/duplicate/inactive targets, stale
   snapshots, Unicode boundaries, wrong quotes, protection, marker removal,

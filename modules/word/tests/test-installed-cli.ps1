@@ -1,7 +1,9 @@
-param([Parameter(Mandatory)][string]$CliPath, [Parameter(Mandatory)][int]$WordProcessId, [Parameter(Mandatory)][string]$OutputDirectory)
+param([Parameter(Mandatory)][string]$CliPath, [Parameter(Mandatory)][int]$WordProcessId, [Parameter(Mandatory)][string]$OutputDirectory, [switch]$IsolationCases, [switch]$AllowForegroundChanges)
 $ErrorActionPreference = 'Stop'
 if ($PSVersionTable.PSEdition -eq 'Core') {
     $child = @('-NoProfile','-STA','-File',$PSCommandPath,'-CliPath',$CliPath,'-WordProcessId',[string]$WordProcessId,'-OutputDirectory',$OutputDirectory)
+    if ($IsolationCases) { $child += '-IsolationCases' }
+    if ($AllowForegroundChanges) { $child += '-AllowForegroundChanges' }
     & "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" @child
     if ($LASTEXITCODE -ne 0) { throw 'Installed CLI qualification failed.' }
     return
@@ -22,8 +24,20 @@ public static class CliNativeObservation {
 }
 '@
 $checks = New-Object 'Collections.Generic.List[string]'
+$unqualifiedForeground = New-Object 'Collections.Generic.List[string]'
 $documents = @(); $sequence = 0; $started = $false
 function Check($Condition, [string]$Message) { if (-not $Condition) { throw $Message }; $checks.Add($Message); Write-Output ('PASS: '+$Message) }
+function Check-Foreground([IntPtr]$Expected, [string]$Message) {
+    $same = [CliNativeObservation]::GetForegroundWindow() -eq $Expected
+    if (-not $same -and $AllowForegroundChanges) {
+        $unqualifiedForeground.Add($Message)
+        Write-Output ('NOT QUALIFIED: '+$Message)
+    } else { Check $same $Message }
+}
+function Trace-Position([string]$Stage) {
+    if (-not $IsolationCases -or $null -eq $word -or -not $activePath) { return }
+    [ordered]@{stage=$Stage;path=[string]$word.ActiveDocument.FullName;expectedPath=$activePath;start=[int]$word.Selection.Start;end=[int]$word.Selection.End;expectedStart=$selectionStart;expectedEnd=$selectionEnd;foreground=[CliNativeObservation]::GetForegroundWindow().ToInt64();expectedForeground=$foreground.ToInt64()}|ConvertTo-Json -Compress|Add-Content -Encoding UTF8 (Join-Path $OutputDirectory 'native-position-private.jsonl')
+}
 function Invoke-Cli([string[]]$Parameters, $Body = $null, [int]$ExpectedExit = 0) {
     $script:sequence++
     $prefix = Join-Path $OutputDirectory ('command-'+$script:sequence)
@@ -37,17 +51,18 @@ function Invoke-Cli([string[]]$Parameters, $Body = $null, [int]$ExpectedExit = 0
     $code = $LASTEXITCODE
     $text = $stdout -join "`n"
     [IO.File]::WriteAllText(($prefix+'-output-private.json'),$text,(New-Object Text.UTF8Encoding($false)))
+    Trace-Position ('CLI-'+$script:sequence)
     if ($code -ne $ExpectedExit) { throw "CLI command $($script:sequence) exited $code; expected $ExpectedExit. Inspect its private receipt." }
     return ($text|ConvertFrom-Json)
 }
 function Native([string]$Command, [string]$Document, $Body = $null, [int]$ExpectedExit = 0) {
     return (Invoke-Cli @($Command,'--document',$Document) $Body $ExpectedExit).result
 }
-function Mcp([string]$Method, $Body = $null, [int]$ExpectedExit = 0) {
-    return (Invoke-Cli @('mcp','--method',$Method,'--session-file',(Join-Path $OutputDirectory 'session-private.json')) $Body $ExpectedExit).response
+function Mcp([string]$Method, $Body = $null, [int]$ExpectedExit = 0, [string]$Session = 'session-private.json') {
+    return (Invoke-Cli @('mcp','--method',$Method,'--session-file',(Join-Path $OutputDirectory $Session)) $Body $ExpectedExit).response
 }
-function Tool([string]$Name, $Body, [int]$ExpectedExit = 0) {
-    $reply = Mcp 'tools/call' @{name=$Name;arguments=$Body} $ExpectedExit
+function Tool([string]$Name, $Body, [int]$ExpectedExit = 0, [string]$Session = 'session-private.json') {
+    $reply = Mcp 'tools/call' @{name=$Name;arguments=$Body} $ExpectedExit $Session
     if ($ExpectedExit -ne 0) { return $reply }
     return ($reply.result.content[0].text|ConvertFrom-Json)
 }
@@ -73,6 +88,7 @@ try {
     $foreground = [CliNativeObservation]::GetForegroundWindow()
     $activePath = [string]$word.ActiveDocument.FullName
     $selectionStart = [int]$word.Selection.Start; $selectionEnd = [int]$word.Selection.End
+    Trace-Position 'baseline'
     $listing = Invoke-Cli @('documents')
     $targets = @($listing.result.documents|Where-Object title -eq 'CLI-fixture-A.docx')
     Check ($targets.Count -eq 1) 'Installed CLI discovers the exact owned fixture'
@@ -90,7 +106,7 @@ try {
     Check (@($state.rules|Where-Object id -eq 'unexpected').Count -eq 0) 'Stale CLI refusal creates no rule'
     Check ([string]$word.ActiveDocument.FullName -ceq $activePath) 'Installed CLI restores the active document'
     Check ($word.Selection.Start -eq $selectionStart -and $word.Selection.End -eq $selectionEnd) 'Installed CLI preserves native selection'
-    Check ([CliNativeObservation]::GetForegroundWindow() -eq $foreground) 'Installed CLI preserves desktop foreground'
+    Check-Foreground $foreground 'Installed CLI preserves desktop foreground'
 
     $status = (Invoke-Cli @('status')).result
     if (-not $status.running) { $null = Invoke-Cli @('connect-local'); $started = $true }
@@ -113,6 +129,94 @@ try {
         Check ($documents[0].Content.Text.Contains("A shorter $emoji sentence.") -and $documents[0].Revisions.Count -eq 0) 'CLI MCP applies exact native wording without tracked revisions'
     } else { Write-Output 'NOT RUN: positive direct write while Word holds foreground; guard preserved.' }
     Check ($documents[1].Content.Text.Contains($prompt) -and $documents[1].Comments.Count -eq 0) 'CLI writing leaves the other synthetic document unchanged'
+    if ($IsolationCases -and $foregroundPid -ne $WordProcessId) {
+        $second = @($listing.result.documents|Where-Object title -eq 'CLI-fixture-B.docx')
+        Check ($second.Count -eq 1) 'Isolation fixture has a unique second document identity'
+        $idB = $second[0].documentId
+        $contextB = Native 'context' $idB
+        $null = Native 'rule-save' $idB @{snapshot=$contextB.snapshot;id='cli-short';label='CLI short';color='#AACCEE';action='prompt';prompt='Shorten without changing meaning.'}
+        $contextB = Native 'context' $idB
+        $fromB = $contextB.text.IndexOf($prompt,[StringComparison]::Ordinal)
+        $null = Native 'mark' $idB @{snapshot=$contextB.snapshot;ruleId='cli-short';from=$fromB;to=$fromB+$prompt.Length;quote=$prompt}
+        $sessionB = 'session-b-private.json'
+        $null = Mcp 'initialize' $null 0 $sessionB
+        $choiceB = Tool 'read_manuscript' @{offset=0} 0 $sessionB
+        Check ($choiceB.selection_required -and -not $choiceB.text -and -not $choiceB.context_id) 'A fresh unnamed client must choose among multiple documents before reading text'
+        $readB = Tool 'read_manuscript' @{manuscript_id=$idB;offset=0} 0 $sessionB
+        $retainedA = Tool 'read_manuscript' @{offset=0}
+        $retainedB = Tool 'read_manuscript' @{offset=0} 0 $sessionB
+        Check ($retainedA.manuscript_id -ceq $id -and $retainedA.text.Contains('Unmarked A introduction.')) 'Client A retains A after client B chooses B'
+        Check ($retainedB.manuscript_id -ceq $idB -and $retainedB.text.Contains('Unmarked B introduction.')) 'Client B retains B across interleaved CLI processes'
+        Check ($retainedA.context_id -and $retainedB.context_id -and $retainedA.context_id -cne $retainedB.context_id) 'Independent complete reads have distinct context witnesses'
+        $beforeB = [string]$documents[1].Content.Text
+        $writeB = @{manuscript_id=$idB;request_id='cli-isolation-b';revision=$retainedB.revision;context_id=$retainedA.context_id;from=$fromB;to=$fromB+$prompt.Length;quote=$prompt;replacement="Client B shortened $emoji wording.";rationale='Remove redundant wording in B.'}
+        $denied = Tool 'suggest_text' $writeB 1 $sessionB
+        Check ($denied.result.isError -and [string]$documents[1].Content.Text -ceq $beforeB -and $documents[1].Comments.Count -eq 0) 'Client A witness cannot authorize a write in client B'
+        $freshB = Tool 'read_manuscript' @{manuscript_id=$idB;offset=0} 0 $sessionB
+        $writeB.context_id = $freshB.context_id; $writeB.revision = $freshB.revision
+        $appliedB = Tool 'suggest_text' $writeB 0 $sessionB
+        Check ($appliedB.applied -and -not $appliedB.requiresApproval) 'Client B writes its authorized passage using its own witness and original request ID'
+        $replayB = Tool 'suggest_text' $writeB 0 $sessionB
+        Check ($replayB.replayed -and $documents[1].Comments.Count -eq 1 -and $documents[1].Revisions.Count -eq 0) 'Client B exact replay retains one rationale and no tracked revisions'
+        Check ($documents[0].Content.Text.Contains("A shorter $emoji sentence.") -and -not $documents[0].Content.Text.Contains('Client B shortened') -and $documents[0].Comments.Count -eq 1) 'Interleaved client B writing leaves client A exact wording and rationale unchanged'
+        $readA = Tool 'read_manuscript' @{offset=0}
+        $intro = 'Unmarked A introduction.'
+        $marking = @{requestId='cli-revoked-highlight';contextId=$readA.context_id;revision=$readA.revision;color='#445566';ranges=@(@{from=0;to=$intro.Length;quote=$intro})}
+        $contextA = Native 'context' $id
+        $beforeRevocation = Native 'state' $id
+        $marksBefore = ConvertTo-Json -InputObject @($beforeRevocation.marks) -Depth 12 -Compress
+        $rulesBefore = ConvertTo-Json -InputObject @($beforeRevocation.rules) -Depth 12 -Compress
+        $null = Native 'revoke' $id @{snapshot=$contextA.snapshot}
+        $denied = Tool 'highlight_text' @{documentId=$id;marking=$marking} 1
+        $afterRevocation = Native 'state' $id
+        Check ($denied.result.isError -and (ConvertTo-Json -InputObject @($afterRevocation.marks) -Depth 12 -Compress) -ceq $marksBefore -and (ConvertTo-Json -InputObject @($afterRevocation.rules) -Depth 12 -Compress) -ceq $rulesBefore) 'Local revocation invalidates the old witness without changing any marker or rule'
+        $readA = Tool 'read_manuscript' @{offset=0}
+        $marking.contextId = $readA.context_id; $marking.revision = $readA.revision
+        $highlight = Tool 'highlight_text' @{documentId=$id;marking=$marking}
+        $afterRecovery = Native 'state' $id
+        Check (@($afterRecovery.marks|Where-Object quote -ceq $intro).Count -eq 1) 'Fresh complete context recovers the original refused highlight request identity'
+        $timer = [Diagnostics.Stopwatch]::StartNew()
+        while (-not ($documents[0].Saved -and $documents[1].Saved -and $word.BackgroundSavingStatus -eq 0)) {
+            if ($timer.ElapsedMilliseconds -ge 15000) { throw 'Timer autosave did not persist both owned CLI fixtures.' }
+            Start-Sleep -Milliseconds 75
+        }
+        Check $true 'Actual timer autosave persists both named fixtures without a CLI Save command'
+        Add-Type -AssemblyName System.IO.Compression
+        foreach ($index in @(0,1)) {
+            $stream = [IO.File]::Open([string]$documents[$index].FullName,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::ReadWrite)
+            $zip = New-Object IO.Compression.ZipArchive($stream,[IO.Compression.ZipArchiveMode]::Read)
+            try {
+                $reader = New-Object IO.StreamReader($zip.GetEntry('word/document.xml').Open())
+                try { [xml]$xml = $reader.ReadToEnd() } finally { $reader.Dispose() }
+                $names = New-Object Xml.XmlNamespaceManager($xml.NameTable); $names.AddNamespace('w','http://schemas.openxmlformats.org/wordprocessingml/2006/main')
+                $savedText = -join @($xml.SelectNodes('//w:body//w:t',$names)|ForEach-Object InnerText)
+                $expected = if($index -eq 0){"A shorter $emoji sentence."}else{"Client B shortened $emoji wording."}
+                Check ($savedText.Contains($expected) -and -not $savedText.Contains($prompt) -and $xml.SelectNodes('//w:ins|//w:del',$names).Count -eq 0 -and $null -ne $zip.GetEntry('word/comments.xml')) 'Saved DOCX retains the authorized Unicode wording and rationale without revisions'
+            } finally { $zip.Dispose(); $stream.Dispose() }
+        }
+        Check ([string]$word.ActiveDocument.FullName -ceq $activePath -and $word.Selection.Start -eq $selectionStart -and $word.Selection.End -eq $selectionEnd) 'Extended CLI operations preserve the original active document and native selection'
+        Check-Foreground $foreground 'Extended CLI operations preserve desktop foreground'
+        Trace-Position 'before-owned-close'
+        $documents[1].Close(0); $documents[1] = $null
+        Trace-Position 'after-owned-close'
+        $closeTimer = [Diagnostics.Stopwatch]::StartNew()
+        while (-not $AllowForegroundChanges -and [CliNativeObservation]::GetForegroundWindow() -ne $foreground) {
+            if ($closeTimer.ElapsedMilliseconds -ge 15000) { throw 'Owned fixture closure did not restore desktop foreground; no input was injected.' }
+            $null = [string]$word.ActiveDocument.FullName
+            Start-Sleep -Milliseconds 75
+        }
+        Trace-Position 'owned-close-settled'
+        $afterClosePath = [string]$word.ActiveDocument.FullName
+        $afterCloseStart = [int]$word.Selection.Start; $afterCloseEnd = [int]$word.Selection.End
+        $afterCloseForeground = [CliNativeObservation]::GetForegroundWindow()
+        $closed = Tool 'read_manuscript' @{offset=0} 1 $sessionB
+        $closedLocal = Invoke-Cli @('context','--document',$idB) $null 1
+        Check ($closed.result.isError -and -not $closedLocal.ok -and $closedLocal.error.Contains('no longer open')) 'Closed client B target refuses through MCP and CLI without active-document fallback'
+        $retainedA = Tool 'read_manuscript' @{offset=0}
+        Check ($retainedA.manuscript_id -ceq $id -and $documents[0].Comments.Count -eq 1) 'Closing B preserves client A target and its single rationale'
+        Check ([string]$word.ActiveDocument.FullName -ceq $afterClosePath -and $word.Selection.Start -eq $afterCloseStart -and $word.Selection.End -eq $afterCloseEnd) 'Closed-target CLI requests preserve the native document and selection left by Word fixture closure'
+        Check-Foreground $afterCloseForeground 'Closed-target CLI requests preserve desktop foreground'
+    }
     $originalsAfter = @($word.Documents|ForEach-Object { @{path=[string]$_.FullName;text=[string]$_.Content.Text;saved=[bool]$_.Saved;comments=[int]$_.Comments.Count;revisions=[int]$_.Revisions.Count} })
     $originalsAfter | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'originals-after-private.json')
     foreach ($item in $originalDocuments) {
@@ -125,8 +229,8 @@ try {
     throw
 } finally {
     if ($started) { $null = Invoke-Cli @('stop') }
-    foreach ($doc in $documents) { $doc.Close(0) }
+    foreach ($doc in $documents) { if ($null -ne $doc) { $doc.Close(0) } }
     if ($filter) { $filter.Dispose() }
 }
-[ordered]@{status=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'PARTIAL'});checks=$checks;cliSha256=(Get-FileHash -LiteralPath $CliPath).Hash;wordProcessId=$WordProcessId;positiveMcpWrite=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'NOT RUN'});userInterfaceInput='NONE';publicTunnel='NOT RUN'}|ConvertTo-Json -Depth 6|Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'result.json')
+[ordered]@{status=$(if($foregroundPid -ne $WordProcessId -and $unqualifiedForeground.Count -eq 0){'PASS'}else{'PARTIAL'});checks=$checks;unqualifiedForegroundChecks=$unqualifiedForeground;cliSha256=(Get-FileHash -LiteralPath $CliPath).Hash;wordProcessId=$WordProcessId;isolationCasesRequested=[bool]$IsolationCases;positiveMcpWrite=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'NOT RUN'});userInterfaceInput='NONE';publicTunnel='NOT RUN'}|ConvertTo-Json -Depth 6|Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'result.json')
 exit 0
