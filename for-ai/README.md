@@ -57,3 +57,12 @@ Visibility at initialization: public
 
 The selected stack and output owners are in `PROJECT.md`. Keep product code,
 assets, installers and website output outside this control plane.
+<!-- for-ai-coding-workflows-route:start -->
+## Skill routing
+
+Read the shared baseline in [`SKILLS.md`](./SKILLS.md) at project entry, then
+select task-specific skills. Resume the goal in `PROJECT.md` and acceptance
+checklist in `HANDOFF.md`. The existing [focused](./skills/superpowers-workflow/SKILL.md)
+and [multi-phase](./skills/gsd-core-workflow/SKILL.md) guides remain documented
+fallbacks when the full toolkits are unavailable.
+<!-- for-ai-coding-workflows-route:end -->

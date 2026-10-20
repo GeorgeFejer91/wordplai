@@ -2,14 +2,19 @@
 
 ## Working loop
 
-1. Read `AGENTS.md`, then the router and task-owned files.
-2. Inspect Git status, branch, remotes, relevant code, tests, and recent history.
+1. Read `AGENTS.md`, then the router, shared baseline in `SKILLS.md`, durable
+   goal in `PROJECT.md`, and active acceptance checklist in `HANDOFF.md`.
+   Reuse existing GSD state when present; keep one task-state owner.
+2. Inspect Git status, branch, remotes, existing worktrees and task-owned files.
 3. Preserve user work and distinguish pre-existing failures from regressions.
 4. Apply YAGNI: check the existing owner before adding anything.
 5. Implement one bounded outcome and verify it proportionately.
 6. Review the diff for accidental scope, secrets, generated output, and stale
    context.
-7. Update project memory and publish only when the rules below apply.
+7. Update the existing task owner with evidence, blockers and the next concrete
+   action. Report observed branch/commit/publication state; recheck it next time.
+   Keep overall acceptance open until its own gates pass. Publish only when
+   the rules below apply.
 
 ## Control-plane update triggers
 
@@ -23,18 +28,19 @@ changes:
 - security, privacy, safety, licensing, or publication boundary;
 - durable decision or repeatedly rediscovered failure mode.
 
-Do not store chat transcripts, daily narration, raw logs, transient branch
-names, private machine paths, speculative ideas, secrets, participant data, or
-facts already obvious from source and tests.
+Do not store chat transcripts, daily narration, raw logs, private machine paths,
+speculative ideas, secrets, participant data, or facts obvious from source and
+tests. Keep short last-observed Git state only in the existing task handoff
+owner when needed for continuity; fresh Git state remains authoritative.
 
 ## Git checkpoints and publication
 
 - Inspect status and diff before and after edits.
 - Stage explicit paths; never absorb unrelated work to make the tree clean.
 - Keep one coherent concern per commit and checkpoint meaningful milestones.
-- Completed, validated implementation work should be pushed promptly under the
-  repository's branch/PR policy. This standing rule does not authorize a push
-  for read-only review or unrelated local changes.
+- Commit coherent, validated work. Push only when requested or covered by
+  continuing explicit authorization, under the repository's branch/PR policy.
+  The shared baseline supersedes the former automatic-push default.
 - Never force-push, rewrite shared history, bypass branch protection, bypass
   secret scanning, or publish known-broken/private material.
 - The user explicitly authorized this standalone preview with remaining

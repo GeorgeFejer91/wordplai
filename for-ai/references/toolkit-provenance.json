@@ -1,0 +1,133 @@
+{
+  "reviewed_on": "2026-10-19",
+  "rtk": {
+    "repository": "https://github.com/rtk-ai/rtk",
+    "type": "CLI plus local Codex guidance",
+    "version": "1.0.1",
+    "release_asset": "rtk-x86_64-unknown-linux-musl.tar.gz",
+    "sha256": "5b919c3bccb799b67a61866d0e617410a4fcdf173e2614440e59de2fa2003436",
+    "license": "Apache-2.0 CLI; engine license retained separately",
+    "skill": "rtk",
+    "integration": "Explicit supported command prefixes; no API proxy or live hooks enabled."
+  },
+  "gsd_core": {
+    "repository": "https://github.com/open-gsd/gsd-core",
+    "version": "1.18.0",
+    "revision": "35f5a452239b897b8d6352c973e1e4efd683370f",
+    "integrity": "sha512-00b29mvlQMmUcR8wkvJFf/okGDWRB1kiHR4Pg921N+Q8nFwXehRhHEGAusQn+oM/p7SMGM4sAdPAbiECGaozwg==",
+    "profile": "standard",
+    "skills": [
+      "gsd-manager",
+      "gsd-pause-work",
+      "gsd-import",
+      "gsd-update",
+      "gsd-ingest-docs",
+      "gsd-workspace",
+      "gsd-execute-phase",
+      "gsd-phase",
+      "gsd-help",
+      "gsd-settings",
+      "gsd-verify-work",
+      "gsd-config",
+      "gsd-progress",
+      "gsd-code-review",
+      "gsd-map-codebase",
+      "gsd-surface",
+      "gsd-new-project",
+      "gsd-resume-work",
+      "gsd-discuss-phase",
+      "gsd-onboard",
+      "gsd-quick",
+      "gsd-review",
+      "gsd-plan-phase"
+    ],
+    "agent_roles": 35,
+    "adaptations": [
+      "Native Codex installer generated the wrappers and agent roles; runtime references relocated from temporary staging to ~/.codex.",
+      "Retained the native user-level skill location ~/.agents/skills, as documented by OpenAI and used by the GSD layout resolver.",
+      "Existing Codex config and live hooks preserved; no updater hook activated.",
+      "Generated role model defaults remain omitted; actual harness capabilities control dispatch.",
+      "Standard profile marker and installed-file manifest retained, with hashes refreshed for actual installed bytes.",
+      "Generated all agent-role TOML files with the native Codex converter, while retaining the standard skill-description profile."
+    ],
+    "skills_root": "$HOME/.agents/skills"
+  },
+  "superpowers": {
+    "repository": "https://github.com/obra/superpowers",
+    "version": "7.0.0",
+    "revision": "bb92a77741419a4ab5f06e711a283343f1ada0c3",
+    "license": "MIT",
+    "skills": [
+      "superpowers-brainstorming",
+      "superpowers-diagnosing-superpowers",
+      "superpowers-dispatching-parallel-agents",
+      "superpowers-executing-plans",
+      "superpowers-finishing-a-development-branch",
+      "superpowers-receiving-code-review",
+      "superpowers-requesting-code-review",
+      "superpowers-subagent-driven-development",
+      "superpowers-systematic-debugging",
+      "superpowers-test-driven-development",
+      "superpowers-using-git-worktrees",
+      "superpowers-using-superpowers",
+      "superpowers-verification-before-completion",
+      "superpowers-writing-plans",
+      "superpowers-writing-skills"
+    ],
+    "adaptations": [
+      "Installed via skill-installer into staging.",
+      "Prefixed metadata names and cross-skill references with superpowers-; preserved local skills.",
+      "Copied upstream license and revision record into every installed skill.",
+      "Optional visual-companion server and telemetry were not enabled.",
+      "Narrowed using-superpowers discovery to software-project entry and added the For-AI composition route."
+    ]
+  },
+  "context_specific_local_skills": [
+    {
+      "skill": "ponytail",
+      "entrypoint_sha256": "ba68ff26239c3c3b05b2a9a47ee0d9a6b93a69639a2555ec87a5d44bffaf2f0c",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    },
+    {
+      "skill": "tauri-rust-developer",
+      "entrypoint_sha256": "b25440b8b124e97c886f3b0443adad7dab3bcc29db87b109decfa9ab5270b9b9",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    },
+    {
+      "skill": "tauri-remote-app-builder",
+      "entrypoint_sha256": "4cd9127be355f62093744766d16199513947e4e80432e1901a0a2817131040ac",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    },
+    {
+      "skill": "tauri-browser-remote-control",
+      "entrypoint_sha256": "4df98336142f6362695d89ec64210cbf56aabf0b3e8b2bcc0b88f42446e4a461",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    },
+    {
+      "skill": "uncodixfy-pretext",
+      "entrypoint_sha256": "800a8c1519f768676e53f5af1198663b366f7d3076a41c8eeb9fcef0f68304b2",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    },
+    {
+      "skill": "uncodixfy",
+      "entrypoint_sha256": "efb88d150e40d34c5b997a25eb4b88655e8daa1628848568a7f50668f1bf1d10",
+      "source_revision": "Installed entrypoint verified by checksum; no Git revision inferred."
+    }
+  ],
+  "upgrade_policy": "Review source instructions, helper scripts, dependencies, provenance, and permission changes before upgrades; do not overwrite existing unrelated skills or Codex configuration.",
+  "codex_skill_discovery_source": "https://learn.chatgpt.com/docs/build-skills",
+  "agents_inc": {
+    "repository": "https://github.com/agents-inc/skills",
+    "revision": "4865dfd140628bd05693fed84b4b6703b4dbc9f5",
+    "license": "MIT",
+    "source_skills": 238,
+    "installation": "Original three topics downloaded with skill-installer into review staging; reviewed Codex rewrites distributed in this repository and installed with skill-installer.",
+    "companions": {
+      "mobx-integration": "skills/mobx-integration",
+      "agents-inc-accessibility": "skills/agents-inc-accessibility",
+      "agents-inc-web-performance": "skills/agents-inc-web-performance"
+    },
+    "primary_composition_reference": "agents-inc-composition.md",
+    "application_dependency_policy": "Optional task-specific adoption; no MobX runtime dependency installed in projects."
+  }
+}
