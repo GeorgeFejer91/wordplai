@@ -29,8 +29,10 @@ namespace UnderTree.WordAddin
                 WordDocumentReview state = Current();
                 if (AutomationMutates(args) && Text(args, "snapshot") != state.Snapshot.Revision)
                     throw new InvalidOperationException("The document changed. Read its current state or complete context before continuing.");
-                if (command == "mark_range") return CommitLocalMark(state, args, Number(args, "from"), Number(args, "to"));
-                return DispatchCore(command, args);
+                object result = command == "mark_range" ?
+                    CommitLocalMark(state, args, Number(args, "from"), Number(args, "to")) : DispatchCore(command, args);
+                if (AutomationMutates(args)) state.AutomaticReview = true;
+                return result;
             }
             finally { automationTarget = null; }
         }

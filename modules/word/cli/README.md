@@ -32,6 +32,11 @@ from `context.result.snapshot` or `state.result.document.revision`. They share
 the native policy, marking, review and autosave implementations used by Word.
 There is no UI draft to save or cancel: `rule-save` explicitly commits a rule.
 
+Successful local mutations enroll an inactive target in the native background
+autosave path. Reads and refused commands do not enroll it or share MCP authority.
+Named/writable, busy and native save guards still apply. Preview.5 fixes the
+missing enrollment in the earlier local preview.4 candidate.
+
 Write UTF-8 JSON to a file and pass `--input FILE`, or use `--input -` for stdin.
 Do not place document text or credentials directly on the command line.
 

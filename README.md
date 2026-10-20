@@ -43,7 +43,7 @@ The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
 The [Windows CLI](modules/word/cli/README.md) automates local rules, range marking,
 document-isolated state/context, connection lifecycle and MCP test requests using
-JSON, without desktop input. It is included in source builds and preview.4
+JSON, without desktop input. It is included in source builds and preview.5
 packaging; the earlier preview.3 installer does not contain it.
 
 To exercise an installed build with disposable documents and no desktop input:

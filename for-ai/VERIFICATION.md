@@ -679,11 +679,78 @@ UI, host reopen or Mac results. Local sharing is stopped after owned tests.
   removed, not qualified. Normal installer registration restoration was used;
   no Office security, profile ownership or production guard was weakened.
 
-Preview.4 is a local installed candidate; the public release/site remain preview.3.
+Preview.4 was a local installed candidate; the public release/site remain preview.3.
+Subsequent WebGPT preparation exposes its local-only background autosave gap:
+`local-autosave-installed-red-2/` fails the unchanged fifteen-second timer gate
+before any MCP read. The prior 36 checks qualified saving after MCP selection.
+The new source regression first fails background eligibility, then passes all
+38 native assertions after successful local mutations enroll the target without
+sharing MCP authority (`local-autosave-red/`, `local-autosave-green/`). These
+source results do not qualify the old installed DLL. Initial preparation had a PowerShell `cli` alias collision;
+the corrected preparation retained the actual timer failure. The first installed
+hash probe used insufficient file sharing and failed before the intended gate;
+its exact owned leftover fixture was closed with a verified path, and the driver
+now tracks fixtures immediately and reads saved hashes with read/write sharing.
 Concurrent recoloring source/test/document edits appeared during final review;
 preserve them outside the CLI checkpoint and compare the candidate to the staged
 Git inputs. Do not claim the whole working tree matches that installer. Physical
-UI, real WebGPT, clean-machine and Mac acceptance remain open.
+UI, full real WebGPT, clean-machine and Mac acceptance remain open.
+
+### Preview.5 exact installed qualification
+
+- `VERIFIED`: all 21 fresh component gates pass (`autosave-components/`),
+  including 1,419 native UI checks/21 renders, transport 2,116 and autosave 50.
+  The overall component `PARTIAL` retains its installed/public boundary. The
+  source-native CLI suite passes 38 assertions with 47 exact bound inputs.
+  Two packaged Markdown files changed after components; all executable inputs
+  remain exact. Independent final-package checks cover the actual binaries.
+- `VERIFIED`: preview.5 binds 71 source inputs and eight payloads. Installer is
+  23,882,311 bytes, SHA-256
+  `e54dc5e05246c292f8071d8ca3a533cdf94ffd5683f8f0286bd4d7e4ee8e0a80`;
+  DLL `99d4c51fa39d539242907d59208b180201857e187fd8a3fa6655400d20e84550`;
+  CLI `26b357fe2e0fd62eeec6df6539faf4182d81e34e4077d2dd1bb34a66203e9fc3`.
+  Its exact DLL passes COM 536 assertions/effective dispatch control; exact CLI
+  passes 14 checks/effective input control. See `preview5/`.
+- `VERIFIED`: Word-open installation refuses with exit 2 and all installed
+  payloads unchanged. Upgrade, uninstall and reinstall exit zero; all eight
+  payloads/version/manifest and both registration views match. Uninstall checks
+  ten registry-view/key combinations absent. All 133 profile files remain
+  unchanged, none added (`preview5-lifecycle/`).
+- `VERIFIED`: actual installed CLI passes 42 checks with zero unqualified focus
+  comparisons, including inactive local-only timer saves before either MCP
+  read, authority remaining unshared, two sessions, revocation, replay and
+  closed-target refusal. Twelve independent saved-DOCX checks pass. A copied
+  session-routing fault fails the intended unnamed-client isolation predicate
+  after 22 successful prefix checks. See `preview5/installed/`,
+  `saved-audit.json` and `session-identity-negative-control.json`.
+- `VERIFIED`: five originals open at upgrade preflight retain native state;
+  all six known saved originals retain exact bytes. The sixth was already
+  closed; the cause is unestablished. The shutdown observer timed out, then the
+  same Word process exited normally before installation. Reopen five and
+  post-test preservation pass (`preview5-reopen/`,
+  `preview5-originals-after-result.json`). No desktop input was used.
+- `VERIFIED`, limited live scope: fresh owned G/H fixtures persist local marks
+  before MCP access (`artifacts/word/webgpt-cli-qualification-3/`). The actual
+  installed HTTPS MCP initialization returns HTTP 200 in 1,001ms. The equivalent
+  ChatGPT app connects with four tools/unchanged low-risk permissions. A fresh
+  named-document Instant chat edits G and leaves H unchanged. An independent
+  unnamed chat reaches a blank picker cold and after reload, then a host
+  could-not-display alert and response-load failure. The same chat's explicit
+  H-name fallback completes H's edit. Twenty-two saved-DOCX checks pass for
+  exact independent wording/Unicode, untouched intro/ending, green protection,
+  one exact rationale/anchor and applied receipt each, with zero revisions.
+  Five open/six saved originals remain unchanged. Client task times are nineteen
+  seconds for G and eleven seconds for H's fallback; first-visible-edit latency
+  is unmeasured. Browser control detaches while preparing an interleaved color
+  request, before Send; both saved files retain their pre-attempt hashes.
+  Interleaving/revocation and usable picker acceptance remain open. This host
+  failure's cause is unestablished; it does not qualify a server-code diagnosis.
+  Raw captures, capability URLs and original identities stay private.
+
+Preview.5 is installed locally and remains unpublished at this checkpoint.
+Public release/site are preview.3. Physical dialog, clean-machine and Mac
+qualification remain open; Mac implementation is deferred to the existing
+future-agent handoff. The overall shipment goal stays active.
 
 Raw browser captures, endpoint capabilities and document-preservation snapshots
 remain private. Retain exploratory harness failures. Native source checks run

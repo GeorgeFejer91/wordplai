@@ -77,6 +77,16 @@ or a successful host render.
 
 ## Known unresolved observations
 
+**Local-only background CLI autosave:** the installed preview.4 candidate leaves
+fresh inactive CLI rule/mark changes dirty until an MCP read enrolls that document
+for background saving. This is a new installed regression, not covered by its
+earlier 36-check run. The minimal source fix enrolls only successful local
+mutations in the existing native autosave path; reads/refusals remain excluded
+and no MCP authority is shared. The new native regression fails before the fix
+and passes 38 assertions afterward. Preview.5 is being qualified; do not ship the
+older preview.4 candidate as if this issue were fixed. WebGPT fixture preparation
+stopped at this persistence gate, and no new writing request has been sent.
+
 **Foreground editing:** the current direct path refuses when the relevant Word
 window owns foreground focus: "Finish typing and move focus from the Word
 document before a direct AI edit." This is an actual current guard, not a
@@ -236,6 +246,40 @@ audit lifecycle changes. Overall acceptance remains open.
   targets: 36 checks pass, with zero unqualified foreground comparisons. Twelve
   saved-file checks and effective copied session/rationale controls pass; all six
   originals retain native state and file hashes. Preserve the earlier failures.
+- [x] Build/install and independently qualify preview.5's local-only background
+  autosave fix before any MCP read: source-native 38, components 21 gates,
+  exact-package COM 536, CLI 14, installed CLI 42 and saved-DOCX 12 checks pass.
+  Session-routing fault control, Word-open installer refusal, upgrade/uninstall/
+  reinstall and profile persistence pass. All 71 inputs/eight payloads are bound.
+  Preserve preview.4's timer failure and source red/green receipts.
+- [ ] Publish the qualified Windows preview.5 and update its stable download
+  metadata after exact-source hosted CI. Preview.3 remains publicly available.
+
+Latest installed state: preview.5, with five originals open and all six known
+original saved files unchanged. The sixth was already closed at upgrade
+preflight; its cause is unestablished. Preserve that observed open set rather
+than reopening it to satisfy the earlier six-open baseline. Native shutdown
+initially exceeded the observer timeout; the same process later exited normally
+before installer work. Reopen and post-test audits pass. Source and package
+hashes, lifecycle receipts and limitations are in `VERIFICATION.md`.
+
+The equivalent `wordplai CLI qualification` ChatGPT app is connected with the
+same four tools and Allow low-risk permission. The installed public MCP endpoint
+initializes with HTTP 200 in 1,001ms. Fresh independent Instant chats edit owned
+G and H; G's first edit leaves H unchanged. The unnamed H chat's embedded picker
+stays blank cold and after reload, then reports it could not display the app;
+the assistant response also fails to load. Explicitly naming H continues the
+same conversation and completes its edit. Twenty-two saved-DOCX checks verify
+exact independent wording, Unicode, protected endings, green paint, one exact
+rationale/anchor and applied receipt per document, with no revisions. Original
+preservation still passes. Client task times are nineteen seconds for G and
+eleven seconds for H's fallback; first-visible-edit latency remains unmeasured.
+Browser control then detaches during preparation of a G-only color request;
+no Send was performed, and both saved files match their pre-attempt hashes.
+Interleaving, safe refusal/revocation and a usable real-host picker remain open.
+Public sharing remains running for continuation. Keep all private capability
+and browser evidence outside Git. Never repeat an uncertain writing request
+under a new identity. See `artifacts/word/webgpt-cli-qualification-3/` privately.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -309,11 +353,9 @@ and third-party-template failures. Source-native isolated tests remain available
 Use `-IsolationCases` for the expanded installed cases. Foreground drift can be
 diagnosed with explicit `-AllowForegroundChanges`; any unqualified comparison
 keeps the result PARTIAL. The final 36-check run qualified all comparisons.
-Chrome extension access is restored and the current qualification connector's
-settings are readable. Its saved endpoint is obsolete after Stop. Reconnect the
-same four tools under the existing user authorization, prepare fresh owned prompt
-fixtures, and exercise two actual WebGPT chats. Browser session setup and native
-foreground checks must run serially. No new WebGPT writing request has been sent.
+Chrome extension access was restored and an equivalent fresh connector was
+subsequently connected. Its preview.5 endpoint and G/H chat results are recorded
+above. Browser session setup and native foreground checks must run serially.
 Resume physical
 UI work only after restored access. Prepare fresh owned
 prompt documents; C was changed by the failed UI interaction and must not be
@@ -323,8 +365,8 @@ choice and safe failure/revocation. The second created tab was absent from the
 latest tab inventory; the original A chat remained available. Preview.3's public
 connection reached running after its installed fixture; public initialization
 returned HTTP 200 in 629ms. Normal Stop completed cleanup, and the old URL then
-returned HTTP 404. Sharing is stopped; future live-client work needs a new
-connection and equivalent connector reconnection. Retain the foreground guard and
+returned HTTP 404. Sharing was stopped at that checkpoint; the preview.5
+connection above supersedes that runtime state. Retain the foreground guard and
 initial cleanup refusal. Its Word-open installer refusal
 already passes with installed files unchanged. The qualified Windows preview.3
 is published with the explicit preview limits under decision D-0002; site
@@ -350,8 +392,8 @@ test files is preserved outside the CLI commit. Recheck exact remote CI after
 the follow-up. Preview.4 remains a local candidate.
 The follow-up `b79108a` subsequently passes both hosted verification
 `39471037155` and Pages `39471037096`. Local recolor checkpoint `c9ba419`
-is above that observed remote head. The expanded CLI tests are a local-only
-continuation; publishing them must preserve the separate recolor scope. Their
+is above that observed remote head. The expanded CLI tests were a local-only
+continuation; subsequent packaging preserves the separate recolor scope. Their
 36 installed checks cover the unchanged earlier candidate DLL/CLI, not a fresh
 build of the newer MCP guidance. Rebind and qualify any new packaged candidate.
 

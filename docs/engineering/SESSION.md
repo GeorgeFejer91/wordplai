@@ -43,3 +43,11 @@ witness refusal, local revocation, closed-target refusal and timer-saved DOCX
 checks to the existing driver. Change only that driver and narrow CLI test
 documentation/evidence. Use the exact installed candidate, owned hidden fixtures
 and explicit existing Word PID; preserve concurrent recolor work and originals.
+
+The WebGPT fixture preparation exposed inactive local-only CLI mutations missing
+background autosave eligibility before any MCP read. Extend scope to
+`WordAutomation.cs`, `NativeCliSmoke.cs`, installed CLI regression and candidate
+version/build metadata. Admit only successful local mutations to the existing
+background autosave path; reads/refusals must not enroll documents or share MCP
+authority. Preserve all save/input/protection guards. Retain the installed
+preparation timeout and qualify a new candidate before claiming the fix installed.

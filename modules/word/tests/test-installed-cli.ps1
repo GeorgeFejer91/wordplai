@@ -25,8 +25,22 @@ public static class CliNativeObservation {
 '@
 $checks = New-Object 'Collections.Generic.List[string]'
 $unqualifiedForeground = New-Object 'Collections.Generic.List[string]'
-$documents = @(); $sequence = 0; $started = $false
+$documents = @(); $initialHashes = @(); $sequence = 0; $started = $false
 function Check($Condition, [string]$Message) { if (-not $Condition) { throw $Message }; $checks.Add($Message); Write-Output ('PASS: '+$Message) }
+function Get-SavedHash([string]$Path) {
+    $stream = [IO.File]::Open($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::ReadWrite)
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try { return [BitConverter]::ToString($hash.ComputeHash($stream)) }
+    finally { $hash.Dispose(); $stream.Dispose() }
+}
+function Wait-Saved($Targets, [string]$Message) {
+    $timer = [Diagnostics.Stopwatch]::StartNew()
+    while (@($Targets|Where-Object { -not $_.Saved }).Count -ne 0 -or $word.BackgroundSavingStatus -ne 0) {
+        if ($timer.ElapsedMilliseconds -ge 15000) { throw ('Timeout: '+$Message) }
+        Start-Sleep -Milliseconds 75
+    }
+    Check $true $Message
+}
 function Check-Foreground([IntPtr]$Expected, [string]$Message) {
     $same = [CliNativeObservation]::GetForegroundWindow() -eq $Expected
     if (-not $same -and $AllowForegroundChanges) {
@@ -78,12 +92,14 @@ try {
     $prompt = "An overly long $emoji sentence can be made shorter."
     foreach ($letter in @('A','B')) {
         $doc = $word.Documents.Add([Type]::Missing,$false,0,$false)
+        $documents += $doc
         $doc.Content.Text = "Unmarked $letter introduction.`r$prompt`rProtected $letter ending.`r"
         $doc.Content.Font.Name = 'Segoe UI Emoji'
         $doc.Content.Font.NameBi = 'Segoe UI Emoji'
         $path = Join-Path $OutputDirectory ('CLI-fixture-'+$letter+'.docx')
         $doc.SaveAs2([ref][object]$path,[ref][object]16)
-        $documents += $doc
+        Wait-Saved @($doc) 'The owned fixture completes its initial ordinary Save As'
+        $initialHashes += Get-SavedHash $path
     }
     $foreground = [CliNativeObservation]::GetForegroundWindow()
     $activePath = [string]$word.ActiveDocument.FullName
@@ -107,6 +123,9 @@ try {
     Check ([string]$word.ActiveDocument.FullName -ceq $activePath) 'Installed CLI restores the active document'
     Check ($word.Selection.Start -eq $selectionStart -and $word.Selection.End -eq $selectionEnd) 'Installed CLI preserves native selection'
     Check-Foreground $foreground 'Installed CLI preserves desktop foreground'
+    Wait-Saved @($documents[0]) 'Local-only CLI changes to inactive A reach timer autosave before any MCP read'
+    $localState = Native 'state' $id
+    Check (-not $localState.document.shared -and (Get-SavedHash ([string]$documents[0].FullName)) -cne $initialHashes[0]) 'Local-only autosave changes saved bytes without sharing MCP authority'
 
     $status = (Invoke-Cli @('status')).result
     if (-not $status.running) { $null = Invoke-Cli @('connect-local'); $started = $true }
@@ -138,6 +157,9 @@ try {
         $contextB = Native 'context' $idB
         $fromB = $contextB.text.IndexOf($prompt,[StringComparison]::Ordinal)
         $null = Native 'mark' $idB @{snapshot=$contextB.snapshot;ruleId='cli-short';from=$fromB;to=$fromB+$prompt.Length;quote=$prompt}
+        Wait-Saved @($documents[1]) 'Local-only CLI changes to inactive B reach timer autosave before its MCP read'
+        $localStateB = Native 'state' $idB
+        Check (-not $localStateB.document.shared -and (Get-SavedHash ([string]$documents[1].FullName)) -cne $initialHashes[1]) 'Independent local-only B autosave changes saved bytes without MCP authority'
         $sessionB = 'session-b-private.json'
         $null = Mcp 'initialize' $null 0 $sessionB
         $choiceB = Tool 'read_manuscript' @{offset=0} 0 $sessionB
@@ -175,12 +197,7 @@ try {
         $highlight = Tool 'highlight_text' @{documentId=$id;marking=$marking}
         $afterRecovery = Native 'state' $id
         Check (@($afterRecovery.marks|Where-Object quote -ceq $intro).Count -eq 1) 'Fresh complete context recovers the original refused highlight request identity'
-        $timer = [Diagnostics.Stopwatch]::StartNew()
-        while (-not ($documents[0].Saved -and $documents[1].Saved -and $word.BackgroundSavingStatus -eq 0)) {
-            if ($timer.ElapsedMilliseconds -ge 15000) { throw 'Timer autosave did not persist both owned CLI fixtures.' }
-            Start-Sleep -Milliseconds 75
-        }
-        Check $true 'Actual timer autosave persists both named fixtures without a CLI Save command'
+        Wait-Saved $documents 'Actual timer autosave persists both named fixtures without a CLI Save command'
         Add-Type -AssemblyName System.IO.Compression
         foreach ($index in @(0,1)) {
             $stream = [IO.File]::Open([string]$documents[$index].FullName,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::ReadWrite)
