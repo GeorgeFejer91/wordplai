@@ -580,7 +580,12 @@ No desktop input or new remote authority is introduced.
   unconfirmed. A scoped transport recheck passes 2,115 assertions and effective
   controls with all fifteen transport inputs unchanged. That scratch wrapper
   inherited an expected negative-control exit; do not call the later full run a
-  pass. Final hosted verification is recorded separately after publication.
+  pass. Hosted verification `39470432974` passes on CLI checkpoint `0aeb646`.
+  All 71 committed installer inputs and the exact installed test driver match.
+  Pages run `39470433033` fails the existing missing-font readiness race: the
+  initial HTML already says unavailable before labels have measurement status.
+  A test-only wait for label initialization preserves the fallback assertions;
+  the corrected local rendered matrix passes all 313 checks. No site UI change.
 - `VERIFIED`, preview.4 candidate: 71 inputs/eight payloads, exact DLL COM ABI
   536 assertions and dispatch-only control, upgrade from preview.3, complete
   uninstall/registration removal and reinstall. All 112 profile files remain

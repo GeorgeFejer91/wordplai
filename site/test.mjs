@@ -142,7 +142,8 @@ try {
   await missingFont.route('**/*.ttf', route => route.abort());
   const readable = await missingFont.newPage();
   await readable.goto(`${origin}/wordplai/`);
-  await readable.waitForFunction(() => document.documentElement.dataset.measureState === 'unavailable');
+  await readable.waitForFunction(() => document.documentElement.dataset.measureState === 'unavailable' &&
+    [...document.querySelectorAll('[data-measure]')].every(label => label.hasAttribute('data-measure-status')));
   await geometry(readable, 'missing-font-readable-fallback', true);
   await missingFont.close();
   check(errors.length === 0, `No page script errors: ${errors.join('; ')}`);

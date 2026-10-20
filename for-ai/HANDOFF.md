@@ -308,6 +308,14 @@ Description, Download and release metadata match tested output; all twelve
 deployed manifest inputs match that published Git commit. Recheck remote SHA and
 applicable CI after subsequent changes.
 
+CLI checkpoint `0aeb646` is pushed; hosted component verification
+`39470432974` passes. Its candidate matches all 71 committed inputs and the
+installed driver. A test-only site readiness correction follows retained Pages
+failure `39470433033`; local site verification passes 313 checks. Concurrent
+recolor work in the current scope, module README, MCP guidance and three existing
+test files is preserved outside the CLI commit. Recheck exact remote CI after
+the follow-up. Preview.4 remains a local candidate.
+
 Preview.3 is published at
 https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.3.
 Word was already closed when

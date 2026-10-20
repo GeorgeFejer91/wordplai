@@ -20,3 +20,7 @@ and exit-status behavior, and real installed CLI commands. Local commands use
 local user authority; remote AI changes continue through the existing MCP tools.
 CLI results do not certify pixels, physical gestures or real WebGPT rendering.
 Mac implementation stays deferred to its existing future-agent handoff.
+
+CI follow-up permits a test-only fix in `site/test.mjs`: wait for missing-font
+fallback labels to initialize before checking geometry. Preserve the actual
+fallback assertions and rendering; retain the original hosted failure.
