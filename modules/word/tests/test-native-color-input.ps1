@@ -99,3 +99,4 @@ finally {
     if ($wordChanged.Count -ne 0) { throw 'Original, snapshot, injected source or compiled harness changed during qualification; see result.json.' }
 }
 Write-Output "Native color-input evidence: $wordOutput (native requested: $RunNative)"
+exit 0
