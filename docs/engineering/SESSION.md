@@ -15,6 +15,17 @@ and all document/native editing behavior. Other tool schemas, real-host picker
 qualification, packaging and Mac support remain separate scopes; do not call
 this a picker fix before observing it on the host.
 
+Package this correction as local candidate `0.1.0-preview.6`, changing only the
+root package/version lock metadata in addition to the above source scope.
+Regenerate the existing widget build manifest for that lock input; require the
+generated picker HTML to remain byte exact.
+Verify exact package COM/CLI contracts, save/preserve the current seven-document
+Word session, upgrade through the real installer, and rerun installed CLI and
+picker descriptor checks. Preserve profile state and the public preview.5
+assets. Reconnect the approved equivalent four-tool test connector after the
+normal endpoint rotation, then qualify cold/reloaded picker rendering in Chrome.
+No new editing authority or physical native UI automation is introduced.
+
 ## Highlight recolor follow-up
 
 Qualify exact green `#00FF00` to red `#FF0000` recoloring through the existing

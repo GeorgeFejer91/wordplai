@@ -263,15 +263,16 @@ audit lifecycle changes. Overall acceptance remains open.
   preserved. Local stable-page rendering passes 313 checks with actual release
   metadata; verify its subsequent exact-SHA Pages deployment.
 
-Latest installed state: preview.5, with five originals open and all six known
-original saved files unchanged. The sixth was already closed at upgrade
+Latest installed state: local preview.6 candidate, with seven documents open
+(five originals and owned G/H) and all six known original saved files unchanged.
+Preview.5 remains the public release. The sixth original was already closed at upgrade
 preflight; its cause is unestablished. Preserve that observed open set rather
 than reopening it to satisfy the earlier six-open baseline. Native shutdown
 initially exceeded the observer timeout; the same process later exited normally
 before installer work. Reopen and post-test audits pass. Source and package
 hashes, lifecycle receipts and limitations are in `VERIFICATION.md`.
 
-The equivalent `wordplai CLI qualification` ChatGPT app is connected with the
+At the earlier preview.5 checkpoint, the equivalent `wordplai CLI qualification` ChatGPT app was connected with the
 same four tools and Allow low-risk permission. The installed public MCP endpoint
 initializes with HTTP 200 in 1,001ms. Fresh independent Instant chats edit owned
 G and H; G's first edit leaves H unchanged. The unnamed H chat's embedded picker
@@ -341,158 +342,82 @@ ChatGPT required one-time approvals and flagged current tool prose/test IDs as
 suspicious. Default persistent permissions stayed unchanged; no tool wording or
 safety annotation was changed to bypass those warnings.
 
-The subsequent source-only picker follow-up adds `outputSchema` to
+The subsequent picker follow-up adds `outputSchema` to
 `list_manuscripts`, covering its exact choice/retained-selection result and coded
 refusal envelope. This follows current OpenAI plugin guidance; general MCP makes
 output schemas optional, so their absence does not prove the blank picker's
 cause. The missing-schema regression fails against prior source; the corrected
 transport passes 2,117 assertions and fifteen JSON Schema positive/negative
 cases. Both real installed listing variants match the declaration, including an
-explicit owned-document complete read and retained choice. Preview.5 remains
-installed/released and does not contain this declaration. Source package inputs
-now differ from that release. All twenty-one source component gates pass;
-five open/six saved originals remain unchanged. See the source-only evidence in
-`VERIFICATION.md`. The prior documentation checkpoint `6272942` was pushed and
-passed verification `39498857172`; recheck this following source checkpoint's
-own remote SHA and CI before packaging it.
-Next: build a distinctly identified candidate, preserve/requalify the installed
-session and refresh the equivalent connector before testing cold/reloaded
-picker rendering. Do not claim a picker fix until that host result is observed.
-Other three tool output schemas remain separate contract work.
+explicit owned-document complete read and retained choice. All twenty-one source
+component gates pass. Source checkpoint `3eed2b6` is pushed and passes hosted
+verification `39500996679`.
 
-Chrome extension browser access was observed and one real connection-only
-WebGPT request attempted discovery but failed internally. A reload temporarily
-showed an empty assistant answer; a later native view showed the failed response.
-Neither observation proves a picker failure or an add-in rejection cause. The
-saved connector endpoint differs from the installed candidate's newly generated
-endpoint. The user explicitly approved a replacement connector with the same four
-tools and document permissions for synthetic testing. Reconnection completed as
-`wordplai qualification`; its visible tool panel confirms four tools. Do not ask
-for that same approval again or delete old connectors. The first named-document
-Instant chat executed a saved prompt: exact saved text, native rationale, green
-paint and stored protection pass fourteen saved-DOCX checks. The post-run audit
-confirms all six original documents unchanged. The client showed nineteen seconds
-for the whole task; first-visible-edit latency is not measured. DOM/screenshot
-show the answer, although AX omitted its text. A second browser tab opened despite
-a creation timeout, then control detached. B was subsequently qualified through
-the public Codex MCP connector, not that second browser conversation: authorized
-wording, protection/stale refusals, replay, neutral RGB, atomic quote refusal and
-saved-state checks pass, with all six originals preserved. B's prompt wording is
-now protected and its intro/ending have a neutral color. Use fresh owned passages
-for future two-browser writing scenarios; do not count B's Codex result as WebGPT.
+Local candidate preview.6 now contains that declaration. Its installer passes
+Word-open refusal, upgrade from preview.5, all eight payload identities and both
+registration views; all 140 profile files remain exact across installation.
+The seven-document session closes/reopens with unchanged saved bytes, text and
+annotation counts. Source package inputs differ from the public preview.5;
+the candidate's 71-input identity is in
+`artifacts/word/picker-output-contract/preview6/package-identity.json`.
+The installed CLI run is PARTIAL: seventeen checks pass, but Word holds the
+foreground and its positive writing/isolation cases remain unrun. Do not reuse
+preview.5's forty-two-check pass as this candidate's installed evidence.
 
-The public Word connection briefly reported running, then failed/revoked; HTTPS
-returned a tunnel-hosted 404. Separate read-only synthetic probes through the
-exact installed TunnelProcess/pinned zrok produced an informational browser
-interstitial and, with a normal API client identity, 502/timeouts. A later verbose
-probe reached the exact synthetic response at about 13 seconds and retained a
-live child for another 15 seconds; exact owned-share cleanup passed. This proves
-one synthetic transport success. Later actual public Word/MCP initialization and
-the first real WebGPT edit passed. Reliability across restart/revocation remains
-unqualified. No TLS/security bypass or expanded permissions were used; the earlier
-failures' cause remains unconfirmed.
+The first Stop returned its asynchronous stopping state and the helper closed
+Word before cleanup settled. The encrypted ownership barrier survived the
+upgrade unchanged; normal Stop after reopening completes exact cleanup. Await
+stopped/busy=false/cleanupPending=false before future normal shutdowns. Preserve
+the first helper's JSON-array nesting refusal and corrected preflight.
 
-A subsequent installed connection-start request returned starting. The following
-COM status query found no exposed add-in object; the existing Word process still
-responds. A later probe confirms the add-in exposed/connected and public running;
-the first real edit and post-run preservation audit then passed. Chrome control
-remains intermittent. Do not infer shutdown from an observation timeout or repeat
-a writing request under a new identity to compensate for lost browser control.
+The equivalent `wordplai preview.6 qualification` app is connected with the same
+four tools and default low-risk permissions. Its cold and reloaded picker both
+report could-not-display and response-load failure. Explicitly named owned H
+reads completely in that same real chat; final native/disk preservation passes
+for all seven open documents and six known saved originals. The current Word
+process is recorded in `preview6/restore/result.json`; the previous process has
+exited. Public sharing is running on the new endpoint in the private status
+snapshot. The old preview.5 endpoint was revoked; do not reuse its connector.
 
-The previous bounded code scope was the Connections overview and its existing UI
-assertion, plus correction of the color-input driver's inherited exit status.
-Keep editing/protection/transaction/connection permissions unchanged. Preserve
-the initial native UI resource-count failure independently; later passes do not
-prove its cause. Do not restart a live test or alter its captured source inputs.
+A default PowerShell public probe receives zrok's browser warning HTML. Its
+corrected non-browser client identification receives three JSON HTTP 200 replies,
+the exact installed catalogue and packaged 58,378-byte picker. This does not prove
+ChatGPT resource receipt or bridge initialization and is not an identified picker
+cause. Private receipts/screenshots are under `preview6/`. Preview.6 is not
+published; the public Description/Download bytes still match preview.5.
+Next: trace the real host's resource request/delivery and bridge initialization
+through the existing diagnostic owners. Preserve annotations/permissions and
+retain the picker failure. Qualify remaining installed writes when the existing
+foreground guard admits them. Other three output schemas and Mac remain open.
 
-Hosted run `39427161161` on documentation checkpoint `b79688d` failed the recolor
-state assertion because nested JSON object properties were ordered differently.
-The captured values were confirmed identical with the existing structural
-comparer and strict controls. The completed test-only repair shares it between
-`PolicyTests.cs` and `PolicyRecolorTests.cs`, update their compile inputs in
-`modules/word/test.ps1`, and retains values, fields and list order exactly. All
-twenty component gates pass after the repair, and a scalar-losing copied control
-fails the intended identity assertion. No runtime, permission, timeout, installer
-or production serialization change. Hosted verification `39428499738` passed on
-the correction's exact published SHA `7034ff0`; retain the earlier hosted failure
-and partial local repair.
+## Continuing test constraints and public release
 
-The user requested CLI functions so behavior testing can continue without taking
-over the desktop. Use `modules/word/cli/README.md` and the installed CLI driver;
-retain the separate physical/UI gaps. On the latest UI resume, Chrome's extension
-session was absent, native browser URL verification stopped control, then a
-Word-only double-click attempt was stopped by Escape. Fresh E/F fixtures were
-prepared with explicit UTF-8 baseline serialization; C remains invalid.
+Use `modules/word/cli/README.md` and `test-installed-cli.ps1 -WordProcessId PID`
+for automation without desktop input. Use the current process from the private
+restore receipt; never attach an arbitrary active Word instance. Browser setup
+and native foreground checks run serially. Any unqualified foreground comparison
+keeps the result PARTIAL; do not bypass the guard to manufacture a writing pass.
+Physical dialog/gesture, clean-machine and timing scopes remain open.
 
-Next actions: use the CLI and `test-installed-cli.ps1 -WordProcessId PID` for
-repeatable native/MCP behavior tests without desktop input. The driver requires
-an already running, connected Word instance; it creates and closes only its own
-fixtures. A fresh-process installed launcher was dropped after retained startup
-and third-party-template failures. Source-native isolated tests remain available.
-Use `-IsolationCases` for the expanded installed cases. Foreground drift can be
-diagnosed with explicit `-AllowForegroundChanges`; any unqualified comparison
-keeps the result PARTIAL. The final 36-check run qualified all comparisons.
-Chrome extension access was restored and an equivalent fresh connector was
-subsequently connected. Its preview.5 endpoint and G/H chat results are recorded
-above. Browser session setup and native foreground checks must run serially.
-Resume physical
-UI work only after restored access. Prepare fresh owned
-prompt documents; C was changed by the failed UI interaction and must not be
-counted as an editing success. Qualify the dialog draft/Cancel/Save and interleave
-two browser chats without cross-target effects, then exercise cold/reloaded
-choice and safe failure/revocation. The second created tab was absent from the
-latest tab inventory; the original A chat remained available. Preview.3's public
-connection reached running after its installed fixture; public initialization
-returned HTTP 200 in 629ms. Normal Stop completed cleanup, and the old URL then
-returned HTTP 404. Sharing was stopped at that checkpoint; the preview.5
-connection above supersedes that runtime state. Retain the foreground guard and
-initial cleanup refusal. Its Word-open installer refusal
-already passes with installed files unchanged. The qualified Windows preview.3
-is published with the explicit preview limits under decision D-0002; site
-metadata now identifies its exact asset, hash, size and actual publication time.
+Keep the earlier C fixture invalid. Older E/F preparations and A/B test histories
+do not replace the current G/H evidence; B's Codex connector result is not a
+second WebGPT chat. Use fresh owned prompt passages where the existing wording
+has already become protected. Keep old connector accounts intact. The current
+equivalent reconnect is already authorized; preserve the same four tools and
+permissions. Historical failures and handoff chronology remain in Git history,
+with the durable evidence index in `VERIFICATION.md`; do not relabel them passed.
 
-Source checkpoints: `9b768c1` corrects the overview/builds preview.3, `ba9ff8a`
-corrects test reporting, and `40ba956` records qualification and the Mac handoff.
-They, the shared-skill update, test-only comparer correction `7034ff0` and
-installed evidence `6c455db` are pushed on `main`. Hosted verification
-`39431955158` passed on `6c455db`, the preview.3 release target. The installer
-remains bound to the unchanged 67 inputs and six payloads. Site/metadata checkpoint
-`25a992f` passed verification `39433032039` and Pages `39433031883`. Anonymous
-Description, Download and release metadata match tested output; all twelve
-deployed manifest inputs match that published Git commit. Recheck remote SHA and
-applicable CI after subsequent changes.
+Latest public release remains [preview.5](https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.5),
+targeting `79168c326cd9926bdcaabb6c0dc104fba254da92`. Its unchanged 71-input,
+eight-payload package and all three anonymous asset downloads were verified.
+Source verification `39488257735` and Pages `39488257736` pass. Actual release
+metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
+`39488997403`; anonymous Description, Download and release JSON matched local
+bytes and all twelve deployed inputs. This is distinct from local preview.6.
 
-CLI checkpoint `0aeb646` is pushed; hosted component verification
-`39470432974` passes. Its candidate matches all 71 committed inputs and the
-installed driver. A test-only site readiness correction follows retained Pages
-failure `39470433033`; local site verification passes 313 checks. Concurrent
-recolor work in the current scope, module README, MCP guidance and three existing
-test files is preserved outside the CLI commit. Recheck exact remote CI after
-the follow-up. Preview.4 remains a local candidate.
-The follow-up `b79108a` subsequently passes both hosted verification
-`39471037155` and Pages `39471037096`. Local recolor checkpoint `c9ba419`
-is above that observed remote head. The expanded CLI tests were a local-only
-continuation; subsequent packaging preserves the separate recolor scope. Their
-36 installed checks cover the unchanged earlier candidate DLL/CLI, not a fresh
-build of the newer MCP guidance. Rebind and qualify any new packaged candidate.
-
-Latest publication: preview.5 targets pushed `79168c326cd9926bdcaabb6c0dc104fba254da92`.
-Hosted verification `39488257735` and Pages `39488257736` pass on that source
-checkpoint. It includes the separate recolor checkpoint and CLI qualification
-without rewriting them. The released installer matches all 71 committed inputs
-and eight payloads; anonymous downloads match all three uploaded assets.
-Release: https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.5.
-The following site-only checkpoint updates the stable page with its actual
-publication metadata and observed limits; local rendering passes 313 checks.
-Its pushed SHA `3e9c7681c589103339baa3d8de297e32dace816d` passes Pages
-`39488997403`; anonymous Description, Download and release metadata exactly
-match local tested bytes. All twelve deployed manifest inputs match that Git
-commit. Hosted verification `39488997631` subsequently passes. Documentation
-checkpoint `b81eebfde6d46d9469ff20279e3b132378471939` is pushed and passes
-verification `39489600126`. Recheck the following evidence-only checkpoint's
-Git/CI state; production/package/site inputs are unchanged.
-Interleaving checkpoint `2f9ef4f4e138e683e5f6a42dd4d58b413329fa50` is pushed
-and passes verification `39494557362`. The following revocation evidence
-checkpoint retains all 71 packaged input hashes; recheck its own remote/CI state.
-The package stays bound to the release target. Keep the overall goal active for
-the remaining real-host picker, interleaving, timing, physical and Mac scopes.
+The latest observed source checkpoint before this version update is `3eed2b6`,
+with successful hosted verification `39500996679`. Recheck the following
+candidate-version checkpoint's own remote/CI and Pages state before any release.
+Retain preview.5 assets and disclose the remaining preview limits. The overall
+shipment goal remains active for usable host picker, timing, physical,
+clean-machine, remaining installed and future Mac scopes.

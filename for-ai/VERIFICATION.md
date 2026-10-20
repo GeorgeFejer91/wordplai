@@ -11,7 +11,7 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
-## Picker output declaration — source only, 2026-10-20
+## Picker output declaration and installed preview.6 — 2026-10-20
 
 - `VERIFIED`: missing-schema regression fails against the prior source. The
   corrected `test-transport.ps1 -MutationCheck` passes 2,117 HTTP assertions,
@@ -25,8 +25,8 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   evidence are in `artifacts/word/picker-output-contract/`.
 - `VERIFIED`: `modules/word/test.ps1` passes all twenty-one component gates,
   including exact built-assembly COM 536, transport/safety controls, autosave 50
-  and native UI 1,419 checks with 21 renders. Overall `PARTIAL` retains unrun
-  installed/public-client scopes for this new source. A fresh native/disk audit
+  and native UI 1,419 checks with 21 renders. That source checkpoint's overall
+  `PARTIAL` leaves installed/public-client scopes to the following candidate. A fresh native/disk audit
   passes for five open originals and all six known saved originals; no changes.
 - Current [OpenAI plugin guidance](https://developers.openai.com/plugins/reference)
   asks for output schemas with structured results; the
@@ -35,10 +35,41 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   of the blank picker's cause. HTML/bridge bytes, tool names, result fields,
   permissions and safety annotations are unchanged. Only `list_manuscripts`
   gains an output schema; the other three tools remain separate scope.
-- `NOT RUN`: installing/refreshing this changed declaration on ChatGPT and
-  qualifying cold/reloaded rendering. Installed/released preview.5 still has no
-  picker output schema; its original 71-input manifest does not describe these
-  newer source bytes. No installer or release asset was changed here.
+- `VERIFIED`: the separately identified preview.6 candidate binds 71 source
+  inputs/eight payloads. Exact-package COM 536 and CLI fourteen checks, including
+  effective fault controls, pass. The 23,885,251-byte installer SHA-256 is
+  `6A2BD3C11AC2B3F2EF3DEE4A4B02C8D222632BBB8F3AD888D8F6BDE11451A17D`.
+  Word-open refusal leaves all eight installed payloads unchanged. Real upgrade
+  from preview.5 exits zero; all payloads, manifest, version and both registration
+  views match. All 140 profile files remain byte exact across installation.
+- `VERIFIED`: seven saved documents close/reopen under one new Word process;
+  text, saved-file bytes, annotation counts and Saved state match. Five open
+  originals and all six known saved originals remain unchanged after browser
+  tests. The first preflight's nested JSON-array refusal is retained separately.
+  The Stop call was asynchronous; closing before it settled left an encrypted
+  ownership barrier. That barrier survived installation unchanged, and normal
+  Stop after restart completes exact cleanup. No barrier was deleted manually.
+- `PARTIAL`: `test-installed-cli.ps1 -IsolationCases` passes seventeen checks;
+  Word holds the foreground, so positive writing/isolation cases remain `NOT RUN`.
+  There are zero unqualified foreground comparisons. The earlier preview.5
+  forty-two-check result does not certify these new installed bytes.
+- `VERIFIED`: installed and public tool discovery exactly match the qualified
+  four-tool source catalogue, including the new schema. A newly connected
+  equivalent ChatGPT app retains Allow low-risk. Its real named-H fallback
+  reports a complete read; native/disk audits confirm no document changes.
+- `FAIL`: cold and reloaded real ChatGPT picker rendering still report
+  could-not-display and response-load failure. The schema correction is not
+  sufficient. Raw browser resource/wire/bridge initialization remains unproven.
+  Console capture contains two Statsig cache warnings, without a proven cause.
+- `VERIFIED`: the corrected public probe identifies itself as a non-browser
+  CLI and receives three JSON HTTP 200 replies, the exact catalogue and the exact
+  58,378-byte packaged HTML/MCP Apps MIME. The original default PowerShell probe
+  instead received zrok warning HTML and is retained as a failed probe, not an
+  MCP success. This does not establish what the ChatGPT widget loader received.
+- Evidence: `artifacts/word/picker-output-contract/preview6/`; current process,
+  endpoint and fixture details stay private there. Preview.6 is installed only;
+  no release asset changed. Both rebuilt public page HTML files still exactly
+  match deployed preview.5. Recheck this version checkpoint's hosted CI/Pages.
 
 ## Exact RGB recolor qualification — 2026-10-20
 
