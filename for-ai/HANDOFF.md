@@ -229,8 +229,11 @@ audit lifecycle changes. Overall acceptance remains open.
 - [x] Run two independent real conversations and interleave color operations;
   verify protected-edit refusal, valid post-refusal recovery and native
   save/reopen with independent targets and original preservation.
-- [ ] Qualify a usable cold/reloaded picker, real-chat revocation/original-ID
-  recovery and first-visible-wording timing.
+- [x] Exercise real-chat local revocation, fresh-read recovery using the
+  client-reported original request identity, and exact replay. Correlate the
+  displayed native identities with saved state and the committed private ledger.
+- [ ] Qualify a usable cold/reloaded picker, capture full client wire/error
+  envelopes for uncertainty-field proof, and measure first-visible wording.
 - [x] Prepare the future Mac agent handoff in `MACOS-COMPATIBILITY.md`.
 - [ ] Future Mac agent: implement, package and independently qualify Word-on-Mac
   support. No Mac support or installer is currently claimed.
@@ -305,10 +308,41 @@ The public picker resource initializes/lists/reads with HTTP 200 and returns
 the exact packaged 58,378-byte HTML. This does not prove ChatGPT receipt or
 bridge/render initialization. The offered Open app in tab fallback also reports
 could-not-display. No picker cause or code fix is inferred from those facts.
-Real-chat revocation/original-ID recovery, usable picker, first-visible timing,
-physical UI and Mac scopes remain open. Public sharing was observed running;
+At that checkpoint real-chat revocation/recovery was still open; the subsequent
+continuation below records its observed scope. Usable picker, first-visible
+timing, physical UI and Mac scopes remain open. Public sharing was observed running;
 recheck it before continuation. Keep private capabilities/browser evidence out
 of Git and never retry an uncertain write under a new identity.
+
+Latest revocation continuation: private evidence is in
+`artifacts/word/webgpt-cli-revocation/qualification-result.json`. The retained H
+chat reads its chosen document completely after reopen. The exact installed
+local CLI changes shared=true to false without changing rules, marks or pending
+proposals. One requested old-witness color attempt is client-reported refused
+with `INVALID_ARGUMENT`; H remains unshared and both saved files stay byte exact.
+After a fresh complete read, the client reports the original requested identity
+and a first application of the color operation. Sixteen independent checks
+correlate its returned native identities with the sole new committed receipt,
+exact paint, unchanged wording/protection/rationale and unchanged G bytes.
+The exact replay is reported as replayed=true with the same returned identities;
+both saved files, the encrypted owned ledger and native/CLI review state remain
+byte/structurally exact. Five open/six saved originals remain unchanged.
+
+Highlight outcomes require both stores: document XML deliberately retains Undo
+staging with a reserved outcome and precommit snapshot; the CurrentUser-protected
+local ledger holds the applied outcome and final native snapshot. The runtime
+merges those replay receipts on load. Retain both failed audit assumptions and
+the effective copied client/native-identity mismatch control. Only the owned H
+ledger was read; raw browser wire requests/error envelopes remain uncaptured.
+The displayed error fields and request identity are client reports, not a claim
+of raw transport capture.
+
+ChatGPT required one-time approvals and flagged current tool prose/test IDs as
+suspicious. Default persistent permissions stayed unchanged. Next: review the
+tool description's clarity about Word color-rule fields against those retained
+warnings; preserve honest safety/authority annotations and validate any warranted
+clarification on the real host. Picker receipt/bridge diagnostics need new
+evidence; do not infer a fix from successful public resource reads.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -441,5 +475,8 @@ commit. Hosted verification `39488997631` subsequently passes. Documentation
 checkpoint `b81eebfde6d46d9469ff20279e3b132378471939` is pushed and passes
 verification `39489600126`. Recheck the following evidence-only checkpoint's
 Git/CI state; production/package/site inputs are unchanged.
+Interleaving checkpoint `2f9ef4f4e138e683e5f6a42dd4d58b413329fa50` is pushed
+and passes verification `39494557362`. The following revocation evidence
+checkpoint retains all 71 packaged input hashes; recheck its own remote/CI state.
 The package stays bound to the release target. Keep the overall goal active for
 the remaining real-host picker, interleaving, timing, physical and Mac scopes.

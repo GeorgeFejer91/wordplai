@@ -810,7 +810,45 @@ unchanged; DLL/CLI hashes remain those above.
   receipt, iframe delivery and bridge/render initialization are unproven;
   resource HTTP success does not identify the cause or qualify a picker fix.
 
-Physical dialog, clean-machine, usable host picker and additional real-client
+### Preview.5 real-client revocation, recovery and replay
+
+Private evidence: `artifacts/word/webgpt-cli-revocation/qualification-result.json`.
+The packet remains `PARTIAL` for the named host/platform and wire-capture gaps.
+Production/package/dependency inputs and persistent permissions are unchanged.
+
+- `VERIFIED`: the retained real H chat reads its chosen document completely
+  after native reopen. The exact installed CLI then revokes H, changing shared
+  true to false while preserving all rules, marks and pending proposals. The
+  requested old-witness attempt is client-reported refused with `INVALID_ARGUMENT`
+  and "Read this chosen document again before continuing its review." H stays
+  unshared and both saved test files remain byte exact.
+- `VERIFIED`, displayed-result/native correlation: after a fresh read the real
+  client reports the original requested identity and replayed=false. Sixteen
+  assertions correlate returned mark/color/replaced identities to exactly one
+  new applied private receipt, its final native snapshot, exact saved RGB and
+  unchanged text, other rules/marks, rationale and G bytes. A copied displayed
+  marker-ID mismatch fails the exact native-correlation predicate.
+- `VERIFIED`: the same chat's exact replay reports replayed=true and otherwise
+  identical returned fields. Both DOCX files, the single owned encrypted ledger,
+  document identity/revision and rules/marks/pending proposals remain exact;
+  there is no duplicate persisted effect. Current native color/Saved checks and
+  the post-run five-open/six-saved-original preservation audit pass.
+- Retained audit failures distinguish two legitimate persistence stages.
+  Document XML carries reserved highlight Undo staging and its precommit
+  snapshot. The final applied outcome/snapshot reside in the CurrentUser-protected
+  owned ledger, merged by `WordReviewStore.Load`. The first audit conflated the
+  stores; a partial correction still compared a prior staged snapshot to its
+  committed snapshot. Final checks require all other fields exact, authoritative
+  committed outcomes, and snapshot hashes matching the captured native revisions.
+  No production persistence or guard was changed to satisfy the checks.
+- Scope limits: browser wire arguments/error envelopes were not captured.
+  Request identity, error code/message and absent isError/uncertainty fields are
+  displayed client reports. The host requested one-time approvals and flagged
+  tool prose/test identifiers as suspicious; no persistent permission setting
+  changed. These observations warrant description-clarity review, not a claim
+  that the safety mechanism or native backend is defective.
+
+Physical dialog, clean-machine, usable host picker and full client wire
 qualification remain open. Mac implementation is deferred to the existing
 future-agent handoff. The overall shipment goal stays active.
 
