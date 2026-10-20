@@ -729,6 +729,22 @@ namespace UnderTree.WordAddin
                 string first = UiState.Text(records.Selected, "id");
                 FindButton(form, "Next").PerformClick();
                 Require(UiState.Text(records.Selected, "id") != first, "Paging reaches records beyond the bounded visible list.");
+                string selected = UiState.Text(records.Selected, "id");
+                form.ClientSize = new Size(430, 180);
+                Settle(form);
+                CheckPagedLists(form);
+                Require(UiState.Text(records.Selected, "id") == selected, "Resizing the native page preserves the exact selected record.");
+                Font original = form.Font;
+                using (Font larger = new Font(original.FontFamily, original.SizeInPoints + 3, original.Style))
+                {
+                    form.Font = larger;
+                    Settle(form);
+                    CheckPagedLists(form);
+                    Require(UiState.Text(records.Selected, "id") == selected, "Changing native list font preserves the exact selected record without duplicate rows.");
+                    form.Font = original;
+                    Settle(form);
+                    CheckPagedLists(form);
+                }
             }
         }
 
@@ -739,6 +755,7 @@ namespace UnderTree.WordAddin
             form.ShowInTaskbar = false;
             form.Show();
             Settle(form);
+            CheckPagedLists(form);
             NativeDialog branded = form as NativeDialog;
             if (branded != null)
             {
@@ -837,8 +854,13 @@ namespace UnderTree.WordAddin
         private static void CheckPagedLists(Control form)
         {
             foreach (ListBox list in Descendants(form).OfType<ListBox>().Where(list => list.Visible))
-                Require(list.Items.Count * list.ItemHeight <= list.ClientSize.Height,
+            {
+                int nativeCount = SendMessage(list.Handle, 0x018B, IntPtr.Zero, IntPtr.Zero).ToInt32();
+                if (nativeCount != list.Items.Count) Capture((Form)form, "native-list-row-count-failure");
+                Require(nativeCount == list.Items.Count, "Native list rows match the managed page: " + list.AccessibleName + " native=" + nativeCount + " managed=" + list.Items.Count);
+                Require(nativeCount * list.ItemHeight <= list.ClientSize.Height,
                     "Paged list has no internal scrollbar: " + list.AccessibleName);
+            }
         }
 
         private static void Capture(Form form, string name)

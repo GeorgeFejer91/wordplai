@@ -11,6 +11,68 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Real client/native continuation and overlap source correction — 2026-10-21
+
+- `FAIL`, fresh warm-cache Chrome conversation: first picker rendering and the
+  ordinary assistant response report load failure. `VERIFIED`, reload recovery:
+  the picker renders seven choices, selecting owned G succeeds, and the automatic
+  continuation reports a complete read with protection taking precedence. The
+  previous H conversation then reports its retained H target on a new unnamed
+  complete-read request; a reciprocal G request retains G. No wording/color/rule
+  change is requested. The final seven-open/six-saved-original audit passes.
+  Resource reads/results/completed writes remain two throughout, with zero
+  RPC/resource/Origin errors; HTTP requests/refusals increase separately. This
+  establishes a cached first-render failure, not its cause or captured bridge wire.
+- `PARTIAL`, browser keyboard: Tab through the nested picker times out after
+  focusing H; the focus observation remains on H. No successful Tab/Enter selection
+  is claimed. The subsequent ordinary visible G click succeeds. Private browser
+  traces and images are in `artifacts/word/resource-diagnostics/preview7-warm/`.
+- `VERIFIED`, installed preview.7 physical mouse path: ribbon double-click and
+  marked-text double-click open the exact owned rule. A preset checkbox changes
+  the draft; 21 checks confirm no commit or saved-byte change. Cancel closes it
+  and independently passes the same 21 checks. Reopening shows the preset absent.
+  Selecting it again and clicking Save closes the dialog, commits the exact preset
+  plus original custom prompt, and reaches ordinary timer save. A further 21 checks
+  preserve text, mark identities/ranges/quotes, native RGB, annotation counts,
+  unrelated rules and all seven pre-existing documents/six saved originals.
+- `VERIFIED`: ten independent actual-DOCX checks correlate the physically saved
+  rule with CLI state, exact text/paragraphs, all saved mark fields, RGB, no tracked
+  revisions/comments and no review proposals. A copied persisted policy omitting
+  the selected preset fails the exact saved-prompt assertion. The initial fixture
+  constructor expectation omitted Word's extra retained terminal paragraph; its
+  refusal is kept. Exact observed paragraph verification succeeds without changing
+  wording. Retain the initial shared-file hash and by-reference Range audit errors;
+  corrected read-only observers use shared read access and explicit COM references.
+- `NOT RUN`, custom dialog typing: the supported helper returns only the Word
+  owner window. Mouse input on its related dialog screenshot works, but Ctrl+A
+  after prompt focus selects the document body. Testing stops before text entry.
+  Alt/F10 attempts do not establish ribbon keyboard navigation. These checks do
+  not certify custom typing, keyboard access, different desktop/DPI configurations
+  or the earlier invalid C fixture. Private physical evidence is under
+  `artifacts/word/native-ui-preview7/`.
+- `FAIL`, installed overlap chooser: two exact marker identities render four
+  selectable rows while the pager reports two. Selecting and opening the repeated
+  third row does nothing. Closing the chooser preserves the owned policy exactly.
+  Only the new UI fixture is then normally closed, with saved bytes unchanged;
+  the final original seven-document set and six known saved files remain exact.
+- `VERIFIED`, source regression/correction: the native ListBox row count is now
+  checked against managed Items before palette refresh can mask the defect. Prior
+  source reproduces native=4/managed=2. A private trace observes synchronous renders
+  during WinForms creation/font/resize processing. The shared list coalesces these
+  layout callbacks on its UI control after those operations; paging and selection
+  remain unchanged. Final focused UI passes 1,433 checks and 21 renders, including
+  exact selection after resize/font changes. The final test with the original list
+  fails the intended native-count predicate; both runs have zero input drift.
+  Keep the earlier trace-preparation line-ending refusal and first driver's stderr
+  capture failure separate from the executed regression. Evidence is in
+  `artifacts/word/overlap-list-fix/`. The full source component driver passes all
+  twenty-one gates, including the 1,433 native UI checks/21 renders, existing
+  transport and safety fault controls, COM 536 and CLI fifteen. Its overall
+  `PARTIAL` retains installed/public-client scope. Preview.7 remains installed
+  with the defect. A distinct preview.8 and installed recheck are required before
+  claiming the fix installed or published; use this correction's own exact-source
+  hosted verification before packaging.
+
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including

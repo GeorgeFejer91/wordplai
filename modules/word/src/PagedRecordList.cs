@@ -17,6 +17,7 @@ namespace UnderTree.WordAddin
         private int page;
         private int pageSize = 6;
         private bool rendering;
+        private bool resizeQueued;
 
         internal event EventHandler RecordSelected;
         internal event EventHandler RecordOpened;
@@ -34,8 +35,9 @@ namespace UnderTree.WordAddin
             };
             list.SelectedIndexChanged += delegate { if (!rendering && RecordSelected != null) RecordSelected(this, EventArgs.Empty); };
             list.DoubleClick += delegate { if (Selected != null && RecordOpened != null) RecordOpened(this, EventArgs.Empty); };
-            list.Resize += delegate { ResizePage(); };
-            list.FontChanged += delegate { ResizePage(); };
+            list.Resize += delegate { QueueResizePage(); };
+            list.FontChanged += delegate { QueueResizePage(); };
+            list.HandleCreated += delegate { QueueResizePage(); };
             previous = NativeLayout.Button("Previous", delegate { page--; Render(); });
             next = NativeLayout.Button("Next", delegate { page++; Render(); });
             counter = NativeLayout.Label("");
@@ -64,6 +66,16 @@ namespace UnderTree.WordAddin
             if (index >= 0) page = index / pageSize;
             Render();
             if (index >= 0) list.SelectedIndex = index % pageSize;
+        }
+
+        private void QueueResizePage()
+        {
+            if (previous == null || resizeQueued || !IsHandleCreated || !list.IsHandleCreated || IsDisposed || Disposing) return;
+            resizeQueued = true;
+            BeginInvoke((Action)delegate {
+                resizeQueued = false;
+                if (!IsDisposed && !Disposing) ResizePage();
+            });
         }
 
         private void ResizePage()

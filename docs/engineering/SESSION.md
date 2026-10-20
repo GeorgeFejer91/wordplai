@@ -1,5 +1,24 @@
 # Current CLI implementation scope
 
+## Native overlap chooser follow-up — 2026-10-21
+
+Start from clean main `476342c`. Installed preview.7 physically renders four
+selectable rows for two overlapping color identities; the pager reports two,
+and opening a repeated third row does nothing. Retain that actual failure.
+Reproduce native ListBox contents separately from its managed Items collection
+before changing production. Scope: `PagedRecordList.cs`, the existing native UI
+test owner/driver when required, and canonical handoff/verification evidence.
+Keep paging, explicit record identity, draft/Cancel/Save authority, rule and
+marker persistence, all MCP tools/permissions and HTML/bridge unchanged. Qualify
+the smallest shared-owner correction with a failing regression and effective
+fault control; a source pass does not certify the installed preview.7 bytes.
+
+Fresh warm-cache Chrome first render also fails, while reload/selection works.
+Independent G/H reads retain their own targets and preserve all original files.
+Real installed ribbon/text double-click, preset draft/Cancel and explicit preset
+Save pass; custom typing/keyboard routing remains unqualified. Raw evidence stays
+private under the preview.7 warm/native qualification folders.
+
 ## Resource delivery diagnostics — 2026-10-21
 
 Start from clean main `51098c3`. Preview.6 still fails cold/reloaded ChatGPT

@@ -219,11 +219,14 @@ audit lifecycle changes. Overall acceptance remains open.
   comments, revisions, saved state and saved-file hashes.
 - [x] Complete preview.3's installed 69-check runtime fixture with all six
   originals unchanged. Retain the initial three-check cleanup refusal separately.
-- [ ] Complete physical dialog draft/Cancel/Save checks. A real double-click on
-  owned C opens the correct installed dialog, but targeted typing actually
-  replaced C's document body with the disposable draft string. The dialog image
-  did not reflect that input. C is invalid for future tests; retain this failed
-  interaction. No dialog Save was performed. Native control was stopped by Escape.
+- [x] Qualify preview.7 physical ribbon/text double-click and preset draft,
+  Cancel and explicit Save on a new owned fixture. Each stage passes 21 checks;
+  ten independent saved-DOCX checks and an effective missing-preset control pass.
+- [ ] Complete custom typing/keyboard and the corrected overlap chooser. Earlier
+  owned C was corrupted when targeted draft typing reached its document body;
+  no Save occurred and native control was stopped by Escape. C stays invalid.
+  The new nonmutating routing check also selects document text, so no new typing
+  is attempted. The newly discovered duplicate chooser rows need installed recheck.
 - [x] Reconnect an equivalent ChatGPT test app and run the first named-document
   real WebGPT edit; verify actual native/saved results and original preservation.
 - [x] Run two independent real conversations and interleave color operations;
@@ -391,49 +394,57 @@ deployed manifest hashes match that exact Git commit. Retain the initial wrong
 comparison against Windows checkout bytes and the corrected tag-label assertion.
 The Git-byte audit's changed-source-hash control fails as intended.
 
-### Resource diagnostics source follow-up — 2026-10-21
+### Current preview.7 and overlap follow-up — 2026-10-21
 
-Source adds local read-only `diagnostics`, through the existing CLI/COM owner,
-with nine numeric HTTP/RPC/resource counters. It distinguishes pre-dispatch
-refusals, generated resource results and completed successful response writes.
-There are no payloads, header values, document/client identities or capabilities.
-An inactive endpoint reports unavailable counters; a new endpoint starts fresh.
-This does not prove client receipt or bridge initialization. The four remote
-tools and their schemas/annotations, HTTP guards and HTML/bridge stay unchanged.
+Preview.7 is installed locally: 72 inputs/eight payloads, COM 536, CLI fifteen,
+installed isolation forty-two and installed diagnostics nine checks pass. Settled
+Stop, Word-open refusal, upgrade and seven-document restore pass; 140 profile
+files remain exact. Version checkpoint `476342c` is pushed and passes hosted
+verification `39511507796` and Pages `39511507524`. Anonymous deployed page/release
+bytes and twelve exact-Git input hashes match. Preview.5 remains public. Package
+identities and retained source/CLI failures are indexed in `VERIFICATION.md`;
+private evidence is under `artifacts/word/resource-diagnostics/preview7/`.
 
-All twenty-one source component gates, 2,134 transport assertions, fifteen CLI
-checks and forty source-native Word checks pass. Two copied faults prove that
-omitting successful-write or HTTP-refusal observations is detected. The initial
-CLI recognition failure and malformed empty-lock fault build remain retained.
-A fresh audit preserves all seven open documents and six known saved originals.
-Private receipts are in `artifacts/word/resource-diagnostics/`. These diagnostics
-were not installed in preview.6; the following candidate supplies installed evidence.
+The equivalent four-tool app's first cold render fails, but reload visibly opens
+seven choices and actual H selection resumes the conversation. A separate fresh
+warm-cache conversation also fails its first render, including response-load
+failure, then reload/actual G selection succeeds. Subsequent unnamed complete
+reads interleave H then G and report their own retained targets; both preserve
+the overlapping Keep unchanged rule. Final native/saved audit passes. Resource
+read results/completed writes remain two through the warm case and interleaving:
+the resource was cached. RPC/resource/Origin errors remain zero; aggregate HTTP
+refusals are separate and do not identify the failure's cause. Raw bridge/client
+wire is uncaptured. Keep both initial failures and reload successes distinct.
+Private receipts are in `artifacts/word/resource-diagnostics/preview7-warm/`.
 
-Preview.7 is now installed and independently qualified: 72 inputs/eight payloads,
-COM 536, CLI fifteen, installed isolation forty-two and installed diagnostics
-nine checks pass. Word-open refusal, settled Stop, normal upgrade and seven-document
-restore pass; all 140 profile files remain exact. The final native/disk audit
-preserves seven open documents and six known saved originals. No UI input was
-needed for the CLI checks. Package identities and scoped evidence are in
-`VERIFICATION.md` and privately in `artifacts/word/resource-diagnostics/preview7/`.
+Installed physical ribbon and marked-text double-click open the correct rule.
+A mouse-selected preset draft, Cancel, and explicit preset Save each pass 21
+native/CLI/preservation checks. Ten independent saved-DOCX checks verify the exact
+saved preset plus original custom prompt, marks, wording and RGB; a copied missing-
+preset control fails. Custom typing remains unrun: the helper does not expose the
+owned dialog as a selectable window, and a nonmutating Ctrl+A routing check selects
+the document body. Alt/F10 attempts do not establish working keyboard navigation.
+Mouse actions on the observed dialog screenshot region do work. Do not repeat the
+earlier C corruption or type without verified dialog targeting.
 
-The equivalent four-tool preview.7 connector is connected. Numeric counters
-observe one successful resource result/write during discovery and another during
-the cold conversation. Cold rendering still fails, but the assistant response
-loads. Reload visibly opens all seven choices without another resource read.
-Actual selection of owned H resumes the conversation automatically and reads it
-completely; the overlapping Keep unchanged rule wins over its concision prompt.
-H is shared, G remains unshared, and final native/saved state is unchanged. This
-qualifies reload/selection/continuation, not a cold fix or raw bridge handshake.
-Keep the original cold failure and aggregate HTTP refusals separate; their cause
-is unproven. No production HTML/bridge bytes changed.
+The controlled overlap case finds a real defect: four selectable rows for two
+identities, with a two-record pager; selecting/opening the repeated third row does
+nothing. A source regression checks native LB_GETCOUNT before palette refresh and
+reproduces native=4/managed=2. The shared list now queues resize/font/handle layout
+after WinForms operations. Focused source UI passes 1,433 checks/21 renders,
+including native row equality and exact selection after resize/font changes. A
+copy of the original list fails the final regression. All twenty-one full source
+component gates pass; installed preview.7 still has the defect. Private source evidence is
+in `artifacts/word/overlap-list-fix/`, with physical receipts/screenshots in
+`artifacts/word/native-ui-preview7/`.
 
-Next: qualify first-render behavior in a fresh warm-cache conversation and a
-repeatable cold case, then capture the client wire/error envelope if an allowed
-surface exposes it. Use fresh owned prompt passages for additional wording cases;
-the existing G/H sentences are now protected. Preserve the working H conversation,
-current endpoint and existing reconnect authorization. Other three output schemas,
-physical/timing/clean-machine evidence and future Mac work remain open.
+Only the new disposable UI fixture is closed after its normal timer save. Its
+chooser interactions leave policy/wording exact; the original seven-document set
+and all six known original saved files pass final preservation. Next: finish the
+exact-source hosted CI gate, then build a distinct preview.8, install through the
+settled-Stop/preservation lifecycle and qualify the actual corrected overlap chooser.
+Reliable first render, keyboard/custom typing, raw client wire, first-visible timing,
+clean-machine and future Mac implementation/qualification remain open.
 
 ## Continuing test constraints and public release
 
@@ -460,10 +471,11 @@ metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
 `39488997403`; anonymous Description, Download and release JSON matched local
 bytes and all twelve deployed inputs. This is distinct from local preview.7.
 
-Version checkpoint `51098c3` passes hosted verification `39504215085` and Pages
-`39504215244`. Diagnostics source checkpoint `838aeb6` is pushed and passes
-hosted verification `39507792665`. Verify the subsequent preview.7 version/evidence
-checkpoint's own remote/CI/Pages state; no new release asset has been published.
+Version checkpoint `476342c` passes hosted verification `39511507796` and Pages
+`39511507524`; the private exact-Git deployment audit passes for all twelve inputs.
+The native overlap source correction is newer; use its own exact-source hosted CI
+before packaging. Its local twenty-one component gates pass.
+No new release asset has been published.
 Retain preview.5 assets and disclose the remaining preview limits. The overall
 shipment goal remains active for reliable cold picker, timing, physical,
 clean-machine, remaining host/client and future Mac scopes.
