@@ -11,6 +11,16 @@ feature parity with LibrAI, correcting defects and retaining actual evidence on
 each host. The public repository, installer and two-page site already exist.
 Publication alone does not complete either goal.
 
+The 2026-10-20 shipment goal additionally requires as much real installed/native
+and Chrome-extension-driven WebGPT qualification as available, fixes for observed
+defects, and working Windows and macOS installers. The user subsequently deferred
+Mac implementation and qualification to a future agent with Mac/Word access;
+this session must provide the actionable handoff in `MACOS-COMPATIBILITY.md`.
+Retain the Windows native implementation. Mac support still requires a compatible
+host integration and independently observed installed Word-on-Mac results;
+packaging the Windows COM binary does not satisfy that requirement. The active
+shipment checklist is in `HANDOFF.md`.
+
 Completion requires passing component and hosted CI, native dialog geometry,
 installed Word behavior, independent real WebGPT document sessions, cold/reloaded
 picker rendering, physical navigation, measured edit latency and saved/reopened

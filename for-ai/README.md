@@ -31,6 +31,7 @@ the easiest interpretation.
 | Session loop, updates, Git publication, handoff | [`WORKFLOW.md`](./WORKFLOW.md) |
 | Why a durable choice was made or superseded | [`DECISIONS.md`](./DECISIONS.md) |
 | Shared behavior with the LibreOffice sibling | [`CROSS-PLATFORM-COMPATIBILITY.md`](./CROSS-PLATFORM-COMPATIBILITY.md) |
+| macOS Word integration and installer qualification | [`MACOS-COMPATIBILITY.md`](./MACOS-COMPATIBILITY.md) |
 | Remaining native/client stress tests and known release gaps | [`HANDOFF.md`](./HANDOFF.md) |
 
 Do not read every file by default. Read this router, then only what the current

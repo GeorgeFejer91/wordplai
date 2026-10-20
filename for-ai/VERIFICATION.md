@@ -323,3 +323,118 @@ exact failures and native observations there; publish only this sanitized scope.
 - These package checks do not qualify preview.2 in installed Word. The open
   Word process, unconfirmed yellow-figure Chrome profile, real-client behavior
   and physical interaction remain outstanding.
+
+## Active shipment qualification — 2026-10-20
+
+All receipts in this section are under ignored
+`artifacts/word/qualification-20261020/`. Counts overlap; do not sum them.
+
+- `VERIFIED`: preview.2 installer SHA-256
+  `8811ea09bd33f3add56549ef3bbcb6938f244d8b40121790dcb6f4d1515c43b7`;
+  67 inputs and six payloads match. Silent upgrade with Word closed exited 0,
+  six installed payloads matched and 99 existing profile files retained hashes.
+  Installed DLL is `0c691c88a445d6d769654c23902267f64896f58c05ed83feae5c7a74008a3811`.
+  See `installation/result.json`. Installed COM metadata passes 536 assertions
+  with the effective dispatch-only negative control.
+- `VERIFIED`: setup and uninstall refuse with Word open (exit 2), preserving eight
+  installed files, display version and the original Word process. This qualifies
+  refusal, not successful uninstall, clean-machine or other Office/OS variants.
+- `VERIFIED`: widget state, synthetic browser picker checks across four widths
+  and twelve late/cancel scenarios, and both site branches (313 checks) pass.
+  These browser checks do not use ChatGPT's iframe. See `browser/results.json`.
+- `FAIL`, retained: the first component/native run stopped at UI resources: GDI
+  40→40, USER 38→42 after twenty cycles. Its native Word cases were not reached.
+  The unchanged standalone UI recheck passed 1,419 checks (USER 43→43). Later
+  passes do not establish the original failure's cause. See `components-native/`
+  and `ui-resource-recheck/`.
+- `VERIFIED`: all eleven isolated native suites exited 0: workflow (209), document
+  choice (50), actual background timer save (15), review (337), recoloring (208),
+  requested colors (46), direct wording (53), accepted legacy edits (63),
+  precommit conflict, four uncertain-outcome scenarios and navigation (15).
+  Effective copied fault controls remain retained. See `isolated/results.json`.
+  These are PID-bound source fixtures, not installed/public/client evidence.
+- `VERIFIED`: additional native autosave passes nineteen checks, component checks
+  and effective controls. Color-input's good native variant passes and both
+  unsafe-Undo mutants fail the exact preservation predicates, with unchanged
+  captured inputs. Its original process nevertheless exited 1 because PowerShell
+  inherited the last expected mutant exit. An explicit success exit now follows
+  every existing assertion and integrity gate. The fresh native run exits 0,
+  reports PASS with unchanged inputs, and retains both exact effective mutant
+  failures. Reusing an existing evidence directory still exits 1. See
+  `color-input-exit-fix/`, its process receipt and refusal receipt; retain the
+  original `additional-native/` receipts.
+- `VERIFIED`: installed preview.2 passes all 69 checks with Chrome foreground,
+  retaining all six original documents' text, saved flag, comments, revisions and
+  saved-file hashes. See `installed-candidate-background/result.json` and its
+  preservation receipt. Earlier installed attempts remain failures: recovered
+  cleanup barrier (normal Stop cleared it) and the intentional foreground Word
+  guard. Do not call that guard resolved or transfer this pass to preview.3.
+- `PARTIAL`: a physical double-click on the owned yellow passage opened the
+  matching Make snappier dialog with direct guidance and no mode toggle; Cancel
+  closed it. Physical draft modification/Save and complete native state assertions
+  remain unrun. Raw screenshot stays private.
+- `VERIFIED`: the revised overview assertion failed against the old production
+  wording at the intended predicate (`connection-copy-regression-2/`). The single
+  production text correction then passed all twenty component gates, including
+  1,419 native UI checks/21 renders and GDI 40→40, USER 41→41. Receipt:
+  `components-ui-copy-fix/result.json` (`components=PASS`; overall PARTIAL records
+  the intentionally unrun installed/public surfaces).
+- `VERIFIED`: preview.3 final build binds 67 unchanged inputs and six payloads.
+  Installer: 23,868,622 bytes; SHA-256
+  `a0f4965fa14e6980b64eeb79e6d60e497cb7d37b65b8103653ce05752e268605`.
+  DLL: `5969541b4295760b2f78cab1e829f92b737a69a18aa958f90ea702d77e64b0f1`.
+  Its exact DLL passes 536 ABI assertions and the effective dispatch-only control.
+  See `preview3-final/verification.json` and `preview3-final/com/`. The first build
+  attempt failed at an absent old NSIS path; final build used installed NSIS 3.11.
+  Preview.3 is not installed or released. Its Word-open setup refusal passes
+  (exit 2, all eight installed files/version/processes unchanged), recorded in
+  `preview3-open-word/result.json`. User-controlled Word close is required.
+- `PARTIAL`: a Chrome-extension WebGPT connection-only request attempted discovery
+  and reported an internal tool failure. Reload temporarily showed an empty answer;
+  a later native view showed the failed response. No picker cause is established.
+  The saved endpoint differs from the candidate's new endpoint. The user approved
+  an equivalent replacement connector for synthetic testing. It is now connected
+  as `wordplai qualification`; its visible tool panel exposes exactly the same
+  two read and two write tools. Old connectors were preserved.
+- `FAIL`, retained: installed public transport briefly ran, then failed/revoked
+  with no pending cleanup; HTTPS returned a tunnel-hosted 404. Separate exact
+  installed TunnelProcess/pinned-zrok synthetic probes returned a browser warning
+  interstitial, then API-client 502/timeouts. No warnings were bypassed, TLS checks
+  disabled or permissions expanded. A later verbose probe passed: local exact
+  response, external POST exact response at 13,011ms, child alive for another
+  fifteen seconds, exact owned-share cleanup PASS. See
+  `real-tunnel-fixture-api-client/` and `real-tunnel-fixture-verbose/`.
+  One synthetic transport pass does not prove public Word/MCP reliability.
+- `PARTIAL`: following a new installed connection start, a COM query found no
+  add-in object. A later read-only probe finds nine open documents, four COM
+  add-ins and Wordplai connected/exposed; status reports running/tunnelRunning.
+  Cause of the earlier unavailable object remains unconfirmed. No document
+  preservation after the earlier audit is inferred from this status probe.
+- `VERIFIED`: actual public MCP initialization returned HTTP 200, application/json,
+  a protocol version and session header (`public-mcp-recheck/result.json`). A fresh
+  Chrome-extension ChatGPT Instant conversation, explicitly naming owned synthetic
+  document A, executed its saved prompt. Native observation confirms the intended
+  wording changed, one comment, zero revisions, exact protected emoji passage and
+  Saved=true. The immutable saved DOCX snapshot then passes fourteen checks for
+  every paragraph, native rationale, exact green paint and persisted protection;
+  document B remains at its initial saved text/rules. See `webgpt-fixtures/saved-audit/`.
+  The client displays 19 seconds for the whole task, not measured first-edit latency.
+  DOM and screenshot confirm a visible answer; the AX tree omitted its text.
+- `VERIFIED`: the post-WebGPT preservation audit, using the existing bounded Word
+  message filter, confirms all six original documents unchanged in text, Saved,
+  revisions, comments and saved-file hashes. The earlier unfiltered audit failed
+  on an unavailable ActiveWindow and remains retained. See
+  `after-webgpt-A-filtered-preservation.json`.
+- `NOT RUN`: second independent live conversation, cold/reloaded host picker,
+  live refusal/retry/revocation and first-visible-edit timings. B is prepared, but
+  browser control detached after the second tab opened; its creation timeout did
+  not mean it was absent. No duplicate writing request was submitted.
+- `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
+  qualification. The user has no Mac and requested a future-agent handoff;
+  `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,
+  artifact/host acceptance and handback. No Mac support claim is made.
+
+Raw browser captures, endpoint capabilities and document-preservation snapshots
+remain private. Retain exploratory harness failures. Native source checks run
+serially; do not change captured inputs while running. Native files intentionally
+preserve CRLF under `.gitattributes`; review with Git's `cr-at-eol` interpretation.

@@ -84,20 +84,12 @@ Plain host/answer-load failures were also observed without a proven common root
 cause. Keep these surfaces separate. Local widget tests and successful HTTP
 responses do not close the live-host gap.
 
-**Installed package identity:** the currently connected registered Word add-in
-reports assembly `wrAIter.Word, Version=0.1.0.0` and uninstall display version
-`0.1.0`. `test-installed.ps1` passed 69 checks on its synthetic document while
-six existing Word documents remained open. The preservation audit retained the
-original document set and saved/revision/comment state, kept the local
-connection and Word process, closed the synthetic test document, and restored
-the original active window. The first cleanup wrapper attempt failed on a COM
-by-reference argument; the failed receipt and successful targeted cleanup are
-both retained. The registered DLL SHA-256
-`1df260fbd4b4517b4aa7ebd422fedf42d952084e30bd325ddf8c7769cc5ed7ec` matches
-neither packaged preview.1 nor preview.2. These installed checks are a local
-baseline and do not qualify either release package. Install and test preview.2
-only after the user's Word documents are saved and closed; do not close them on
-the user's behalf.
+**Installed package identity:** preview.2 is installed and its exact payload has
+passed the 69-check synthetic runtime fixture with the six original documents
+preserved. Preview.3 includes the corrected Connections overview and is built
+but awaits installation after user-controlled Word close. Full hashes and
+scoped receipts are in $('VERIFICATION.md'). Do not transfer installed preview.2
+results to preview.3 or to a different host.
 
 **Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
 transport and autosave checks but failed the native WinForms containment gate.
@@ -110,7 +102,7 @@ restores editing when space returns. The regression fails against the old code;
 all 20 component gates pass locally and in hosted run `39175387165`, including
 1,419 local and 1,373 hosted native UI checks with 21 renders in each run.
 The original failures remain retained. Published preview.1 does not contain
-this fix; preview.2 is built but not installed or released. Installed UI and
+this fix; preview.2 has since been installed and tested as recorded below. Installed UI and
 physical interaction qualification remain open. This is separate from the
 ChatGPT picker and the earlier JSON property-order assertion correction.
 
@@ -170,40 +162,90 @@ Keep unsanitized evidence private; do not overwrite it with a redacted copy.
 
 ## Readiness and next action
 
-1. Standalone extraction, component gates, local browser checks, build and
-   source/payload binding pass. Preview.2's installer and exact DLL are ready
-   for qualification; see `VERIFICATION.md` for their hashes. The current
-   registered installed DLL does not match either packaged preview.1 or
-   preview.2. The preview.2 Word-open refusal passes without modifying the
-   installed payload. Save and close existing Word documents before a real
-   upgrade; do not close them on the user's behalf. Keep the stable Download
-   page on the observed preview.1 release until a replacement is qualified.
-   The bundled tunnel is Windows
-   AMD64; unsupported-OS, clean-machine, upgrade/uninstall and Office-bitness
-   variants remain separate checks.
-2. After installing and hash-verifying the exact preview.2 package, run the P0
-   safety scenarios against that installed candidate and retain all failures.
-   Resolve or prominently disclose foreground and host-rendering gaps; preview
-   publication does not establish those acceptance criteria.
-3. The Chrome side-session opens a fresh ChatGPT page and exposes one browser
-   profile, but the API cannot inspect the Chrome toolbar avatar or select a
-   profile. The page's ChatGPT account icon showed orange initials; that does
-   not confirm the yellow-figure Chrome profile the user identified. Do not
-   claim real-client qualification until the user switches the side-session
-   to the intended profile. The saved connector previously returned
-   `FORBIDDEN` even though the installed local/tunnel status reports running.
-   A separate read-only Secret Tunnel MCP availability probe on 2026-10-19
-   returned `UNAVAILABLE` / `invalid_mcp_response` after an HTTP 404 SSE
-   response; this differs from the earlier `FORBIDDEN` and does not establish
-   a root cause. Do not publish its endpoint. Run the two fresh
-   minimal-invocation web sessions, both independent targets, cold/reloaded
-   picker paths and physical double-click after supported access is restored.
-   Repeat only affected checks after a fix, with one demonstrated negative
-   control for new behavior.
-4. Claim a scenario verified only when the actual named surface passed with
-   unchanged inputs. Credential exposure, cross-document mutation, lost
-   protection/discussion, false success or uncertain replay remain release
-   blockers. Unrun scenarios remain explicitly unrun.
+### Active shipment goal — 2026-10-20
 
-This handoff changes no runtime code and authorizes no extra tools, policy
-migration, private-data publication or modification of the predecessor tree.
+The user authorized sustained Windows qualification, real Chrome/WebGPT
+scenarios, fixes and qualified shipment. They subsequently deferred Mac
+implementation/testing to a future agent with Mac and Word access and requested
+an actionable handoff. Preserve user documents; close only owned disposable
+fixtures. Overall acceptance remains open.
+
+- [x] Recheck preview.2 source/payload identity, install it with Word closed and
+  verify its installed payload; run the installed 69-check fixture and preservation
+  audit. These results cover preview.2, not the newer candidate.
+- [x] Run eleven fresh isolated native suites serially, with retained failures and
+  fault controls. Additional native autosave and color-input checks ran; the
+  color-input process reporting defect is fixed: fresh native PASS/exit 0 with
+  both effective mutant failures retained; existing-evidence refusal still exits 1.
+- [x] Correct obsolete Connections overview text after a demonstrated regression;
+  all twenty fresh component gates pass, including native UI containment.
+- [x] Build preview.3, bind all 67 inputs and six payloads, and verify its exact
+  DLL's COM ABI and effective fault control. See `VERIFICATION.md` for hashes.
+- [ ] Install preview.3 after the user saves and closes Word; verify installed
+  identity, actual runtime, physical dialog draft/Cancel/Save, upgrade/uninstall
+  and persistence. The user's Word process remains open; do not close it for them.
+- [x] Reconnect an equivalent ChatGPT test app and run the first named-document
+  real WebGPT edit; verify actual native/saved results and original preservation.
+- [ ] Run a second independent conversation, cold/reloaded picker, independent
+  targets, safe refusal/retry, revocation and first-visible-edit timing.
+- [x] Prepare the future Mac agent handoff in `MACOS-COMPATIBILITY.md`.
+- [ ] Future Mac agent: implement, package and independently qualify Word-on-Mac
+  support. No Mac support or installer is currently claimed.
+- [ ] Ship only qualified artifacts, retaining preview limitations, and verify
+  exact remote CI, release/download hashes and deployment after publication.
+
+Chrome extension browser access was observed and one real connection-only
+WebGPT request attempted discovery but failed internally. A reload temporarily
+showed an empty assistant answer; a later native view showed the failed response.
+Neither observation proves a picker failure or an add-in rejection cause. The
+saved connector endpoint differs from the installed candidate's newly generated
+endpoint. The user explicitly approved a replacement connector with the same four
+tools and document permissions for synthetic testing. Reconnection completed as
+`wordplai qualification`; its visible tool panel confirms four tools. Do not ask
+for that same approval again or delete old connectors. The first named-document
+Instant chat executed a saved prompt: exact saved text, native rationale, green
+paint and stored protection pass fourteen saved-DOCX checks. The post-run audit
+confirms all six original documents unchanged. The client showed nineteen seconds
+for the whole task; first-visible-edit latency is not measured. DOM/screenshot
+show the answer, although AX omitted its text. A second owned fixture is ready;
+its chat tab opened despite a creation timeout, then browser control detached.
+
+The public Word connection briefly reported running, then failed/revoked; HTTPS
+returned a tunnel-hosted 404. Separate read-only synthetic probes through the
+exact installed TunnelProcess/pinned zrok produced an informational browser
+interstitial and, with a normal API client identity, 502/timeouts. A later verbose
+probe reached the exact synthetic response at about 13 seconds and retained a
+live child for another 15 seconds; exact owned-share cleanup passed. This proves
+one synthetic transport success. Later actual public Word/MCP initialization and
+the first real WebGPT edit passed. Reliability across restart/revocation remains
+unqualified. No TLS/security bypass or expanded permissions were used; the earlier
+failures' cause remains unconfirmed.
+
+A subsequent installed connection-start request returned starting. The following
+COM status query found no exposed add-in object; the existing Word process still
+responds. A later probe confirms the add-in exposed/connected and public running;
+the first real edit and post-run preservation audit then passed. Chrome control
+remains intermittent. Do not infer shutdown from an observation timeout or repeat
+a writing request under a new identity to compensate for lost browser control.
+
+Current bounded code scope is the Connections overview and its existing UI
+assertion, plus correction of the color-input driver's inherited exit status.
+Keep editing/protection/transaction/connection permissions unchanged. Preserve
+the initial native UI resource-count failure independently; later passes do not
+prove its cause. Do not restart a live test or alter its captured source inputs.
+
+Next actions: recover the already-created second Chrome tab, run B and interleave
+A/B requests without cross-target effects, then exercise cold/reloaded choice and
+safe failure/revocation. Await user-controlled Word close for preview.3 upgrade;
+its Word-open refusal already passes with installed files unchanged. Keep the
+stable download on its observed preview.1 until a replacement qualifies.
+
+Source checkpoints: `9b768c1` corrects the Connections overview and builds the
+preview.3 candidate; `ba9ff8a` corrects color-input process reporting. These and
+the shared-skill update `f14dc7c` were created on `main`; the last observed remote
+was `c5f0130` before publication. The sanitized evidence/Mac handoff checkpoint
+follows them. Recheck remote SHA and hosted CI after pushing; no preview.3 release
+or installer deployment has been performed. Browser control was stopped with
+physical Escape twice; continue non-UI work and await restored UI access before
+claiming further browser scenarios. Word remains open, and the save/close request
+is pending; do not close the user's documents for them.
