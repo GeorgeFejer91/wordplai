@@ -35,6 +35,34 @@ if ($LogicalOnly) { $wordRunArguments += 'logical-only' }
 & $wordTest @wordRunArguments 2>&1 | Tee-Object -FilePath (Join-Path $wordOutput 'transport.log')
 if ($LASTEXITCODE -ne 0) { throw "Transport tests failed; see $wordOutput\transport.log" }
 
+if (-not $LogicalOnly) {
+    $wordPickerSchema = Join-Path $wordOutput 'profiles/local/picker-output-schema.json'
+    $wordSchemaCases = @(
+        @{name='no-open-documents';valid=$true;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":null,"title":null}'},
+        @{name='unselected-one';valid=$true;json='{"selection_required":false,"manuscripts":[{"manuscript_id":"a","documentId":"a","title":"Draft 😀.docx","active":true}],"selected_manuscript_id":null,"title":"Draft 😀.docx"}'},
+        @{name='unselected-many';valid=$true;json='{"selection_required":true,"manuscripts":[{"manuscript_id":"a","documentId":"a","title":"A.docx","active":true},{"manuscript_id":"b","documentId":"b","title":"B.docx","active":false}],"selected_manuscript_id":null,"title":null}'},
+        @{name='retained-choice';valid=$true;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":"a","title":"A.docx"}'},
+        @{name='refusal-without-details';valid=$true;json='{"error":{"code":"word_busy","message":"Word is busy.","details":null}}'},
+        @{name='refusal-with-details';valid=$true;json='{"error":{"code":"session_revoked","message":"Access expired.","details":{"operation_started":false}}}'},
+        @{name='missing-result-field';valid=$false;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":null}'},
+        @{name='wrong-boolean';valid=$false;json='{"selection_required":"false","manuscripts":[],"selected_manuscript_id":null,"title":null}'},
+        @{name='wrong-selected-identity';valid=$false;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":3,"title":null}'},
+        @{name='incomplete-choice';valid=$false;json='{"selection_required":true,"manuscripts":[{"manuscript_id":"a","title":"A.docx","active":true}],"selected_manuscript_id":null,"title":null}'},
+        @{name='private-path-in-choice';valid=$false;json='{"selection_required":true,"manuscripts":[{"manuscript_id":"a","documentId":"a","title":"A.docx","active":true,"path":"private"}],"selected_manuscript_id":null,"title":null}'},
+        @{name='extra-top-level-field';valid=$false;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":null,"title":null,"text":"private"}'},
+        @{name='incomplete-error';valid=$false;json='{"error":{"code":"word_busy","message":"Word is busy."}}'},
+        @{name='wrong-error-message';valid=$false;json='{"error":{"code":"word_busy","message":4,"details":null}}'},
+        @{name='mixed-success-and-error';valid=$false;json='{"selection_required":false,"manuscripts":[],"selected_manuscript_id":null,"title":null,"error":{"code":"word_busy","message":"Busy","details":null}}'}
+    )
+    foreach ($wordSchemaCase in $wordSchemaCases) {
+        $wordValid = Test-Json -Json $wordSchemaCase.json -SchemaFile $wordPickerSchema -ErrorAction SilentlyContinue
+        if ($wordValid -ne $wordSchemaCase.valid) { throw "Picker output schema failed $($wordSchemaCase.name)." }
+    }
+    [ordered]@{status='PASS';checks=$wordSchemaCases.Count;schemaSha256=(Get-FileHash -LiteralPath $wordPickerSchema).Hash;cases=$wordSchemaCases} |
+        ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $wordOutput 'picker-schema-result.json') -Encoding utf8
+    Write-Output "PASS: $($wordSchemaCases.Count) picker result JSON Schema positive/negative cases."
+}
+
 if ($MutationCheck) {
     $wordMutation = Join-Path $wordOutput 'mutation'
     New-Item -ItemType Directory -Path $wordMutation | Out-Null

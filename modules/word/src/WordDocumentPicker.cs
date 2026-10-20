@@ -10,6 +10,28 @@ namespace UnderTree.WordAddin
         internal const string SessionKey = "\u0000wordplai-session";
         private const string Mime = "text/html;profile=mcp-app";
 
+        internal static object OutputSchema()
+        {
+            object text = new { type = "string" };
+            object nullableText = new { type = new[] { "string", "null" } };
+            object choice = new { type = "object", properties = new {
+                manuscript_id = text, documentId = text, title = text, active = new { type = "boolean" }
+            }, required = new[] { "manuscript_id", "documentId", "title", "active" }, additionalProperties = false };
+            return new { type = "object", oneOf = new object[] {
+                new { type = "object", properties = new {
+                    selection_required = new { type = "boolean" },
+                    manuscripts = new { type = "array", items = choice },
+                    selected_manuscript_id = nullableText, title = nullableText
+                }, required = new[] { "selection_required", "manuscripts", "selected_manuscript_id", "title" }, additionalProperties = false },
+                new { type = "object", properties = new {
+                    error = new { type = "object", properties = new {
+                        code = text, message = text,
+                        details = new { description = "Operation-specific refusal details, or null when no details are supplied." }
+                    }, required = new[] { "code", "message", "details" }, additionalProperties = false }
+                }, required = new[] { "error" }, additionalProperties = false }
+            } };
+        }
+
         internal static object ToolMetadata()
         {
             return new Dictionary<string, object> {

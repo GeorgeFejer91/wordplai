@@ -1,5 +1,20 @@
 # Current CLI implementation scope
 
+## Picker result contract follow-up
+
+Start from clean main `6272942`. The installed picker remains blank on ChatGPT;
+its resource is reachable, but the cause is unproven. The picker-linked
+`list_manuscripts` tool returns structured content without the output schema
+requested by current OpenAI plugin guidance. Add its exact success/error schema
+in `WordDocumentPicker.cs` and reference it from the existing catalogue in
+`McpEndpoint.cs`. Extend the existing transport tests/driver with missing-schema
+regression and JSON Schema positive/negative controls. Verify real installed
+listing output against the new declaration without reading manuscript prose.
+Preserve tool names, result fields, annotations, permissions, HTML/bridge bytes,
+and all document/native editing behavior. Other tool schemas, real-host picker
+qualification, packaging and Mac support remain separate scopes; do not call
+this a picker fix before observing it on the host.
+
 ## Highlight recolor follow-up
 
 Qualify exact green `#00FF00` to red `#FF0000` recoloring through the existing

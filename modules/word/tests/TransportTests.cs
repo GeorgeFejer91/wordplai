@@ -243,6 +243,10 @@ internal static partial class TransportTests
             object[] tools = (object[])catalogue["tools"];
             Assert(tools.Length == 4 && ((Dictionary<string, object>)tools[2])["name"].Equals("suggest_text") &&
                 ((Dictionary<string, object>)tools[3])["name"].Equals("highlight_text"), "Catalogue has exactly four closed Review tools.");
+            var pickerTool = (IDictionary<string, object>)tools[0];
+            Assert(pickerTool.ContainsKey("outputSchema") && pickerTool["outputSchema"] is IDictionary<string, object>,
+                "The picker-linked tool declares its structured result schema for host validation.");
+            File.WriteAllText(Path.Combine(directory, "picker-output-schema.json"), Json.Serialize(pickerTool["outputSchema"]));
             Assert(((string)((IDictionary<string, object>)tools[0])["description"]).Contains("all open Word document names") &&
                 ((string)((IDictionary<string, object>)tools[0])["description"]).Contains("without changing the chosen writing target") &&
                 ((string)((IDictionary<string, object>)tools[1])["description"]).Contains("Omit manuscript_id on the first call"),

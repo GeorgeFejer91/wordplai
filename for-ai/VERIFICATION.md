@@ -11,6 +11,35 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Picker output declaration — source only, 2026-10-20
+
+- `VERIFIED`: missing-schema regression fails against the prior source. The
+  corrected `test-transport.ps1 -MutationCheck` passes 2,117 HTTP assertions,
+  fifteen JSON Schema positive/negative cases, and its existing safety mutation
+  controls. The declaration closes successful list/choice fields and coded
+  error envelopes, including nullable selection/title and opaque error details.
+- `VERIFIED`: the actual installed preview.5 CLI listing matches that source
+  declaration with seven open documents. An explicit owned H complete read and
+  subsequent listing also match, retain the exact chosen identity and require no
+  mouse/keyboard or wording write. Raw private results and retained red/green
+  evidence are in `artifacts/word/picker-output-contract/`.
+- `VERIFIED`: `modules/word/test.ps1` passes all twenty-one component gates,
+  including exact built-assembly COM 536, transport/safety controls, autosave 50
+  and native UI 1,419 checks with 21 renders. Overall `PARTIAL` retains unrun
+  installed/public-client scopes for this new source. A fresh native/disk audit
+  passes for five open originals and all six known saved originals; no changes.
+- Current [OpenAI plugin guidance](https://developers.openai.com/plugins/reference)
+  asks for output schemas with structured results; the
+  [MCP specification](https://modelcontextprotocol.io/specification/2025-06-18/server/tools)
+  makes them optional. This is a documented host-contract correction, not proof
+  of the blank picker's cause. HTML/bridge bytes, tool names, result fields,
+  permissions and safety annotations are unchanged. Only `list_manuscripts`
+  gains an output schema; the other three tools remain separate scope.
+- `NOT RUN`: installing/refreshing this changed declaration on ChatGPT and
+  qualifying cold/reloaded rendering. Installed/released preview.5 still has no
+  picker output schema; its original 71-input manifest does not describe these
+  newer source bytes. No installer or release asset was changed here.
+
 ## Exact RGB recolor qualification — 2026-10-20
 
 - `VERIFIED`: the existing policy recolors exact green `#00FF00` to red

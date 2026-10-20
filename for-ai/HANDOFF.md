@@ -338,11 +338,27 @@ The displayed error fields and request identity are client reports, not a claim
 of raw transport capture.
 
 ChatGPT required one-time approvals and flagged current tool prose/test IDs as
-suspicious. Default persistent permissions stayed unchanged. Next: review the
-tool description's clarity about Word color-rule fields against those retained
-warnings; preserve honest safety/authority annotations and validate any warranted
-clarification on the real host. Picker receipt/bridge diagnostics need new
-evidence; do not infer a fix from successful public resource reads.
+suspicious. Default persistent permissions stayed unchanged; no tool wording or
+safety annotation was changed to bypass those warnings.
+
+The subsequent source-only picker follow-up adds `outputSchema` to
+`list_manuscripts`, covering its exact choice/retained-selection result and coded
+refusal envelope. This follows current OpenAI plugin guidance; general MCP makes
+output schemas optional, so their absence does not prove the blank picker's
+cause. The missing-schema regression fails against prior source; the corrected
+transport passes 2,117 assertions and fifteen JSON Schema positive/negative
+cases. Both real installed listing variants match the declaration, including an
+explicit owned-document complete read and retained choice. Preview.5 remains
+installed/released and does not contain this declaration. Source package inputs
+now differ from that release. All twenty-one source component gates pass;
+five open/six saved originals remain unchanged. See the source-only evidence in
+`VERIFICATION.md`. The prior documentation checkpoint `6272942` was pushed and
+passed verification `39498857172`; recheck this following source checkpoint's
+own remote SHA and CI before packaging it.
+Next: build a distinctly identified candidate, preserve/requalify the installed
+session and refresh the equivalent connector before testing cold/reloaded
+picker rendering. Do not claim a picker fix until that host result is observed.
+Other three tool output schemas remain separate contract work.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
