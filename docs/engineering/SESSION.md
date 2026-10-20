@@ -51,3 +51,10 @@ version/build metadata. Admit only successful local mutations to the existing
 background autosave path; reads/refusals must not enroll documents or share MCP
 authority. Preserve all save/input/protection guards. Retain the installed
 preparation timeout and qualify a new candidate before claiming the fix installed.
+
+Preview.5 now passes exact-package installed/lifecycle and two real WebGPT
+document checks, with the host picker failure retained. Publish this qualified
+unsigned Windows preview under D-0002; update only root release guidance,
+`site/build.mjs` release/limit copy, `site/release.json` actual published metadata
+and the existing handoff/verification owners. Preserve layout, locked Pretext,
+old release assets and the independently qualified package inputs.

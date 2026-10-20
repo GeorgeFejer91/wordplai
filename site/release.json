@@ -1,8 +1,8 @@
 {
-  "version": "v0.1.0-preview.3",
+  "version": "v0.1.0-preview.5",
   "asset": "wordplai-setup.exe",
-  "downloadUrl": "https://github.com/GeorgeFejer91/wordplai/releases/download/v0.1.0-preview.3/wordplai-setup.exe",
-  "sha256": "a0f4965fa14e6980b64eeb79e6d60e497cb7d37b65b8103653ce05752e268605",
-  "sizeBytes": 23868622,
-  "publishedAt": "2026-10-20T13:42:38Z"
+  "downloadUrl": "https://github.com/GeorgeFejer91/wordplai/releases/download/v0.1.0-preview.5/wordplai-setup.exe",
+  "sha256": "e54dc5e05246c292f8071d8ca3a533cdf94ffd5683f8f0286bd4d7e4ee8e0a80",
+  "sizeBytes": 23882311,
+  "publishedAt": "2026-10-20T20:03:24Z"
 }

@@ -252,8 +252,10 @@ audit lifecycle changes. Overall acceptance remains open.
   Session-routing fault control, Word-open installer refusal, upgrade/uninstall/
   reinstall and profile persistence pass. All 71 inputs/eight payloads are bound.
   Preserve preview.4's timer failure and source red/green receipts.
-- [ ] Publish the qualified Windows preview.5 and update its stable download
-  metadata after exact-source hosted CI. Preview.3 remains publicly available.
+- [x] Publish the qualified Windows preview.5 after exact-source hosted CI;
+  all three asset digests/sizes and anonymous downloads match. Preview.3 is
+  preserved. Local stable-page rendering passes 313 checks with actual release
+  metadata; verify its subsequent exact-SHA Pages deployment.
 
 Latest installed state: preview.5, with five originals open and all six known
 original saved files unchanged. The sixth was already closed at upgrade
@@ -397,12 +399,14 @@ continuation; subsequent packaging preserves the separate recolor scope. Their
 36 installed checks cover the unchanged earlier candidate DLL/CLI, not a fresh
 build of the newer MCP guidance. Rebind and qualify any new packaged candidate.
 
-Preview.3 is published at
-https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.3.
-Word was already closed when
-the new open/save authorization was checked; the original documents were saved.
-Installation and reopening then passed without changing their files. Browser
-control recovered for the installed focus move, then native control was stopped
-again with physical Escape during dialog testing. Await user-restored UI access
-before claiming further browser scenarios. Do not infer shutdown from a
-timeout or substitute public MCP checks for the named browser/installed surfaces.
+Latest publication: preview.5 targets pushed `79168c326cd9926bdcaabb6c0dc104fba254da92`.
+Hosted verification `39488257735` and Pages `39488257736` pass on that source
+checkpoint. It includes the separate recolor checkpoint and CLI qualification
+without rewriting them. The released installer matches all 71 committed inputs
+and eight payloads; anonymous downloads match all three uploaded assets.
+Release: https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.5.
+The following site-only checkpoint updates the stable page with its actual
+publication metadata and observed limits; local rendering passes 313 checks.
+Recheck that checkpoint's remote SHA, CI/Pages and anonymous deployed bytes.
+The package stays bound to the release target. Keep the overall goal active for
+the remaining real-host picker, interleaving, timing, physical and Mac scopes.

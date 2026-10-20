@@ -747,9 +747,23 @@ UI, full real WebGPT, clean-machine and Mac acceptance remain open.
   failure's cause is unestablished; it does not qualify a server-code diagnosis.
   Raw captures, capability URLs and original identities stay private.
 
-Preview.5 is installed locally and remains unpublished at this checkpoint.
-Public release/site are preview.3. Physical dialog, clean-machine and Mac
-qualification remain open; Mac implementation is deferred to the existing
+- `VERIFIED`, preview shipment: public prerelease `v0.1.0-preview.5` targets
+  `79168c326cd9926bdcaabb6c0dc104fba254da92`; hosted verification `39488257735`
+  and Pages `39488257736` pass on that source checkpoint. All 71 committed
+  source inputs and all three uploaded asset sizes/digests match. Anonymous
+  HTTPS downloads return exact installer, build manifest and checksum bytes.
+  The build-manifest SHA-256 is
+  `9893e210a88515cd28f7fc984e9b3f088b4f6e7b6576d90dd4b924a9d908662a`.
+  Earlier releases remain unchanged. See `preview5-release/` privately.
+- `VERIFIED`, local site: release metadata uses the actual publication time,
+  installer URL, SHA-256 and byte count. Updated release/limit copy retains
+  existing layout and locked Pretext; the rendered matrix passes 313 checks.
+  Minimum-width Description and 200%-text Download captures were inspected.
+  Verify the following site checkpoint's hosted CI/Pages and deployed bytes
+  separately; a local render does not establish deployment.
+
+Physical dialog, clean-machine, usable host picker and additional real-client
+qualification remain open. Mac implementation is deferred to the existing
 future-agent handoff. The overall shipment goal stays active.
 
 Raw browser captures, endpoint capabilities and document-preservation snapshots

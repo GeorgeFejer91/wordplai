@@ -32,10 +32,11 @@ Connection/account setup remains yours, and no connection credentials are shippe
 This is an unsigned early build. The existing direct-edit guard can refuse while
 Word is the foreground application. Fresh WebGPT timing, host picker rendering,
 physical dialog draft/Cancel/Save and clean-machine cases are not fully qualified.
-Preview.3 fixes the color-dialog sizing failure on small desktops with enlarged
-text using a readable no-fit state that preserves the draft. Its exact installer
-passes 69 installed Word checks and upgrade/uninstall/reinstall on the qualification
-host. Mac support and a Mac installer remain deferred to the
+Preview.5 includes the CLI and fixes saving locally marked inactive documents
+before MCP access. Its exact installed runtime passes 42 CLI checks, saved-file
+audits and upgrade/uninstall/reinstall. Two real WebGPT chats edit separate test
+documents; the second requires an explicit document-name fallback because the
+embedded picker fails to display. Mac support and a Mac installer remain deferred to the
 [future Mac agent handoff](for-ai/MACOS-COMPATIBILITY.md).
 The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
