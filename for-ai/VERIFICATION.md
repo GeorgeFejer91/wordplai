@@ -517,6 +517,32 @@ All receipts in this section are under ignored
   passes for all six originals, including exact text, comments, revisions, Saved
   state and file hashes (`preview3-after-native-ui-preservation.json`). The
   disposable C incident does not authorize claims about dialog input routing.
+- `VERIFIED`, preview.3 public restart/revocation: the installed post-restart
+  HTTPS endpoint initializes MCP with protocol `2025-03-26`, HTTP 200 in 629ms.
+  Normal Stop reaches stopped with no cleanup pending; initialization at the old
+  capability URL then returns HTTP 404 in 126ms. Sharing is stopped. This is one
+  transport/revocation case, not sustained reliability or live WebGPT editing.
+  See `preview3-public-revocation/result.json`.
+- `VERIFIED`, Windows preview shipment: prerelease `v0.1.0-preview.3` targets
+  `6c455dbc1995e8f722b8d3b6881c7d9a135125f1`, whose hosted verification
+  `39431955158` passed. Its three uploaded assets match their local SHA-256 and
+  size. Anonymous HTTPS installer download returns HTTP 200, 23,868,622 bytes,
+  SHA-256 `a0f4965fa14e6980b64eeb79e6d60e497cb7d37b65b8103653ce05752e268605`.
+  The source/payload manifest SHA-256 is
+  `611af95264d1c56221675d32baa9275d92ee6dbbd90031c86b2800e680de62c9`.
+  All 67 inputs and six payloads remain exact after installed qualification.
+  The release is unsigned and explicitly lists the incomplete physical,
+  preview.3 WebGPT/picker/timing, clean-machine and Mac scopes. Publication does
+  not complete overall acceptance. See `preview3-release/` and
+  `preview3-after-installed-binding.json`; verify subsequent site deployment
+  separately.
+- `VERIFIED`, preview.3 site source: the existing rendered matrix passes 313
+  checks after updating release copy and the published asset's exact metadata.
+  Minimum-width Description and enlarged-text Download captures were inspected,
+  followed by the final desktop Download with preview.3's checksum and limits.
+  Locked Pretext/fonts, keyboard navigation and readable fallbacks remain covered.
+  See `preview3-release/site-published-metadata-results.json`; this local render
+  does not establish Pages deployment or the ChatGPT picker.
 - `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
   qualification. The user has no Mac and requested a future-agent handoff;
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,

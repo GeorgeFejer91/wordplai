@@ -201,8 +201,10 @@ audit lifecycle changes. Overall acceptance remains open.
 - [x] Prepare the future Mac agent handoff in `MACOS-COMPATIBILITY.md`.
 - [ ] Future Mac agent: implement, package and independently qualify Word-on-Mac
   support. No Mac support or installer is currently claimed.
-- [ ] Ship only qualified artifacts, retaining preview limitations, and verify
-  exact remote CI, release/download hashes and deployment after publication.
+- [x] Publish Windows preview.3 as an unsigned prerelease with explicit remaining
+  limits; verify all three asset digests and an anonymous installer download.
+- [ ] Verify the updated stable download page and exact remote CI/deployment
+  after publication. Overall acceptance and Mac qualification remain open.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -267,21 +269,26 @@ counted as an editing success. Qualify the dialog draft/Cancel/Save and interlea
 two browser chats without cross-target effects, then exercise cold/reloaded
 choice and safe failure/revocation. The second created tab was absent from the
 latest tab inventory; the original A chat remained available. Preview.3's public
-connection reached running after its installed fixture, but its new endpoint
-still needs equivalent connector reconnection. Retain the foreground guard and
+connection reached running after its installed fixture; public initialization
+returned HTTP 200 in 629ms. Normal Stop completed cleanup, and the old URL then
+returned HTTP 404. Sharing is stopped; future live-client work needs a new
+connection and equivalent connector reconnection. Retain the foreground guard and
 initial cleanup refusal. Its Word-open installer refusal
-already passes with installed files unchanged. Keep the
-stable download on its observed preview.1 until a replacement qualifies.
+already passes with installed files unchanged. The qualified Windows preview.3
+is published with the explicit preview limits under decision D-0002; site
+metadata now identifies its exact asset, hash, size and actual publication time.
 
 Source checkpoints: `9b768c1` corrects the overview/builds preview.3, `ba9ff8a`
 corrects test reporting, and `40ba956` records qualification and the Mac handoff.
-They, the shared-skill update and test-only comparer correction `7034ff0` are
-pushed on `main`. Hosted verification `39428499738` passed on `7034ff0`; Pages
-`39425758498` passed on `40ba956`. The public Download still matches preview.1.
-This additional evidence checkpoint changes no runtime or release assets;
-recheck its remote SHA and CI after publication.
+They, the shared-skill update, test-only comparer correction `7034ff0` and
+installed evidence `6c455db` are pushed on `main`. Hosted verification
+`39431955158` passed on `6c455db`, the preview.3 release target. The installer
+remains bound to the unchanged 67 inputs and six payloads. Recheck remote SHA,
+CI and Pages for the subsequent site/metadata publication checkpoint.
 
-No preview.3 installer release has been performed. Word was already closed when
+Preview.3 is published at
+https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.3.
+Word was already closed when
 the new open/save authorization was checked; the original documents were saved.
 Installation and reopening then passed without changing their files. Browser
 control recovered for the installed focus move, then native control was stopped

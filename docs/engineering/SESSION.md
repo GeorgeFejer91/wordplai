@@ -1,46 +1,25 @@
 # Current qualification scope
 
-The user asked to continue the standalone acceptance checks and fix concrete
-gaps. Preserve the published preview and all unrelated applications/documents.
+Prepare the qualified Windows preview.3 installer for the user's authorized
+preview shipment, retaining incomplete acceptance and the deferred Mac work.
+Initial state: clean `main` at `6c455dbc1995e8f722b8d3b6881c7d9a135125f1`;
+hosted verification `39431955158` passed on that exact checkpoint.
 
-Initial state is clean at `1d21fbabce9a9b42de67d44d002e560026727375`. This
-pass owns a focused isolated native-MCP regression for a stale cached prompt
-marker whose current visible Word permission still authorizes direct wording.
-Expected files are this session scope, `modules/word/tests/NativeReviewSmoke.cs`,
-`modules/word/tests/test-native-review.ps1`, `for-ai/scripts/check-context.ps1`,
-`for-ai/VERIFICATION.md`, and `for-ai/HANDOFF.md`.
-The gate's remote check must retain Git's exit code before filtering its output;
-PowerShell 7.6.5 leaves `$LASTEXITCODE` unset after the current pipeline.
-The focused stale-marker run passed 19 assertions, the integrated native review
-suite passed 337, and a copied `RefreshMarks` mutation failed at the expected
-denial while preserving the original runtime source. Commit
-`9da41535cf626e4860205f72eb9e7467b4963490` passed hosted workflow
-`39294629741`. The remaining installed, physical and real-client gaps are still
-open. A subsequent installed smoke run passed 69 checks on the currently
-registered `0.1.0.0` add-in. Its registered DLL hash matches neither packaged
-preview.1 nor preview.2. The synthetic test document was closed and the
-original Word window and six-document state were restored; the first cleanup
-wrapper failure remains retained with the corrected cleanup evidence.
-Preserve the MCP request/response contract and assert the actual edit plus
-native text, review state, local rules and saved-file effects. No product
-runtime, installer, release, site, connector configuration or user document
-may change. The earlier document-choice run passed 50 assertions with zero
-drift; the prior native-review suite passed 326 isolated assertions. No known
-pre-existing test failure is being carried into this pass.
+This pass may change root `README.md`, `site/build.mjs`, `site/release.json`, this
+scope, and the existing `for-ai/HANDOFF.md` / `for-ai/VERIFICATION.md` evidence
+owners. Keep the native runtime, installer, picker, dependencies, permissions and
+all 67 candidate inputs unchanged. Publish only the tested installer, sanitized
+build manifest/checksums and preview notes; never raw private evidence.
 
-Do not operate on the user's open Word documents. Preview.2 is still a local
-candidate; install only after the user confirms Word is saved and closed.
-Continue to distinguish source fixtures, installed Word, physical gestures
-and real-client behavior.
+The exact candidate passes all 69 installed checks, lifecycle/payload checks and
+original-document preservation. Public HTTPS initialization followed by normal
+Stop and old-URL HTTP 404 also passes. Retain the initial cleanup refusal,
+earlier transport failures and failed native UI input separately. Native UI
+control was stopped by physical Escape; do not resume it automatically. Physical
+draft/Cancel/Save, preview.3 real WebGPT/picker/timing and clean-machine cases
+remain unqualified. Mac implementation/testing is explicitly deferred by user.
 
-Chrome side-session inspection reaches a fresh ChatGPT page, but the API does
-not expose the Chrome toolbar avatar or profile selector. The page's ChatGPT
-account icon showed orange initials, which does not confirm the yellow-figure
-Chrome profile the user identified. Do not claim real-client qualification
-until the requested profile and connector are available.
-
-| Risk | Verification |
-| --- | --- |
-| A source fixture is mistaken for installed behavior | Keep isolated, installed, physical and real-client evidence separate in `for-ai/VERIFICATION.md`. |
-| Wrong Chrome profile is used for live-client checks | Confirm the yellow-figure profile is active before using the real connector. |
-| Artifact upload action runs on a deprecated runtime | Pin the official Node 24 action release and retain the existing artifact behavior; verify hosted upload and the full component workflow. |
+Use the existing site layout and locked Pretext/font measurement. Change only
+release copy and metadata; run its rendered matrix, inspect the resulting pages,
+then verify exact GitHub asset hashes, anonymous download, remote CI and Pages.
+Do not claim that release publication completes the overall acceptance goal.

@@ -31,11 +31,12 @@ Connection/account setup remains yours, and no connection credentials are shippe
 
 This is an unsigned early build. The existing direct-edit guard can refuse while
 Word is the foreground application. Fresh WebGPT timing, host picker rendering,
-physical gestures and clean-machine installer/upgrade cases are not fully qualified.
-The published preview has a color-dialog sizing failure on small desktops with
-enlarged text. The source fix passes local and hosted containment checks and
-preserves the draft in a readable no-fit state. Its next installer candidate
-still needs installed-package qualification.
+physical dialog draft/Cancel/Save and clean-machine cases are not fully qualified.
+Preview.3 fixes the color-dialog sizing failure on small desktops with enlarged
+text using a readable no-fit state that preserves the draft. Its exact installer
+passes 69 installed Word checks and upgrade/uninstall/reinstall on the qualification
+host. Mac support and a Mac installer remain deferred to the
+[future Mac agent handoff](for-ai/MACOS-COMPATIBILITY.md).
 The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
 ## Build and test
