@@ -263,7 +263,7 @@ audit lifecycle changes. Overall acceptance remains open.
   preserved. Local stable-page rendering passes 313 checks with actual release
   metadata; verify its subsequent exact-SHA Pages deployment.
 
-Latest installed state: local preview.6 candidate, with seven documents open
+Latest installed state: local preview.7 candidate, with seven documents open
 (five originals and owned G/H) and all six known original saved files unchanged.
 Preview.5 remains the public release. The sixth original was already closed at upgrade
 preflight; its cause is unestablished. Preserve that observed open set rather
@@ -407,17 +407,33 @@ omitting successful-write or HTTP-refusal observations is detected. The initial
 CLI recognition failure and malformed empty-lock fault build remain retained.
 A fresh audit preserves all seven open documents and six known saved originals.
 Private receipts are in `artifacts/word/resource-diagnostics/`. These diagnostics
-are not installed in preview.6; no live-host counter trace is claimed.
+were not installed in preview.6; the following candidate supplies installed evidence.
 
-Next: build a distinctly versioned preview.7 candidate with matching CLI/add-in,
-qualify its package, await normal Stop cleanup before closing the preserved
-session, then install/reopen through the existing guarded lifecycle. Capture
-diagnostics before connector discovery, after discovery and around cold/reloaded
-Chrome picker actions. A cached resource may be fetched during discovery, so do
-not infer absence from a later flat delta alone. Run manual probes separately
-from those baselines. Keep raw results private and preserve the existing four-tool
-reconnect authorization. Qualify remaining installed writes when the foreground
-guard admits them. Other three output schemas, usable picker and Mac remain open.
+Preview.7 is now installed and independently qualified: 72 inputs/eight payloads,
+COM 536, CLI fifteen, installed isolation forty-two and installed diagnostics
+nine checks pass. Word-open refusal, settled Stop, normal upgrade and seven-document
+restore pass; all 140 profile files remain exact. The final native/disk audit
+preserves seven open documents and six known saved originals. No UI input was
+needed for the CLI checks. Package identities and scoped evidence are in
+`VERIFICATION.md` and privately in `artifacts/word/resource-diagnostics/preview7/`.
+
+The equivalent four-tool preview.7 connector is connected. Numeric counters
+observe one successful resource result/write during discovery and another during
+the cold conversation. Cold rendering still fails, but the assistant response
+loads. Reload visibly opens all seven choices without another resource read.
+Actual selection of owned H resumes the conversation automatically and reads it
+completely; the overlapping Keep unchanged rule wins over its concision prompt.
+H is shared, G remains unshared, and final native/saved state is unchanged. This
+qualifies reload/selection/continuation, not a cold fix or raw bridge handshake.
+Keep the original cold failure and aggregate HTTP refusals separate; their cause
+is unproven. No production HTML/bridge bytes changed.
+
+Next: qualify first-render behavior in a fresh warm-cache conversation and a
+repeatable cold case, then capture the client wire/error envelope if an allowed
+surface exposes it. Use fresh owned prompt passages for additional wording cases;
+the existing G/H sentences are now protected. Preserve the working H conversation,
+current endpoint and existing reconnect authorization. Other three output schemas,
+physical/timing/clean-machine evidence and future Mac work remain open.
 
 ## Continuing test constraints and public release
 
@@ -442,12 +458,12 @@ eight-payload package and all three anonymous asset downloads were verified.
 Source verification `39488257735` and Pages `39488257736` pass. Actual release
 metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
 `39488997403`; anonymous Description, Download and release JSON matched local
-bytes and all twelve deployed inputs. This is distinct from local preview.6.
+bytes and all twelve deployed inputs. This is distinct from local preview.7.
 
-The latest observed verified version checkpoint before the diagnostics source
-follow-up is `51098c3`, with successful hosted verification `39504215085` and
-Pages `39504215244`. Recheck the following diagnostics checkpoint's own remote/CI
-state before packaging its changed source.
+Version checkpoint `51098c3` passes hosted verification `39504215085` and Pages
+`39504215244`. Diagnostics source checkpoint `838aeb6` is pushed and passes
+hosted verification `39507792665`. Verify the subsequent preview.7 version/evidence
+checkpoint's own remote/CI/Pages state; no new release asset has been published.
 Retain preview.5 assets and disclose the remaining preview limits. The overall
-shipment goal remains active for usable host picker, timing, physical,
-clean-machine, remaining installed and future Mac scopes.
+shipment goal remains active for reliable cold picker, timing, physical,
+clean-machine, remaining host/client and future Mac scopes.

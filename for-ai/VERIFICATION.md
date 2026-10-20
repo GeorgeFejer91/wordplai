@@ -11,7 +11,7 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
-## Local resource diagnostics — source only, 2026-10-21
+## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including
   2,134 transport assertions and two effective diagnostic fault controls. Fifteen
@@ -31,9 +31,54 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   fault control failed compilation after removing its lock body; the corrected
   copied fault compiles and fails the intended observation predicate. The earlier
   six-counter prototype is not substituted for the final nine-counter result.
-- `NOT RUN`: this command on a newly installed candidate and real Chrome counter
-  baselines. Installed preview.6 lacks it. Source adds no remote tool, permission,
-  persisted logs or HTML/bridge change; no installer or release changed here.
+- At this source checkpoint, installed and Chrome counter baselines were `NOT RUN`;
+  preview.6 lacks the command. The following preview.7 qualification covers the
+  new installed bytes. Source adds no remote tool, permission, persisted logs or
+  HTML/bridge change.
+
+## Installed preview.7 CLI and real picker continuation — 2026-10-21
+
+- `VERIFIED`: the distinct local candidate binds 72 source inputs and eight
+  payloads. Exact-package COM 536 and CLI fifteen checks pass, including their
+  effective fault controls. The 23,886,046-byte installer SHA-256 is
+  `F5E85B7CCD2427AD1FF7ECD0B861ECD00E003F3CDB8AF6877E855AD737FB95CC`.
+  The widget dependency manifest is refreshed for the version lock; packaged
+  HTML remains the same 58,378 bytes and SHA-256 recorded below.
+- `VERIFIED`: Word-open installer refusal preserves all eight installed payloads.
+  Normal Stop reaches stopped/not busy/no pending cleanup before Word exits.
+  Upgrade from preview.6 exits zero; payloads, manifest, version and both registry
+  views match. All 140 profile files remain unchanged, with none added. Seven
+  documents reopen with exact text, saved bytes, annotation counts and Saved state.
+- `VERIFIED`: the exact installed CLI passes all forty-two isolation checks,
+  including actual MCP wording writes, independent sessions, witness refusal,
+  replay, revocation/recovery, local-only timer autosave and closed targets.
+  There are zero unqualified foreground comparisons and no mouse/keyboard input.
+  This candidate's pass does not rewrite preview.6's retained partial result.
+  Nine separate installed diagnostics checks pass: inactive/zero/reset state,
+  stable local observations, exact resource counts and refused-read separation.
+- `VERIFIED`, resource observation: counters start at zero before equivalent
+  connector creation. Discovery completes one successful resource result/write;
+  the first cold conversation completes a second. Reload and visible document
+  selection cause no further resource read. There are no resource/RPC/Origin
+  errors in these snapshots; aggregate HTTP refusals remain separately counted.
+  Completed writes do not establish host receipt or identify the cold failure.
+- `FAIL`, first cold render: ChatGPT reports could-not-display, while its ordinary
+  assistant response loads. `VERIFIED`, subsequent reload: the embedded picker
+  visibly renders seven choices. Clicking the owned H document changes the UI to
+  its selected title and automatically resumes the conversation. The assistant
+  reports a complete read and preserves wording where a saved prompt overlaps
+  Keep unchanged. Native CLI state confirms H shared and G unshared, with four
+  marks/eight rules each. This is observed picker/continuation success after
+  reload, not proof of a cold fix or captured bridge wire messages.
+- `VERIFIED`: final audit preserves all seven open documents and all six known
+  saved originals. Private evidence, screenshots, counter baselines and lifecycle
+  receipts are in `artifacts/word/resource-diagnostics/preview7/`. Installed DLL
+  SHA-256 is `BB5F03D1D241566786296C2BEE90D1BF3A3290CCCD1F1CE1675109E4C61B47F9`;
+  CLI SHA-256 is `25F0EA9DBE035AD4F1377CFD6DA0F043E57665AB1E96E787E944AFDC417913F4`.
+  Preview.7 is local only; public preview.5 assets are unchanged. Cold rendering,
+  raw client wire, physical UI, first-visible timing, clean-machine and Mac
+  acceptance remain open. Source checkpoint `838aeb6` passes hosted verification
+  `39507792665`; verify the version/evidence checkpoint separately.
 
 ## Picker output declaration and installed preview.6 — 2026-10-20
 

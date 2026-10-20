@@ -23,6 +23,14 @@ completed writes, concurrent counters and lifecycle reset with effective faults.
 Do not claim a live-host trace until these bytes are independently installed and
 the actual Chrome scenario is observed. Mac stays with its existing handoff.
 
+Package the verified diagnostics as local preview.7. Update only the root
+package/lock version and regenerate the existing widget dependency manifest;
+require unchanged HTML bytes. Qualify the exact installer, preserve the current
+seven-document session, await Stop cleanup before shutdown, and upgrade/reopen.
+Capture isolated local diagnostics around equivalent connector creation and
+cold/reloaded Chrome picker loads. Keep preview.5 public assets unchanged and
+preserve existing test failures, profiles and all original documents.
+
 ## Picker result contract follow-up
 
 Start from clean main `6272942`. The installed picker remains blank on ChatGPT;
