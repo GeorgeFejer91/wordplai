@@ -1,0 +1,132 @@
+param([Parameter(Mandatory)][string]$CliPath, [Parameter(Mandatory)][int]$WordProcessId, [Parameter(Mandatory)][string]$OutputDirectory)
+$ErrorActionPreference = 'Stop'
+if ($PSVersionTable.PSEdition -eq 'Core') {
+    $child = @('-NoProfile','-STA','-File',$PSCommandPath,'-CliPath',$CliPath,'-WordProcessId',[string]$WordProcessId,'-OutputDirectory',$OutputDirectory)
+    & "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" @child
+    if ($LASTEXITCODE -ne 0) { throw 'Installed CLI qualification failed.' }
+    return
+}
+[Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
+$OutputEncoding = [Console]::OutputEncoding
+$CliPath = (Resolve-Path -LiteralPath $CliPath).Path
+if (Test-Path -LiteralPath $OutputDirectory) { throw 'Choose a fresh installed CLI evidence directory.' }
+New-Item -ItemType Directory -Path $OutputDirectory | Out-Null
+$OutputDirectory = (Resolve-Path -LiteralPath $OutputDirectory).Path
+Add-Type -ReferencedAssemblies 'Microsoft.CSharp','System.Core' -Path (Join-Path $PSScriptRoot 'WordAutomation.cs')
+$filter = New-Object WordTestAutomation
+Add-Type -TypeDefinition @'
+using System; using System.Runtime.InteropServices;
+public static class CliNativeObservation {
+ [DllImport("user32.dll")] public static extern IntPtr GetForegroundWindow();
+ [DllImport("user32.dll")] public static extern uint GetWindowThreadProcessId(IntPtr window, out uint pid);
+}
+'@
+$checks = New-Object 'Collections.Generic.List[string]'
+$documents = @(); $sequence = 0; $started = $false
+function Check($Condition, [string]$Message) { if (-not $Condition) { throw $Message }; $checks.Add($Message); Write-Output ('PASS: '+$Message) }
+function Invoke-Cli([string[]]$Parameters, $Body = $null, [int]$ExpectedExit = 0) {
+    $script:sequence++
+    $prefix = Join-Path $OutputDirectory ('command-'+$script:sequence)
+    $parameters = @($Parameters) + @('--word-pid',[string]$WordProcessId)
+    if ($null -ne $Body) {
+        $inputFile = $prefix+'-input-private.json'
+        [IO.File]::WriteAllText($inputFile, ($Body|ConvertTo-Json -Depth 30 -Compress), (New-Object Text.UTF8Encoding($false)))
+        $parameters += @('--input',$inputFile)
+    }
+    $stdout = & $CliPath @parameters 2> ($prefix+'-stderr.txt')
+    $code = $LASTEXITCODE
+    $text = $stdout -join "`n"
+    [IO.File]::WriteAllText(($prefix+'-output-private.json'),$text,(New-Object Text.UTF8Encoding($false)))
+    if ($code -ne $ExpectedExit) { throw "CLI command $($script:sequence) exited $code; expected $ExpectedExit. Inspect its private receipt." }
+    return ($text|ConvertFrom-Json)
+}
+function Native([string]$Command, [string]$Document, $Body = $null, [int]$ExpectedExit = 0) {
+    return (Invoke-Cli @($Command,'--document',$Document) $Body $ExpectedExit).result
+}
+function Mcp([string]$Method, $Body = $null, [int]$ExpectedExit = 0) {
+    return (Invoke-Cli @('mcp','--method',$Method,'--session-file',(Join-Path $OutputDirectory 'session-private.json')) $Body $ExpectedExit).response
+}
+function Tool([string]$Name, $Body, [int]$ExpectedExit = 0) {
+    $reply = Mcp 'tools/call' @{name=$Name;arguments=$Body} $ExpectedExit
+    if ($ExpectedExit -ne 0) { return $reply }
+    return ($reply.result.content[0].text|ConvertFrom-Json)
+}
+try {
+    if ($WordProcessId -le 0) { throw 'Specify a positive Word process ID.' }
+    $word = [WordTestAutomation]::AttachProcess($WordProcessId)
+    $actual = [uint32]0
+    [void][CliNativeObservation]::GetWindowThreadProcessId([IntPtr]$word.ActiveWindow.Hwnd,[ref]$actual)
+    if ($actual -ne $WordProcessId) { throw 'Fixture creation refused a different Word process.' }
+    $originalDocuments = @($word.Documents|ForEach-Object { @{path=[string]$_.FullName;text=[string]$_.Content.Text;saved=[bool]$_.Saved;comments=[int]$_.Comments.Count;revisions=[int]$_.Revisions.Count} })
+    $originalDocuments | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'originals-before-private.json')
+    $emoji = [char]::ConvertFromUtf32(0x1F600)
+    $prompt = "An overly long $emoji sentence can be made shorter."
+    foreach ($letter in @('A','B')) {
+        $doc = $word.Documents.Add([Type]::Missing,$false,0,$false)
+        $doc.Content.Text = "Unmarked $letter introduction.`r$prompt`rProtected $letter ending.`r"
+        $doc.Content.Font.Name = 'Segoe UI Emoji'
+        $doc.Content.Font.NameBi = 'Segoe UI Emoji'
+        $path = Join-Path $OutputDirectory ('CLI-fixture-'+$letter+'.docx')
+        $doc.SaveAs2([ref][object]$path,[ref][object]16)
+        $documents += $doc
+    }
+    $foreground = [CliNativeObservation]::GetForegroundWindow()
+    $activePath = [string]$word.ActiveDocument.FullName
+    $selectionStart = [int]$word.Selection.Start; $selectionEnd = [int]$word.Selection.End
+    $listing = Invoke-Cli @('documents')
+    $targets = @($listing.result.documents|Where-Object title -eq 'CLI-fixture-A.docx')
+    Check ($targets.Count -eq 1) 'Installed CLI discovers the exact owned fixture'
+    $id = $targets[0].documentId
+    $context = Native 'context' $id
+    Check ($context.complete -and $context.text.Contains($emoji)) 'Installed CLI context preserves complete Unicode text'
+    $state = Native 'rule-save' $id @{snapshot=$context.snapshot;id='cli-short';label='CLI short';color='#AACCEE';action='prompt';prompt='Shorten without changing meaning.'}
+    $from = $context.text.IndexOf($prompt,[StringComparison]::Ordinal)
+    $context = Native 'context' $id
+    $state = Native 'mark' $id @{snapshot=$context.snapshot;ruleId='cli-short';from=$from;to=$from+$prompt.Length;quote=$prompt}
+    Check (@($state.marks|Where-Object quote -ceq $prompt).Count -eq 1) 'Installed CLI marks an exact range without changing native selection'
+    $refused = Invoke-Cli @('rule-save','--document',$id) @{snapshot='obsolete';id='unexpected';label='Wrong';color='#FF0000';action='protect'} 1
+    Check (-not $refused.ok -and $refused.error.Contains('changed')) 'Installed CLI refuses a stale local snapshot'
+    $state = Native 'state' $id
+    Check (@($state.rules|Where-Object id -eq 'unexpected').Count -eq 0) 'Stale CLI refusal creates no rule'
+    Check ([string]$word.ActiveDocument.FullName -ceq $activePath) 'Installed CLI restores the active document'
+    Check ($word.Selection.Start -eq $selectionStart -and $word.Selection.End -eq $selectionEnd) 'Installed CLI preserves native selection'
+    Check ([CliNativeObservation]::GetForegroundWindow() -eq $foreground) 'Installed CLI preserves desktop foreground'
+
+    $status = (Invoke-Cli @('status')).result
+    if (-not $status.running) { $null = Invoke-Cli @('connect-local'); $started = $true }
+    $null = Mcp 'initialize'
+    $catalogue = Mcp 'tools/list'
+    Check (($catalogue.result.tools.name -join ',') -ceq 'list_manuscripts,read_manuscript,suggest_text,highlight_text') 'CLI MCP exposes exactly the existing four tools'
+    $sessionHash = (Get-FileHash -LiteralPath (Join-Path $OutputDirectory 'session-private.json')).Hash
+    $null = Mcp 'initialize' $null 2
+    Check ((Get-FileHash -LiteralPath (Join-Path $OutputDirectory 'session-private.json')).Hash -ceq $sessionHash) 'CLI initialization never overwrites an existing client session'
+    $read = Tool 'read_manuscript' @{manuscript_id=$id;offset=0}
+    Check ($read.complete -and $read.text.Contains($emoji) -and $read.context_id) 'CLI reads actual MCP context and its complete-read witness'
+    $request = @{manuscript_id=$id;request_id='cli-installed-direct';revision=$read.revision;context_id=$read.context_id;from=$from;to=$from+$prompt.Length;quote=$prompt;replacement="A shorter $emoji sentence.";rationale='Remove redundant wording.'}
+    $foregroundPid = [uint32]0
+    [void][CliNativeObservation]::GetWindowThreadProcessId([CliNativeObservation]::GetForegroundWindow(),[ref]$foregroundPid)
+    if ($foregroundPid -ne $WordProcessId) {
+        $applied = Tool 'suggest_text' $request
+        Check ($applied.applied -and -not $applied.requiresApproval) 'CLI submits an authorized AI edit through the actual MCP safeguards'
+        $replay = Tool 'suggest_text' $request
+        Check ($replay.replayed -and $documents[0].Comments.Count -eq 1) 'CLI exact replay does not duplicate the native rationale'
+        Check ($documents[0].Content.Text.Contains("A shorter $emoji sentence.") -and $documents[0].Revisions.Count -eq 0) 'CLI MCP applies exact native wording without tracked revisions'
+    } else { Write-Output 'NOT RUN: positive direct write while Word holds foreground; guard preserved.' }
+    Check ($documents[1].Content.Text.Contains($prompt) -and $documents[1].Comments.Count -eq 0) 'CLI writing leaves the other synthetic document unchanged'
+    $originalsAfter = @($word.Documents|ForEach-Object { @{path=[string]$_.FullName;text=[string]$_.Content.Text;saved=[bool]$_.Saved;comments=[int]$_.Comments.Count;revisions=[int]$_.Revisions.Count} })
+    $originalsAfter | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'originals-after-private.json')
+    foreach ($item in $originalDocuments) {
+        $current = @($word.Documents|Where-Object { [string]$_.FullName -ceq $item.path })
+        if ($current.Count -ne 1 -or [string]$current[0].Content.Text -cne $item.text -or [bool]$current[0].Saved -ne $item.saved -or $current[0].Comments.Count -ne $item.comments -or $current[0].Revisions.Count -ne $item.revisions) { throw 'An original document changed during CLI qualification.' }
+    }
+    Check $true 'All pre-existing documents retain exact native text, saved state, comments and revisions'
+} catch {
+    [ordered]@{status='FAIL';checks=$checks;error=$_.Exception.Message}|ConvertTo-Json -Depth 6|Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'result.json')
+    throw
+} finally {
+    if ($started) { $null = Invoke-Cli @('stop') }
+    foreach ($doc in $documents) { $doc.Close(0) }
+    if ($filter) { $filter.Dispose() }
+}
+[ordered]@{status=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'PARTIAL'});checks=$checks;cliSha256=(Get-FileHash -LiteralPath $CliPath).Hash;wordProcessId=$WordProcessId;positiveMcpWrite=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'NOT RUN'});userInterfaceInput='NONE';publicTunnel='NOT RUN'}|ConvertTo-Json -Depth 6|Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'result.json')
+exit 0

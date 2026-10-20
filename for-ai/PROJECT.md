@@ -44,6 +44,7 @@ Add project-specific non-goals only after they prevent a plausible wrong turn.
 ## Product/control-plane boundary
 
 - Product source, assets, tests and packaging: `modules/word/`.
+- Local Windows CLI and command reference: `modules/word/cli/`.
 - Local selective-editor contract: `modules/review/selective-editor-contract.json`.
 - Branding: `assets/wraiter/` (legacy asset names retained).
 - Description and stable download pages: `site/`; deployment: `.github/workflows/`.
@@ -56,6 +57,12 @@ Keep the existing C# 5/.NET Framework 4.8 in-process Word COM stack and native
 WinForms UI. Do not migrate to Tauri or require UnderTree. Retain legacy COM,
 assembly and profile identities for compatibility; they are not an external
 application dependency. The bundled zrok child has no inherited account state.
+
+The Windows CLI uses the same .NET Framework/COM authority and is bundled with
+the add-in. It provides explicit document-ID local automation and an MCP client;
+it adds no remote tools or direct AI-write bypass. Local range marking shares
+the native marking implementation. CLI tests require no mouse/keyboard input;
+they do not replace physical-gesture, pixel or real WebGPT acceptance evidence.
 
 Node.js is build/test tooling for the embedded picker and static website, not a
 desktop runtime dependency. Pin Pretext and the bundler in the repository lock.

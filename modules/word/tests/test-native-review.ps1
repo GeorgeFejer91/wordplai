@@ -1,6 +1,6 @@
-param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly, [switch]$StaleMarkerOnly)
+param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly, [switch]$StaleMarkerOnly, [switch]$CliOnly)
 $ErrorActionPreference = 'Stop'
-$modes = @($ManualMarkingOnly, $StaleMarkerOnly).Where({ $_ }).Count
+$modes = @($ManualMarkingOnly, $StaleMarkerOnly, $CliOnly).Where({ $_ }).Count
 if ($modes -gt 1) { throw 'Choose only one focused native review scenario.' }
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repo ('artifacts/word/native-review-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) }
@@ -10,7 +10,7 @@ New-Item -ItemType Directory -Path $OutputDirectory | Out-Null
 if (-not $WordExecutable) { $WordExecutable = Join-Path $env:ProgramFiles 'Microsoft Office/root/Office16/WINWORD.EXE' }
 if (-not (Test-Path -LiteralPath $WordExecutable)) { throw 'Specify the installed Word executable.' }
 $sources = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot '../src') -Filter '*.cs' | Sort-Object Name | ForEach-Object FullName)
-$testSources = @((Join-Path $PSScriptRoot 'NativeReviewSmoke.cs'), (Join-Path $PSScriptRoot 'WordAutomation.cs'), (Join-Path $PSScriptRoot 'NativeMcpClient.cs'))
+$testSources = @((Join-Path $PSScriptRoot 'NativeReviewSmoke.cs'), (Join-Path $PSScriptRoot 'NativeCliSmoke.cs'), (Join-Path $PSScriptRoot 'WordAutomation.cs'), (Join-Path $PSScriptRoot 'NativeMcpClient.cs'))
 $contract = Join-Path $repo 'modules/review/selective-editor-contract.json'
 $snapshot = @(@($sources) + $testSources + @($contract, $PSCommandPath) | ForEach-Object { [ordered]@{path=$_.Substring($repo.Length).TrimStart('\','/');sha256=(Get-FileHash -LiteralPath $_).Hash.ToLowerInvariant()} })
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
@@ -20,6 +20,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Native review harness compilation failed.' }
 $nativeArguments = @($WordExecutable, (Join-Path $OutputDirectory 'native'))
 if ($ManualMarkingOnly) { $nativeArguments += 'manual-marking-only' }
 if ($StaleMarkerOnly) { $nativeArguments += 'stale-marker-only' }
+if ($CliOnly) { $nativeArguments += 'cli-only' }
 & $test @nativeArguments 2>&1 | Tee-Object -FilePath (Join-Path $OutputDirectory 'native.log')
 $code = $LASTEXITCODE
 foreach ($entry in $snapshot) {

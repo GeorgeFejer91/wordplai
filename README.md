@@ -41,6 +41,23 @@ The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
 ## Build and test
 
+The [Windows CLI](modules/word/cli/README.md) automates local rules, range marking,
+document-isolated state/context, connection lifecycle and MCP test requests using
+JSON, without desktop input. It is included in source builds and preview.4
+packaging; the earlier preview.3 installer does not contain it.
+
+To exercise an installed build with disposable documents and no desktop input:
+
+```powershell
+./modules/word/tests/test-installed-cli.ps1 -CliPath "$env:LOCALAPPDATA/Programs/wrAIter Word/wordplai.exe" -WordProcessId WORD_PID -OutputDirectory artifacts/installed-cli-new
+```
+
+Use the PID of an already running Word instance with the add-in connected.
+The driver creates and closes only disposable test documents. The positive AI
+edit is skipped when that Word process holds foreground focus; the existing
+input guard still applies. Fresh-process source tests are also documented in the
+CLI reference.
+
 Build tooling: Windows, PowerShell 7, .NET Framework C# compiler, Node.js 22 or
 newer, and NSIS for the installer. See [the Word module](modules/word/README.md)
 for exact standalone commands and pinned runtime provisioning. Dependency

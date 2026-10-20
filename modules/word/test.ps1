@@ -22,6 +22,7 @@ function Run-Gate([string]$Name, [string]$Program, [string[]]$Arguments) {
 try {
     $payload = Join-Path $OutputDirectory 'payload'
     Run-Gate 'build' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'build.ps1'),'-OutputDirectory',$payload)
+    Run-Gate 'cli' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-cli.ps1'),'-CliPath',(Join-Path $payload 'wordplai.exe'),'-OutputDirectory',(Join-Path $OutputDirectory 'cli'),'-MutationCheck')
     $policy = Join-Path $OutputDirectory 'PolicyTests.exe'
     $policySources = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'src') -Filter 'Policy*.cs' | ForEach-Object FullName)
     $stateComparison = Join-Path $PSScriptRoot 'tests/PolicyStateJson.cs'
@@ -49,6 +50,7 @@ try {
     Run-Gate 'ui-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$ui",'/r:System.Windows.Forms.dll','/r:System.Drawing.dll','/r:System.Web.Extensions.dll','/r:System.Security.dll','/r:Microsoft.CSharp.dll',"/resource:$(Join-Path $repo 'modules/review/selective-editor-contract.json'),SelectiveEditorContract", "/resource:$(Join-Path $repo 'assets/wraiter/icon16.png'),wrAIter.Ribbon.png", "/resource:$(Join-Path $repo 'assets/wraiter/icon.ico'),wrAIter.Icon.ico") + $sources + @((Join-Path $PSScriptRoot 'tests/UiLayoutSmoke.cs')))
     Run-Gate 'native-ui' $ui @((Join-Path $OutputDirectory 'ui'), (Join-Path $repo 'assets/wraiter'))
     if ($NativeWord) {
+        Run-Gate 'native-word-cli' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-native-review.ps1'),'-CliOnly','-OutputDirectory',(Join-Path $OutputDirectory 'native-cli'))
         Run-Gate 'native-word-color-input' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-native-color-input.ps1'),'-OutputDirectory',(Join-Path $OutputDirectory 'native-color-input'),'-RunNative')
         Run-Gate 'native-word-suggestion-workflow' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-native-suggestion-workflow.ps1'),'-OutputDirectory',(Join-Path $OutputDirectory 'native-suggestion-workflow'))
         Run-Gate 'native-word-uncertain-outcomes' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-native-uncertain-outcomes.ps1'),'-OutputDirectory',(Join-Path $OutputDirectory 'native-uncertain-outcomes'),'-MutationCheck')

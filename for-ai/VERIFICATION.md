@@ -559,6 +559,66 @@ All receipts in this section are under ignored
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,
   artifact/host acceptance and handback. No Mac support claim is made.
 
+## Windows CLI qualification — 2026-10-20
+
+Private evidence root: `artifacts/word/cli-qualification/`. CLI commands use local
+COM authority for rules/markers and the existing four MCP tools for AI edits.
+No desktop input or new remote authority is introduced.
+
+- `VERIFIED`, source-native: `test-native-review.ps1 -CliOnly` passes 33
+  assertions (`native-final/`): exact/closed/duplicate/inactive targets, stale
+  snapshots, Unicode boundaries, wrong quotes, protection, marker removal,
+  unchanged neighboring saved bytes and selection/foreground preservation.
+  The original red run fails at the missing automation operation as intended.
+- `VERIFIED`, CLI client: 14 checks including the effective input-limit copied
+  control pass against the packaged executable (`preview4/cli-exit-fixed/`).
+  Its driver explicitly exits zero after expected negative controls; the earlier
+  inherited nonzero wrapper exit remains retained. Picker state doubles pass.
+- `VERIFIED`, components: the first complete CLI component run passes all 21
+  gates (`components/`), including 1,419 native UI checks and 21 renders. A later
+  full run fails at the unchanged foreign-share cleanup timeout; its cause is
+  unconfirmed. A scoped transport recheck passes 2,115 assertions and effective
+  controls with all fifteen transport inputs unchanged. That scratch wrapper
+  inherited an expected negative-control exit; do not call the later full run a
+  pass. Final hosted verification is recorded separately after publication.
+- `VERIFIED`, preview.4 candidate: 71 inputs/eight payloads, exact DLL COM ABI
+  536 assertions and dispatch-only control, upgrade from preview.3, complete
+  uninstall/registration removal and reinstall. All 112 profile files remain
+  unchanged, none added. Installer SHA-256:
+  `ed4025a3b161c995cb843aca4c5f5900cd2cbebbed329b3c9ac355e7dfc9b130`
+  (23,888,654 bytes); DLL:
+  `5c10abcb79071d97d166dcb64132eb4f40da44911511fcffbec787f739bff5f0`;
+  CLI: `381df69f63ff2e6e963a73c89ef09b943423bf075a5627b3667e38292db3ff0b`.
+- `VERIFIED`, actual installed CLI: `test-installed-cli.ps1 -WordProcessId PID`
+  passes all 16 checks (`installed-existing-final/`), including local rule/range
+  marking, stale refusal, native active-document/selection/foreground equality,
+  real loopback sessions and complete-read witness, direct wording, exact replay
+  with one rationale and no tracked revisions, unchanged neighbor and all six
+  pre-existing documents. No desktop input; public tunnel and WebGPT not tested.
+- `VERIFIED`, preservation: save/close and reopen audits preserve all six
+  originals, their exact text/comments/revisions/Saved state and file hashes
+  (`headless-test-close/`, `reopen-after-cli/`); the post-test
+  `installed-final-originals-result.json` again verifies all six native states
+  and file hashes. The installed add-in is connected
+  with the candidate DLL. Local sharing started by the driver is stopped normally.
+- `FAIL`/`PARTIAL`, retained installed attempts: a foreground-Word run skips the
+  positive edit; second-instance attempts refuse the single-owner profile;
+  a mixed-format fixture safely refuses without wording/revisions/comments.
+  The corrected fixture uses the existing installed suite's coherent font setup.
+  A later 15-check successful prefix fails preservation of a transient EndNote
+  startup template; a diagnostic captures that template as the original. Another
+  diagnostic fails foreground equality, without proven cause. Startup-readiness
+  and `/a` attempts fail before creating fixtures; a driver-edit error is repaired
+  before the final passing run. The optional installed-process launcher was
+  removed, not qualified. Normal installer registration restoration was used;
+  no Office security, profile ownership or production guard was weakened.
+
+Preview.4 is a local installed candidate; the public release/site remain preview.3.
+Concurrent recoloring source/test/document edits appeared during final review;
+preserve them outside the CLI checkpoint and compare the candidate to the staged
+Git inputs. Do not claim the whole working tree matches that installer. Physical
+UI, real WebGPT, clean-machine and Mac acceptance remain open.
+
 Raw browser captures, endpoint capabilities and document-preservation snapshots
 remain private. Retain exploratory harness failures. Native source checks run
 serially; do not change captured inputs while running. Native files intentionally

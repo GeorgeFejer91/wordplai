@@ -48,6 +48,13 @@ namespace UnderTree.WordAddin
             if (state.Id != selectionDocument || snapshot.Revision != selectionProof || Text(args, "snapshot") != selectionProof ||
                 from != selectionFrom || to != selectionTo || snapshot.VisibleOffset((int)application.Selection.Start) != from || snapshot.VisibleOffset((int)application.Selection.End) != to)
                 throw new InvalidOperationException("The document or selection changed. Select and preview the passage again.");
+            return CommitLocalMark(state, args, from, to);
+        }
+
+        private object CommitLocalMark(WordDocumentReview state, IDictionary<string, object> args, int from, int to)
+        {
+            RequireWritable(state);
+            WordSnapshot snapshot = state.Snapshot;
             snapshot.RequireProse(state.Document, from, to, OwnedBookmarks(state), null, true);
             string quote = snapshot.MainText.Substring(from, to - from);
             if (Text(args, "quote") != quote) throw new InvalidOperationException("The selected wording changed.");

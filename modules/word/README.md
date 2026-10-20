@@ -30,6 +30,16 @@ or suggestion window. **New color rule** adds a color; **Connections** manages
 AI access. No separate application or tray utility is needed. The installed
 add-in owns its internal tunnel process and private connection profile.
 
+## Command-line automation
+
+Source builds and preview.4 packaging include `wordplai.exe` and
+[CLI instructions](cli/README.md). The CLI provides JSON commands for document
+discovery, explicitly targeted state/context, local rules and UTF-16 range
+marking, native review, connection lifecycle and the existing MCP tools. It uses
+the add-in's local authority without mouse/keyboard input or a separate service.
+Rule changes commit explicitly; CLI behavior checks do not replace visual or
+physical interaction evidence. Preview.3 installers do not contain this CLI.
+
 Requires installed desktop Word on Windows 10/11 x64 (Intel/AMD) and .NET Framework 4.8 (included
 in supported current Windows installations). The installer registers only this
 add-in for the current Windows user. Close Word before installing/updating.

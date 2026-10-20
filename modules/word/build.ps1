@@ -7,6 +7,7 @@ New-Item -ItemType Directory -Force $OutputDirectory | Out-Null
 $compiler = Join-Path $env:WINDIR 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'
 $assembly = Join-Path $OutputDirectory 'wrAIter.Word.dll'
 $sources = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'src') -Filter '*.cs' | Sort-Object Name | ForEach-Object FullName)
+$cliSources = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'cli') -Filter '*.cs' | Sort-Object Name | ForEach-Object FullName)
 $contract = Join-Path $repo 'modules/review/selective-editor-contract.json'
 $branding = Join-Path $repo 'assets/wraiter'
 $picker = Join-Path $PSScriptRoot 'assets/document-picker.html'
@@ -21,7 +22,7 @@ foreach ($entry in $widgetManifest.inputs) {
         throw "Rebuild the Word document picker after changing $($entry.path)."
     }
 }
-$inputs = @($sources) + $widgetInputs + @(Get-ChildItem -LiteralPath $branding -File | Sort-Object Name | ForEach-Object FullName) + @($contract, $PSCommandPath, (Join-Path $PSScriptRoot 'README.md'),
+$inputs = @($sources) + $cliSources + $widgetInputs + @(Get-ChildItem -LiteralPath $branding -File | Sort-Object Name | ForEach-Object FullName) + @($contract, $PSCommandPath, (Join-Path $PSScriptRoot 'README.md'), (Join-Path $PSScriptRoot 'cli/README.md'),
     (Join-Path $PSScriptRoot 'THIRD-PARTY.md'), (Join-Path $repo 'package.json'), (Join-Path $PSScriptRoot 'packaging/installer.nsi'),
     (Join-Path $PSScriptRoot 'packaging/zrok-LICENSE'), (Join-Path $PSScriptRoot 'packaging/zrok.json'), (Join-Path $PSScriptRoot 'packaging/fetch-zrok.ps1'))
 $sourceSnapshot = @($inputs | ForEach-Object { [ordered]@{path=[IO.Path]::GetRelativePath($repo,$_);sha256=(Get-FileHash -LiteralPath $_ -Algorithm SHA256).Hash.ToLowerInvariant()} })
@@ -38,6 +39,8 @@ $arguments = @('/nologo','/target:library','/platform:anycpu','/optimize+','/deb
     '/r:System.Windows.Forms.dll','/r:System.Web.Extensions.dll','/r:System.Xml.dll','/r:System.Security.dll','/r:Microsoft.CSharp.dll') + $sources
 & $compiler @arguments
 if ($LASTEXITCODE -ne 0) { throw 'Word add-in compilation failed.' }
+& $compiler /nologo /target:exe /platform:anycpu /optimize+ /debug- /langversion:5 "/out:$(Join-Path $OutputDirectory 'wordplai.exe')" /r:System.dll /r:System.Core.dll /r:System.Web.Extensions.dll /r:Microsoft.CSharp.dll @cliSources
+if ($LASTEXITCODE -ne 0) { throw 'Word CLI compilation failed.' }
 $runtime = Join-Path $OutputDirectory 'runtime'
 $zrokPin = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'packaging/zrok.json') | ConvertFrom-Json
 if ($Installer -and -not $ZrokExecutable) {
@@ -61,9 +64,10 @@ if ((Test-Path -LiteralPath $bundledZrok) -and
 $packagedReadme = [IO.File]::ReadAllText((Join-Path $PSScriptRoot 'README.md')).Replace('../../assets/wraiter/icon.svg', 'wrAIter.ico')
 [IO.File]::WriteAllText((Join-Path $OutputDirectory 'README.md'), $packagedReadme)
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'THIRD-PARTY.md') -Destination $OutputDirectory -Force
+Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'cli/README.md') -Destination (Join-Path $OutputDirectory 'CLI.md') -Force
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'packaging/zrok-LICENSE') -Destination $OutputDirectory -Force
 Copy-Item -LiteralPath (Join-Path $branding 'icon.ico') -Destination (Join-Path $OutputDirectory 'wrAIter.ico') -Force
-$payloadFiles = @('wrAIter.Word.dll','README.md','THIRD-PARTY.md','zrok-LICENSE','wrAIter.ico')
+$payloadFiles = @('wrAIter.Word.dll','wordplai.exe','CLI.md','README.md','THIRD-PARTY.md','zrok-LICENSE','wrAIter.ico')
 if (Test-Path -LiteralPath (Join-Path $runtime 'zrok.exe')) { $payloadFiles += 'runtime/zrok.exe' }
 Assert-SourceSnapshot
 $manifest = [ordered]@{ product='wordplai';version=$packageVersion;platform='Windows desktop Word';

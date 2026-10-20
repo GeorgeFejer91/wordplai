@@ -175,7 +175,9 @@ namespace UnderTree.WordAddin
             catch (Exception error)
             {
                 while (error is TargetInvocationException || error is AggregateException) error = error.InnerException;
-                return json.Serialize(new { ok = false, error = error.Message });
+                var refusal = error as McpOperationException;
+                return json.Serialize(new { ok = false, error = error.Message,
+                    error_code = refusal == null ? null : refusal.Code, details = refusal == null ? null : refusal.Details });
             }
         }
 
@@ -202,9 +204,11 @@ namespace UnderTree.WordAddin
         {
             return InvokeWord(delegate {
                 object result = json.DeserializeObject(json.Serialize(editor.Dispatch(operation, arguments)));
-                if (ribbon != null) ribbon.Observe(result);
+                if (ribbon != null && operation != "automation") ribbon.Observe(result);
+                if (operation == "automation" && WordEditor.AutomationMutates(arguments)) QueuePaletteRefresh();
                 if (automaticSave != null && (operation == "save_rule" || operation == "mark_selection" ||
-                    operation == "remove_mark" || operation == "accept" || operation == "reject")) automaticSave.Changed(DateTime.UtcNow);
+                    operation == "remove_mark" || operation == "accept" || operation == "reject" ||
+                    (operation == "automation" && WordEditor.AutomationMutates(arguments)))) automaticSave.Changed(DateTime.UtcNow);
                 return result;
             });
         }

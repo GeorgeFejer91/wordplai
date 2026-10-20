@@ -84,14 +84,14 @@ Plain host/answer-load failures were also observed without a proven common root
 cause. Keep these surfaces separate. Local widget tests and successful HTTP
 responses do not close the live-host gap.
 
-**Installed package identity:** preview.3 is installed with all six exact payloads
-and its manifest verified. Upgrade, uninstall, registration removal in both
-registry views and reinstall pass; all 107 existing profile files are unchanged.
-The six original documents reopened unchanged. Preview.3's installed runtime
-fixture then passed all 69 checks after normal Stop cleared the initial cleanup
-barrier and normal Chrome activation moved foreground focus. Full hashes and
-scoped receipts are in `VERIFICATION.md`. Do not transfer results between
-candidates or hosts.
+**Installed package identity:** the local preview.4 CLI candidate is installed
+with all eight exact payloads verified. Upgrade, uninstall, registration removal
+in both registry views and reinstall pass; all 112 existing profile files are
+unchanged. Its installed CLI passes 16 checks and all six originals are preserved.
+The published preview.3 separately passed its 69-check installed fixture after
+normal Stop cleared cleanup and normal Chrome activation moved foreground focus.
+Full hashes and scoped receipts are in `VERIFICATION.md`. Do not transfer results
+between candidates or hosts.
 
 **Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
 transport and autosave checks but failed the native WinForms containment gate.
@@ -205,6 +205,12 @@ audit lifecycle changes. Overall acceptance remains open.
   limits; verify all three asset digests and an anonymous installer download.
 - [x] Verify the updated stable download page and exact remote CI/deployment
   after publication. Overall acceptance and Mac qualification remain open.
+- [x] Qualify the newly requested CLI on its exact preview.4 package: local
+  document/rule/range commands, inactive-target isolation, native selection and
+  foreground preservation, MCP session/read/edit/replay, and original preservation.
+  Native 33 assertions, client 14 checks and installed 16 checks pass. Upgrade,
+  uninstall/reinstall and six-original preservation pass. The candidate is
+  installed locally; preview.3 remains the public release. See `VERIFICATION.md`.
 
 Chrome extension browser access was observed and one real connection-only
 WebGPT request attempted discovery but failed internally. A reload temporarily
@@ -245,7 +251,7 @@ the first real edit and post-run preservation audit then passed. Chrome control
 remains intermittent. Do not infer shutdown from an observation timeout or repeat
 a writing request under a new identity to compensate for lost browser control.
 
-Current bounded code scope is the Connections overview and its existing UI
+The previous bounded code scope was the Connections overview and its existing UI
 assertion, plus correction of the color-input driver's inherited exit status.
 Keep editing/protection/transaction/connection permissions unchanged. Preserve
 the initial native UI resource-count failure independently; later passes do not
@@ -263,7 +269,20 @@ or production serialization change. Hosted verification `39428499738` passed on
 the correction's exact published SHA `7034ff0`; retain the earlier hosted failure
 and partial local repair.
 
-Next actions: resume UI work only after user-restored access. Prepare fresh owned
+The user requested CLI functions so behavior testing can continue without taking
+over the desktop. Use `modules/word/cli/README.md` and the installed CLI driver;
+retain the separate physical/UI gaps. On the latest UI resume, Chrome's extension
+session was absent, native browser URL verification stopped control, then a
+Word-only double-click attempt was stopped by Escape. Fresh E/F fixtures were
+prepared with explicit UTF-8 baseline serialization; C remains invalid.
+
+Next actions: use the CLI and `test-installed-cli.ps1 -WordProcessId PID` for
+repeatable native/MCP behavior tests without desktop input. The driver requires
+an already running, connected Word instance; it creates and closes only its own
+fixtures. A fresh-process installed launcher was dropped after retained startup
+and third-party-template failures. Source-native isolated tests remain available.
+Resume physical
+UI work only after restored access. Prepare fresh owned
 prompt documents; C was changed by the failed UI interaction and must not be
 counted as an editing success. Qualify the dialog draft/Cancel/Save and interleave
 two browser chats without cross-target effects, then exercise cold/reloaded

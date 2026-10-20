@@ -13,7 +13,7 @@ using System.Web.Script.Serialization;
 using System.Windows.Forms;
 using UnderTree.WordAddin;
 
-internal static class NativeReviewSmoke
+internal static partial class NativeReviewSmoke
 {
     private delegate bool Enumerate(IntPtr window, IntPtr state);
     [DllImport("user32.dll")] private static extern bool EnumWindows(Enumerate callback, IntPtr state);
@@ -62,7 +62,8 @@ internal static class NativeReviewSmoke
             Local("connection_local");
 
             string scenario = args.Length < 3 ? "all" : args[2];
-            if (scenario == "stale-marker-only") StaleCachedPromptMarkerRecoversFromCurrentContext();
+            if (scenario == "cli-only") CliAutomation();
+            else if (scenario == "stale-marker-only") StaleCachedPromptMarkerRecoversFromCurrentContext();
             else if (scenario == "all" || scenario == "manual-marking-only")
             {
                 if (scenario == "all")

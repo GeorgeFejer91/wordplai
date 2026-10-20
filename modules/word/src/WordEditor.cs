@@ -31,6 +31,7 @@ namespace UnderTree.WordAddin
         private string previewDocument;
         private int selectionFrom, selectionTo;
         private bool operationActive;
+        private WordDocumentReview automationTarget;
         private delegate void DocumentClosing(object document, ref bool cancel);
         private readonly DocumentClosing documentClosing;
         private static readonly Guid WordApplicationEvents = new Guid("00020A01-0000-0000-C000-000000000046");
@@ -58,7 +59,7 @@ namespace UnderTree.WordAddin
 
         private WordDocumentReview Current()
         {
-            return Current(ActiveDocumentReview());
+            return Current(automationTarget ?? ActiveDocumentReview());
         }
 
         private WordDocumentReview Current(WordDocumentReview state)
@@ -164,7 +165,8 @@ namespace UnderTree.WordAddin
         private object DispatchCore(string operation, IDictionary<string, object> args)
         {
             args = args ?? new Dictionary<string, object>();
-            if (args.ContainsKey("documentId") && Text(args, "documentId") != ActiveDocumentReview().Id)
+            if (operation == "automation") return Automation(args);
+            if (args.ContainsKey("documentId") && Text(args, "documentId") != (automationTarget ?? ActiveDocumentReview()).Id)
                 throw new InvalidOperationException("The active document changed. Refresh the selective editor before continuing.");
             switch (operation)
             {
