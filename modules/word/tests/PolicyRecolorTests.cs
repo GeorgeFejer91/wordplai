@@ -92,9 +92,9 @@ internal static class PolicyRecolorTests
         Equal(definitions, Json.Serialize(engine.Rules), "Recoloring changes no existing local rule definition.");
         Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Neighboring protection remains exact.");
         Equal(0, engine.Proposals.Count, "A recolor request creates no wording change or acceptance proposal.");
-        string unchanged = Json.Serialize(engine.ExportState());
+        string unchanged = PolicyStateJson.Serialize(engine.ExportState());
         Equal(receipt.MarkIds.Single(), engine.Highlight(request, Text, Snapshot).MarkIds.Single(), "A lost recolor reply replays the same new identity.");
-        Equal(unchanged, Json.Serialize(engine.ExportState()), "Recolor replay has no further effect.");
+        Equal(unchanged, PolicyStateJson.Serialize(engine.ExportState()), "Recolor replay has no further effect.");
         Denied(engine, Change(request, "ColorId", "blue"), Text, "A consumed recolor request cannot change its destination color.");
         engine.Revoke(); engine.Share(Document);
         Denied(engine, request, Text, "Revocation prevents recolor replay or restoration of retired identities.");
@@ -149,11 +149,11 @@ internal static class PolicyRecolorTests
             }
             Equal(definitions, Json.Serialize(engine.Rules), "Overlapping recoloring leaves all local definitions unchanged.");
             Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Overlapping recoloring leaves neighboring protection exact.");
-            string unchanged = Json.Serialize(engine.ExportState());
+            string unchanged = PolicyStateJson.Serialize(engine.ExportState());
             Equal(true, engine.Highlight(request, Text, Snapshot).MarkIds.SequenceEqual(receipt.MarkIds), "An overlapping recolor replay returns the exact prior new IDs.");
-            Equal(unchanged, Json.Serialize(engine.ExportState()), "Overlapping replay changes no markers, definitions or receipts.");
+            Equal(unchanged, PolicyStateJson.Serialize(engine.ExportState()), "Overlapping replay changes no markers, definitions or receipts.");
             PolicyState saved = engine.ExportState();
-            Equal(unchanged, Json.Serialize(new PolicyEngine(contract, saved).ExportState()), "Overlapping replacement requests and receipts survive metadata validation and reopening.");
+            Equal(unchanged, PolicyStateJson.Serialize(new PolicyEngine(contract, saved).ExportState()), "Overlapping replacement requests and receipts survive metadata validation and reopening.");
             saved.HighlightReceipts.Last().ReplacedMarkIds.Reverse();
             Refused(() => new PolicyEngine(contract, saved), "Overlapping receipts cannot reorder the replaced source identities.");
         }
@@ -308,10 +308,10 @@ internal static class PolicyRecolorTests
 
     private static void Denied(PolicyEngine engine, HighlightRequest request, string text, string message, string reason = null)
     {
-        string before = Json.Serialize(engine.ExportState()); string actual = Refused(() => engine.Highlight(request, text, Snapshot), message);
+        string before = PolicyStateJson.Serialize(engine.ExportState()); string actual = Refused(() => engine.Highlight(request, text, Snapshot), message);
         if (reason != null) Equal(true, actual.IndexOf(reason, StringComparison.OrdinalIgnoreCase) >= 0,
             "The refusal identifies the actual recolor constraint: expected " + reason + "; received " + actual);
-        Equal(before, Json.Serialize(engine.ExportState()), "Refused recolor preserves all rule definitions, marker identities and replay receipts.");
+        Equal(before, PolicyStateJson.Serialize(engine.ExportState()), "Refused recolor preserves all rule definitions, marker identities and replay receipts.");
     }
 
     private static string Refused(Action action, string message)

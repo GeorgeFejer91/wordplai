@@ -24,12 +24,13 @@ try {
     Run-Gate 'build' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'build.ps1'),'-OutputDirectory',$payload)
     $policy = Join-Path $OutputDirectory 'PolicyTests.exe'
     $policySources = @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'src') -Filter 'Policy*.cs' | ForEach-Object FullName)
-    Run-Gate 'policy-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$policy",'/r:System.Web.Extensions.dll') + $policySources + @((Join-Path $PSScriptRoot 'tests/PolicyTests.cs')))
+    $stateComparison = Join-Path $PSScriptRoot 'tests/PolicyStateJson.cs'
+    Run-Gate 'policy-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$policy",'/r:System.Web.Extensions.dll') + $policySources + @($stateComparison,(Join-Path $PSScriptRoot 'tests/PolicyTests.cs')))
     Run-Gate 'policy' $policy @((Join-Path $repo 'modules/review/selective-editor-contract.json'))
     Run-Gate 'concurrent-policy' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-concurrent-policy.ps1'),'-OutputDirectory',(Join-Path $OutputDirectory 'concurrent-policy'),'-MutationCheck')
     Run-Gate 'uncertain-inspection' $powershell @('-NoProfile','-File',(Join-Path $PSScriptRoot 'tests/test-uncertain-inspection.ps1'),'-OutputDirectory',(Join-Path $OutputDirectory 'uncertain-inspection'),'-MutationCheck')
     $recolorPolicy = Join-Path $OutputDirectory 'PolicyRecolorTests.exe'
-    Run-Gate 'recolor-policy-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$recolorPolicy",'/r:System.Web.Extensions.dll') + $policySources + @((Join-Path $PSScriptRoot 'tests/PolicyRecolorTests.cs')))
+    Run-Gate 'recolor-policy-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$recolorPolicy",'/r:System.Web.Extensions.dll') + $policySources + @($stateComparison,(Join-Path $PSScriptRoot 'tests/PolicyRecolorTests.cs')))
     Run-Gate 'recolor-policy' $recolorPolicy @((Join-Path $repo 'modules/review/selective-editor-contract.json'))
     $nativePolicy = Join-Path $OutputDirectory 'NativeReviewPolicyTests.exe'
     Run-Gate 'native-review-policy-compile' $compiler (@('/nologo','/target:exe','/langversion:5',"/out:$nativePolicy",'/r:System.Web.Extensions.dll') + $policySources + @((Join-Path $PSScriptRoot 'tests/NativeReviewPolicyTests.cs')))

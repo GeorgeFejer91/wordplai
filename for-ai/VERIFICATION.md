@@ -458,6 +458,22 @@ All receipts in this section are under ignored
   advertise preview.3 (`pages-after-source-push.json`). No new installer release
   was created. The context gate with `-RequireRemote` passes on the pushed clean
   checkpoint; later documentation checkpoints require their own remote recheck.
+- `FAIL`, retained: hosted `39427161161` on `b79688d` stopped at recolor state
+  preservation. Parsing its actual expected/actual JSON with the existing policy
+  comparer confirms identical values/fields/list order and different object-key
+  ordering (`hosted-recolor-comparison-diagnosis.json`). The existing canonical
+  comparer is now shared by the two policy suites as `PolicyStateJson.cs`; the
+  driver compiles that test helper into both. Production serialization and the
+  installer remain unchanged. The five strict comparison controls still pass;
+  a copied scalar-losing mutant fails the exact changed-identity predicate.
+  The first partial repair missed one reopened-state comparison and failed;
+  that receipt remains in `components-state-comparison/`. After correcting both
+  sides, all twenty component gates pass, including 168 recolor assertions,
+  1,419 native UI checks and 21 renders. See `components-state-comparison-final/`,
+  `hosted-recolor-comparison-fixed.json` and `state-json-negative-control/`.
+  The final candidate's 67 inputs and six payloads still match, with unchanged
+  installer SHA-256 (`preview3-final-current-binding.json`). Verify hosted CI on
+  the test correction's own published SHA before calling remote checks complete.
 - `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
   qualification. The user has no Mac and requested a future-agent handoff;
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,

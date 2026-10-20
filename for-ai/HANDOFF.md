@@ -239,6 +239,17 @@ Keep editing/protection/transaction/connection permissions unchanged. Preserve
 the initial native UI resource-count failure independently; later passes do not
 prove its cause. Do not restart a live test or alter its captured source inputs.
 
+Hosted run `39427161161` on documentation checkpoint `b79688d` failed the recolor
+state assertion because nested JSON object properties were ordered differently.
+The captured values were confirmed identical with the existing structural
+comparer and strict controls. The completed test-only repair shares it between
+`PolicyTests.cs` and `PolicyRecolorTests.cs`, update their compile inputs in
+`modules/word/test.ps1`, and retains values, fields and list order exactly. All
+twenty component gates pass after the repair, and a scalar-losing copied control
+fails the intended identity assertion. No runtime, permission, timeout, installer
+or production serialization change. Verify the correction's exact published SHA
+and hosted workflow; retain the earlier hosted failure and partial local repair.
+
 Next actions: recover the already-created second Chrome tab, prepare fresh owned
 prompt passages and interleave two browser chats without cross-target effects,
 then exercise cold/reloaded choice and safe failure/revocation. Await

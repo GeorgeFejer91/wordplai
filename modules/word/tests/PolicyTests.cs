@@ -761,33 +761,22 @@ internal static class PolicyTests
 
     private static string StateJson(PolicyEngine engine)
     {
-        return CanonicalJson(Json.DeserializeObject(Json.Serialize(engine.ExportState())));
-    }
-
-    private static string CanonicalJson(object value)
-    {
-        var fields = value as IDictionary<string, object>;
-        if (fields != null)
-            return "{" + String.Join(",", fields.OrderBy(pair => pair.Key, StringComparer.Ordinal)
-                .Select(pair => Json.Serialize(pair.Key) + ":" + CanonicalJson(pair.Value))) + "}";
-        var items = value as object[];
-        if (items != null) return "[" + String.Join(",", items.Select(CanonicalJson)) + "]";
-        return Json.Serialize(value);
+        return PolicyStateJson.Serialize(engine.ExportState());
     }
 
     private static void StateComparisonControls()
     {
         // Reflection property order can differ between Framework builds; list order and every value still matter.
-        string baseline = CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[1,2]}"));
-        Equal(baseline, CanonicalJson(Json.DeserializeObject("{\"Marks\":[1,2],\"Request\":{\"From\":1,\"Id\":\"a\"}}")),
+        string baseline = PolicyStateJson.Canonical(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[1,2]}"));
+        Equal(baseline, PolicyStateJson.Canonical(Json.DeserializeObject("{\"Marks\":[1,2],\"Request\":{\"From\":1,\"Id\":\"a\"}}")),
             "State comparison ignores only object property ordering, including nested requests.");
-        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"b\",\"From\":1},\"Marks\":[1,2]}")),
+        Equal(false, baseline == PolicyStateJson.Canonical(Json.DeserializeObject("{\"Request\":{\"Id\":\"b\",\"From\":1},\"Marks\":[1,2]}")),
             "State comparison detects a changed native identity.");
-        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":2},\"Marks\":[1,2]}")),
+        Equal(false, baseline == PolicyStateJson.Canonical(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":2},\"Marks\":[1,2]}")),
             "State comparison detects changed range geometry.");
-        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[2,1]}")),
+        Equal(false, baseline == PolicyStateJson.Canonical(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\",\"From\":1},\"Marks\":[2,1]}")),
             "State comparison preserves list order.");
-        Equal(false, baseline == CanonicalJson(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\"},\"Marks\":[1,2]}")),
+        Equal(false, baseline == PolicyStateJson.Canonical(Json.DeserializeObject("{\"Request\":{\"Id\":\"a\"},\"Marks\":[1,2]}")),
             "State comparison detects a missing field.");
     }
 
