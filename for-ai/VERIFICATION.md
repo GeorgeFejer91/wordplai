@@ -429,6 +429,35 @@ All receipts in this section are under ignored
   live refusal/retry/revocation and first-visible-edit timings. B is prepared, but
   browser control detached after the second tab opened; its creation timeout did
   not mean it was absent. No duplicate writing request was submitted.
+- `VERIFIED`, separate client scope: the reconnected app became callable from
+  Codex. Through that actual public MCP connector, owned B was read completely;
+  protected wording was refused with unchanged revision/text, authorized wording
+  applied directly, exact replay added no duplicate rationale, and stale context
+  returned `manuscript_changed` with `request_applied=false` and fresh context.
+  The connector envelope labels this error `INVALID_ARGUMENT`; retain both layers.
+  Saved B text, rationale, green protection and lack of revisions pass six checks;
+  A's saved file remained byte-identical and all six originals passed preservation.
+- `VERIFIED`, public MCP color scope: a fresh RGB created a neutral rule with empty
+  prompt and two marks. A same-length wrong final quote refused the entire batch,
+  preserving text, revision, rules and markers. Neutral color did not authorize
+  wording. Reusing the existing neutral identity preserved its rule; immediate
+  exact replay returned the same marker without duplication. A prior replay test
+  incorrectly expected success after an intervening native refusal had revoked
+  authority; the actual safe stale/revoked refusal is retained, not relabeled as
+  a successful replay. The source explicitly binds receipts to their authority
+  epoch/session. Seven saved-DOCX checks pass for exact text/paint, six total marks,
+  three neutral marks, one empty-prompt neutral rule, one rationale and no revisions.
+  All six originals again pass preservation. Receipts: `public-mcp-complete-part-*-private.json`,
+  `webgpt-fixtures/public-mcp-B-saved-result.json`,
+  `webgpt-fixtures/public-neutral-saved-result.json` and
+  `after-public-neutral-preservation.json`. This supplements the Chrome result;
+  it does not qualify a second WebGPT conversation or host picker rendering.
+- `VERIFIED`: hosted component workflow `39425758523` and Pages `39425758498`
+  both passed on `40ba9568507274815b5cc5ae49c6003f4313223e`. A fresh public Download
+  HTTP 200 still matches preview.1's version, asset URL and checksum and does not
+  advertise preview.3 (`pages-after-source-push.json`). No new installer release
+  was created. The context gate with `-RequireRemote` passes on the pushed clean
+  checkpoint; later documentation checkpoints require their own remote recheck.
 - `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
   qualification. The user has no Mac and requested a future-agent handoff;
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,

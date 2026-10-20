@@ -207,8 +207,13 @@ Instant chat executed a saved prompt: exact saved text, native rationale, green
 paint and stored protection pass fourteen saved-DOCX checks. The post-run audit
 confirms all six original documents unchanged. The client showed nineteen seconds
 for the whole task; first-visible-edit latency is not measured. DOM/screenshot
-show the answer, although AX omitted its text. A second owned fixture is ready;
-its chat tab opened despite a creation timeout, then browser control detached.
+show the answer, although AX omitted its text. A second browser tab opened despite
+a creation timeout, then control detached. B was subsequently qualified through
+the public Codex MCP connector, not that second browser conversation: authorized
+wording, protection/stale refusals, replay, neutral RGB, atomic quote refusal and
+saved-state checks pass, with all six originals preserved. B's prompt wording is
+now protected and its intro/ending have a neutral color. Use fresh owned passages
+for future two-browser writing scenarios; do not count B's Codex result as WebGPT.
 
 The public Word connection briefly reported running, then failed/revoked; HTTPS
 returned a tunnel-hosted 404. Separate read-only synthetic probes through the
@@ -234,18 +239,23 @@ Keep editing/protection/transaction/connection permissions unchanged. Preserve
 the initial native UI resource-count failure independently; later passes do not
 prove its cause. Do not restart a live test or alter its captured source inputs.
 
-Next actions: recover the already-created second Chrome tab, run B and interleave
-A/B requests without cross-target effects, then exercise cold/reloaded choice and
-safe failure/revocation. Await user-controlled Word close for preview.3 upgrade;
+Next actions: recover the already-created second Chrome tab, prepare fresh owned
+prompt passages and interleave two browser chats without cross-target effects,
+then exercise cold/reloaded choice and safe failure/revocation. Await
+user-controlled Word close for preview.3 upgrade;
 its Word-open refusal already passes with installed files unchanged. Keep the
 stable download on its observed preview.1 until a replacement qualifies.
 
-Source checkpoints: `9b768c1` corrects the Connections overview and builds the
-preview.3 candidate; `ba9ff8a` corrects color-input process reporting. These and
-the shared-skill update `f14dc7c` were created on `main`; the last observed remote
-was `c5f0130` before publication. The sanitized evidence/Mac handoff checkpoint
-follows them. Recheck remote SHA and hosted CI after pushing; no preview.3 release
-or installer deployment has been performed. Browser control was stopped with
-physical Escape twice; continue non-UI work and await restored UI access before
-claiming further browser scenarios. Word remains open, and the save/close request
-is pending; do not close the user's documents for them.
+Source checkpoints: `9b768c1` corrects the overview/builds preview.3, `ba9ff8a`
+corrects test reporting, and `40ba956` records qualification and the Mac handoff.
+They and the shared-skill update are pushed on `main`. Hosted verification
+`39425758523` and Pages `39425758498` passed on `40ba956`; the public Download
+still matches preview.1. This additional evidence checkpoint changes no runtime
+or release assets; recheck its remote SHA and CI after publication.
+
+No preview.3 installer release has been performed. The remaining installed/UI
+gates require external action: Word remains open and the save/close request is
+pending; browser control was stopped with physical Escape twice. Await restored
+UI access before claiming further browser scenarios. Do not close the user's
+documents, infer shutdown from a timeout, or substitute these public MCP checks
+for the remaining named browser/installed surfaces.
