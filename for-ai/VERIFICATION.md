@@ -472,8 +472,51 @@ All receipts in this section are under ignored
   1,419 native UI checks and 21 renders. See `components-state-comparison-final/`,
   `hosted-recolor-comparison-fixed.json` and `state-json-negative-control/`.
   The final candidate's 67 inputs and six payloads still match, with unchanged
-  installer SHA-256 (`preview3-final-current-binding.json`). Verify hosted CI on
-  the test correction's own published SHA before calling remote checks complete.
+  installer SHA-256 (`preview3-final-current-binding.json`). Hosted verification
+  `39428499738` passed on the exact published correction `7034ff0`.
+- `VERIFIED`, preview.3 installed lifecycle: upgrade from preview.2 and reinstall
+  exit 0, with all six payloads, manifest, version and both registration views
+  correct. Uninstall removes the payload/uninstaller and all eight checked COM,
+  Word add-in and product keys across both registry views. All 107 existing
+  profile files remain unchanged, with none added during this lifecycle. See
+  `preview3-lifecycle/result.json` and `preview3-unregister/result.json`. This
+  covers this existing-profile host, not a clean machine or other Office/OS hosts.
+- `VERIFIED`, original preservation: Word was already closed and all six originals
+  saved when the user's new open/save authorization was checked. Fresh installed
+  Word reopened all six with unchanged native text, comments, revisions, Saved
+  state and file hashes; the preview.3 add-in is connected/exposed with its exact
+  DLL hash. See `preview3-reopen/result.json`. The first helper had a parser error
+  before execution and remains retained.
+- `FAIL`, retained: preview.3's first installed runtime attempt stopped after
+  three checks at recovered connection cleanup, with all six originals unchanged
+  (`preview3-installed-preservation.json`). Normal Stop subsequently cleared
+  cleanup and busy state. The new Word window held foreground focus; normal
+  Chrome activation subsequently moved focus without removing the guard.
+- `VERIFIED`, preview.3 installed runtime: the fresh
+  `preview3-installed-background/result.json` passes all 69 checks, including
+  direct editing, native rationale/green protection, exact replay, stale feedback
+  refusal, Undo/Redo, Discard/Reject, timer autosave, revocation and saved/reopened
+  markers. The matching preservation receipt passes for all six originals with
+  exact DLL SHA-256 `5969541b4295760b2f78cab1e829f92b737a69a18aa958f90ea702d77e64b0f1`.
+  This driver uses actual installed Word/MCP loopback, not the public tunnel.
+- `PARTIAL`, physical preview.3 UI: a real double-click on owned synthetic C's
+  yellow prompt passage opens the correct color-rule dialog with direct-edit
+  guidance and no mode toggle. Its accessibility tree is empty. The dialog image
+  did not change after attempted field input, but the later native audit finds
+  C's body replaced with the disposable draft string and automatically saved.
+  This is a failed automation interaction, not a verified dialog draft edit or
+  an AI write. No dialog Save occurred; C is invalid for further writing tests.
+  The attempted Cancel was stopped by the user's physical Escape, so
+  draft/Cancel/Save remains unqualified. Raw diagnosis and the initial preparation
+  precondition failure are retained under `preview3-webgpt-fixtures/`. The first
+  audit also found that legacy PowerShell's default JSON file encoding lost the
+  baseline emoji; use explicit UTF-8 or the source-defined Unicode expectation
+  for future fixture audits. Chrome control recovered to the original A chat
+  before that stop; no new WebGPT writing request was submitted.
+- `VERIFIED`, post-UI original preservation: the bounded native audit again
+  passes for all six originals, including exact text, comments, revisions, Saved
+  state and file hashes (`preview3-after-native-ui-preservation.json`). The
+  disposable C incident does not authorize claims about dialog input routing.
 - `DEFERRED BY USER`: Mac implementation, installer and installed Word/client
   qualification. The user has no Mac and requested a future-agent handoff;
   `MACOS-COMPATIBILITY.md` now specifies starting context, capability feasibility,

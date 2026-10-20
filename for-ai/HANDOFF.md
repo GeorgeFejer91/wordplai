@@ -84,12 +84,14 @@ Plain host/answer-load failures were also observed without a proven common root
 cause. Keep these surfaces separate. Local widget tests and successful HTTP
 responses do not close the live-host gap.
 
-**Installed package identity:** preview.2 is installed and its exact payload has
-passed the 69-check synthetic runtime fixture with the six original documents
-preserved. Preview.3 includes the corrected Connections overview and is built
-but awaits installation after user-controlled Word close. Full hashes and
-scoped receipts are in $('VERIFICATION.md'). Do not transfer installed preview.2
-results to preview.3 or to a different host.
+**Installed package identity:** preview.3 is installed with all six exact payloads
+and its manifest verified. Upgrade, uninstall, registration removal in both
+registry views and reinstall pass; all 107 existing profile files are unchanged.
+The six original documents reopened unchanged. Preview.3's installed runtime
+fixture then passed all 69 checks after normal Stop cleared the initial cleanup
+barrier and normal Chrome activation moved foreground focus. Full hashes and
+scoped receipts are in `VERIFICATION.md`. Do not transfer results between
+candidates or hosts.
 
 **Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
 transport and autosave checks but failed the native WinForms containment gate.
@@ -167,8 +169,9 @@ Keep unsanitized evidence private; do not overwrite it with a redacted copy.
 The user authorized sustained Windows qualification, real Chrome/WebGPT
 scenarios, fixes and qualified shipment. They subsequently deferred Mac
 implementation/testing to a future agent with Mac and Word access and requested
-an actionable handoff. Preserve user documents; close only owned disposable
-fixtures. Overall acceptance remains open.
+an actionable handoff. The user subsequently explicitly authorized opening and
+saving Word as needed for qualification. Preserve original document content and
+audit lifecycle changes. Overall acceptance remains open.
 
 - [x] Recheck preview.2 source/payload identity, install it with Word closed and
   verify its installed payload; run the installed 69-check fixture and preservation
@@ -181,9 +184,16 @@ fixtures. Overall acceptance remains open.
   all twenty fresh component gates pass, including native UI containment.
 - [x] Build preview.3, bind all 67 inputs and six payloads, and verify its exact
   DLL's COM ABI and effective fault control. See `VERIFICATION.md` for hashes.
-- [ ] Install preview.3 after the user saves and closes Word; verify installed
-  identity, actual runtime, physical dialog draft/Cancel/Save, upgrade/uninstall
-  and persistence. The user's Word process remains open; do not close it for them.
+- [x] Install preview.3, verify exact installed identity, upgrade/uninstall/reinstall
+  and profile persistence; reopen all six originals with unchanged content,
+  comments, revisions, saved state and saved-file hashes.
+- [x] Complete preview.3's installed 69-check runtime fixture with all six
+  originals unchanged. Retain the initial three-check cleanup refusal separately.
+- [ ] Complete physical dialog draft/Cancel/Save checks. A real double-click on
+  owned C opens the correct installed dialog, but targeted typing actually
+  replaced C's document body with the disposable draft string. The dialog image
+  did not reflect that input. C is invalid for future tests; retain this failed
+  interaction. No dialog Save was performed. Native control was stopped by Escape.
 - [x] Reconnect an equivalent ChatGPT test app and run the first named-document
   real WebGPT edit; verify actual native/saved results and original preservation.
 - [ ] Run a second independent conversation, cold/reloaded picker, independent
@@ -247,26 +257,34 @@ comparer and strict controls. The completed test-only repair shares it between
 `modules/word/test.ps1`, and retains values, fields and list order exactly. All
 twenty component gates pass after the repair, and a scalar-losing copied control
 fails the intended identity assertion. No runtime, permission, timeout, installer
-or production serialization change. Verify the correction's exact published SHA
-and hosted workflow; retain the earlier hosted failure and partial local repair.
+or production serialization change. Hosted verification `39428499738` passed on
+the correction's exact published SHA `7034ff0`; retain the earlier hosted failure
+and partial local repair.
 
-Next actions: recover the already-created second Chrome tab, prepare fresh owned
-prompt passages and interleave two browser chats without cross-target effects,
-then exercise cold/reloaded choice and safe failure/revocation. Await
-user-controlled Word close for preview.3 upgrade;
-its Word-open refusal already passes with installed files unchanged. Keep the
+Next actions: resume UI work only after user-restored access. Prepare fresh owned
+prompt documents; C was changed by the failed UI interaction and must not be
+counted as an editing success. Qualify the dialog draft/Cancel/Save and interleave
+two browser chats without cross-target effects, then exercise cold/reloaded
+choice and safe failure/revocation. The second created tab was absent from the
+latest tab inventory; the original A chat remained available. Preview.3's public
+connection reached running after its installed fixture, but its new endpoint
+still needs equivalent connector reconnection. Retain the foreground guard and
+initial cleanup refusal. Its Word-open installer refusal
+already passes with installed files unchanged. Keep the
 stable download on its observed preview.1 until a replacement qualifies.
 
 Source checkpoints: `9b768c1` corrects the overview/builds preview.3, `ba9ff8a`
 corrects test reporting, and `40ba956` records qualification and the Mac handoff.
-They and the shared-skill update are pushed on `main`. Hosted verification
-`39425758523` and Pages `39425758498` passed on `40ba956`; the public Download
-still matches preview.1. This additional evidence checkpoint changes no runtime
-or release assets; recheck its remote SHA and CI after publication.
+They, the shared-skill update and test-only comparer correction `7034ff0` are
+pushed on `main`. Hosted verification `39428499738` passed on `7034ff0`; Pages
+`39425758498` passed on `40ba956`. The public Download still matches preview.1.
+This additional evidence checkpoint changes no runtime or release assets;
+recheck its remote SHA and CI after publication.
 
-No preview.3 installer release has been performed. The remaining installed/UI
-gates require external action: Word remains open and the save/close request is
-pending; browser control was stopped with physical Escape twice. Await restored
-UI access before claiming further browser scenarios. Do not close the user's
-documents, infer shutdown from a timeout, or substitute these public MCP checks
-for the remaining named browser/installed surfaces.
+No preview.3 installer release has been performed. Word was already closed when
+the new open/save authorization was checked; the original documents were saved.
+Installation and reopening then passed without changing their files. Browser
+control recovered for the installed focus move, then native control was stopped
+again with physical Escape during dialog testing. Await user-restored UI access
+before claiming further browser scenarios. Do not infer shutdown from a
+timeout or substitute public MCP checks for the named browser/installed surfaces.
