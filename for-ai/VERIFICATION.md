@@ -117,6 +117,11 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   `artifacts/word/overlap-list-fix/preview8/`. This candidate is installed locally,
   not published. Reliable host rendering, keyboard/custom typing, raw wire,
   first-visible latency, clean-machine and Mac scopes remain open.
+- `VERIFIED`: version/evidence checkpoint `ae583e7` is pushed and passes hosted
+  verification `39521101640` and Pages `39521101662`. Local rendering passes 313
+  checks. Three anonymous page/release files match tested bytes; all twelve
+  deployed source hashes match exact Git blobs. The copied changed-lock-hash
+  control fails its intended predicate. The public release remains preview.5.
 
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 

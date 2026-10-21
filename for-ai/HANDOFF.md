@@ -452,8 +452,15 @@ prior UI-fixture cleanup path substitution fails before closure. Corrected
 observers pass. Current Word process/public status are in private preview.8
 restore/status receipts; the old endpoint is revoked. Recheck before reuse.
 
-Next: verify this candidate's version/evidence Git checkpoint and hosted CI/Pages;
-publish a new unsigned preview only with its actual identity and explicit limits.
+Version/evidence checkpoint `ae583e7` is pushed and passes hosted verification
+`39521101640` and Pages `39521101662`. Local site rendering passes 313 checks;
+anonymous page/release bytes and twelve deployed source hashes match exact Git
+blobs, including the effective changed-hash control. Private consolidated CLI
+proof is `preview8/cli-qualification-result.json`; remote/deployment receipts
+remain under the same ignored evidence root.
+
+Next: publish a new unsigned preview only with its actual identity and explicit
+limits; preview.8 is currently installed locally and preview.5 remains public.
 Reliable host rendering, keyboard/custom typing, raw client wire, first-visible
 timing, clean-machine and future Mac implementation/qualification remain open.
 
@@ -486,7 +493,9 @@ Version checkpoint `476342c` passes hosted verification `39511507796` and Pages
 `39511507524`; the private exact-Git deployment audit passes for all twelve inputs.
 The native overlap source correction `8044b36` passes hosted verification
 `39515532203` and twenty-one local component gates before preview.8 packaging.
-Verify the newer version/evidence checkpoint separately.
+Version/evidence checkpoint `ae583e7` passes verification `39521101640` and Pages
+`39521101662`, with exact anonymous/Git-byte deployment audit. Subsequent
+documentation-only commits do not change the qualified package inputs.
 No new release asset has been published.
 Retain preview.5 assets and disclose the remaining preview limits. The overall
 shipment goal remains active for reliable cold picker, timing, physical,
