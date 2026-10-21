@@ -242,6 +242,9 @@ audit lifecycle changes. Overall acceptance remains open.
   all three asset digests/sizes and anonymous downloads match. Preview.3 is
   preserved. Local stable-page rendering passes 313 checks with actual release
   metadata; verify its subsequent exact-SHA Pages deployment.
+- [x] Publish qualified Windows preview.8 with explicit limits; all three public
+  asset bytes match. Actual-release site rendering passes 313 checks; exact hosted
+  CI/Pages and anonymous page/source/metadata audits pass. Older assets remain.
 
 Latest installed state: local preview.8 candidate, with seven documents open
 (five originals and owned G/H) and all six known original saved files unchanged.
@@ -443,9 +446,17 @@ blobs, including the effective changed-hash control. Private consolidated CLI
 proof is `preview8/cli-qualification-result.json`; remote/deployment receipts
 remain under the same ignored evidence root.
 
-Preview.8 is now published as an unsigned prerelease with explicit limits.
-Next: verify the actual-release site update's exact hosted CI/Pages deployment
-and anonymous page/source identities, then continue unfinished host acceptance.
+Preview.8 is published as an unsigned prerelease with explicit limits. The actual
+release-site checkpoint `e23d1e8` passes verification `39522289127`, Pages
+`39522289143` and 313 local rendered checks. Anonymous Description/Download/
+release bytes match tested output; twelve deployed source hashes match exact Git
+blobs, and the changed-hash control is effective. Site version, publication time,
+URL, checksum and size match GitHub's actual published asset metadata.
+Post-publication native/saved preservation again passes seven open documents and
+six known saved originals, with zero changes. Receipts are in the release root.
+Next: retain an actual failing live host resource/bridge or tool error envelope
+through supported observation before attributing the rendering failure to code;
+continue native keyboard and timing acceptance when the named surface is available.
 Reliable host rendering, keyboard/custom typing, raw client wire, first-visible
 timing, clean-machine and future Mac implementation/qualification remain open.
 
@@ -475,10 +486,9 @@ and GitHub digests/sizes match. The remote tag resolves to the intended commit.
 Preview.5's three asset digests/sizes remain unchanged. Raw release/download
 receipts are private under `artifacts/word/preview8-release/`.
 
-Actual release metadata and limit copy are updated in the existing root README
-and two-page site. Verify this change's exact CI, rendered layouts and Pages
-deployment before claiming the stable download page updated. Older deployment
-and package outcomes remain indexed in `VERIFICATION.md` and Git history.
+Actual release metadata and limit copy are deployed in the existing root README
+and two-page site at `e23d1e8`, with CI/Pages and exact anonymous audits above.
+Older deployment/package outcomes remain in `VERIFICATION.md` and Git history.
 The native source correction `8044b36` and version checkpoint `ae583e7` passed
 their own exact hosted gates before publication; package inputs are unchanged.
 Retain older assets and disclose the remaining preview limits. The overall

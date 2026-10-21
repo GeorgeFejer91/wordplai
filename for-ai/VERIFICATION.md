@@ -114,8 +114,9 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   JSON parsing confirms identical values), and the earlier UI-fixture cleanup
   path-substitution failure; both stop before closing their fixtures. Corrected
   explicit UTF-8/path observers pass. Raw receipts remain private under
-  `artifacts/word/overlap-list-fix/preview8/`. This candidate is installed locally,
-  not published. Reliable host rendering, keyboard/custom typing, raw wire,
+  `artifacts/word/overlap-list-fix/preview8/`. At that runtime checkpoint the
+  candidate was local and unpublished; its later release is recorded below.
+  Reliable host rendering, keyboard/custom typing, raw wire,
   first-visible latency, clean-machine and Mac scopes remain open.
 - `VERIFIED`: version/evidence checkpoint `ae583e7` is pushed and passes hosted
   verification `39521101640` and Pages `39521101662`. Local rendering passes 313
@@ -145,7 +146,18 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   foreground refusal, native keyboard/custom typing, latency, additional host
   configurations, clean-machine and future Mac gaps. Physical preview.7 preset
   results retain their version; preview.8 separately qualifies corrected overlap.
-  Verify this actual-metadata site's rendered/remote deployment separately.
+  The actual-metadata site's verification is recorded below.
+- `VERIFIED`: actual-release site checkpoint `e23d1e8` passes hosted verification
+  `39522289127` and Pages `39522289143`. Local rendered verification passes 313
+  checks across both routes, sizes, enlarged/localized/spacing text and readable
+  fallbacks. Three anonymous page/release files match tested bytes, and all twelve
+  deployed source hashes match exact Git blobs; the changed-lock-hash control is
+  effective. Site version/time/URL/hash/size independently match published GitHub
+  asset metadata. No host widget success is inferred from the site result.
+- `VERIFIED`: the post-publication audit preserves all seven open documents and
+  six known saved originals with zero native/file changes. Its private receipt is
+  `overlap-list-fix/preview8/post-release-preservation-result.json`. Full release/
+  deployment receipts and rendered output remain under `preview8-release/`.
 
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
