@@ -439,6 +439,23 @@ prior UI-fixture cleanup path substitution fails before closure. Corrected
 observers pass. Current Word process/public status are in private preview.8
 restore/status receipts; the old endpoint is revoked. Recheck before reuse.
 
+A later real-chat closed-target case reports `document_closed` and
+`request_applied=false` for the exact owned J, without fallback/retry. Fifteen
+checks correlate all displayed error fields with an independent actual CLI MCP
+refusal and preserve seven open/six known saved originals plus both closed owned
+files. The CLI envelope has `isError=true`; the client report says that field is
+absent and reports outer `INVALID_ARGUMENT`. This is a channel distinction,
+not proof that the real MCP wire omitted `isError`. A changed-code control fails.
+
+Only owned J reopens hidden with its original identity, rules/marks, saved bytes
+and rationale. Explicit real-chat recovery reads it completely; a subsequent
+client-reported offset-only read retains J while another Word document stays
+active. Thirteen recovery/preservation checks and an effective changed-identity
+control pass. Normal close restores seven documents with all originals unchanged.
+The original J response now renders after reopening the conversation; retain its
+prior load failures. Private receipts: `artifacts/word/webgpt-preview8-closed-target/`.
+No runtime/package or public asset changes accompany these read-only tests.
+
 Version/evidence checkpoint `ae583e7` is pushed and passes hosted verification
 `39521101640` and Pages `39521101662`. Local site rendering passes 313 checks;
 anonymous page/release bytes and twelve deployed source hashes match exact Git
@@ -454,8 +471,10 @@ blobs, and the changed-hash control is effective. Site version, publication time
 URL, checksum and size match GitHub's actual published asset metadata.
 Post-publication native/saved preservation again passes seven open documents and
 six known saved originals, with zero changes. Receipts are in the release root.
-Next: retain an actual failing live host resource/bridge or tool error envelope
-through supported observation before attributing the rendering failure to code;
+Inspected Chrome controls expose console logs and page assets, without a network
+trace capability; the response menu exposes no raw tool result. Two Statsig cache
+warnings do not establish the rendering failure's cause. Next: obtain a supported
+host resource/bridge trace before attributing the rendering failure to code;
 continue native keyboard and timing acceptance when the named surface is available.
 Reliable host rendering, keyboard/custom typing, raw client wire, first-visible
 timing, clean-machine and future Mac implementation/qualification remain open.

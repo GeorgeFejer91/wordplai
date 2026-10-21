@@ -159,6 +159,38 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   `overlap-list-fix/preview8/post-release-preservation-result.json`. Full release/
   deployment receipts and rendered output remain under `preview8-release/`.
 
+## Preview.8 real-client closed target and reopen recovery — 2026-10-21
+
+- `VERIFIED`, scoped client/native correlation: one explicitly requested real
+  Chrome read of closed owned J reports `document_closed`, no fallback/retry and
+  `request_applied=false`. All displayed code/message/details exactly match a
+  separate actual CLI MCP refusal, whose text/structuredContent agree and whose
+  outer tool result has `isError=true`. The chat reports `isError` absent and an
+  outer `INVALID_ARGUMENT`; this is not captured raw host wire. Fifteen checks
+  pass, including exact inventory/active target, seven-open/six-saved-original
+  preservation and unchanged saved I/J files. A copied client-code mismatch fails.
+- `VERIFIED`: only owned J reopens hidden, retaining identity, rules/marks,
+  pending review state, wording, saved bytes and one exact rationale. Explicit
+  real-chat complete reading recovers that target; a follow-up client-reported
+  offset-only call returns the same J while another Word document remains active.
+  Thirteen checks correlate both actual rendered tables with native/CLI state,
+  complete flags, new sharing authority and exact rules/mark fields. Wording,
+  rationale content/anchor and saved bytes remain exact with no new revisions.
+  Normal close restores seven documents; all originals remain unchanged. A copied
+  displayed-identity mismatch fails its intended predicate. Word lifecycle uses
+  no mouse/keyboard input. Real request arguments/call counts remain client reports.
+- The original J edit response now renders after reopening its chat; its earlier
+  first/reload failures remain retained. Inspected supported Chrome capabilities
+  expose console/page assets, not network tracing; response actions expose no raw
+  result view. The only two captured warnings concern Statsig cache writes and do
+  not identify a cause. During the closed-target chat, HTTP requests/refusals rise
+  by four/one; resource/RPC/Origin errors remain zero, with no resource read/write.
+  Aggregate counters do not prove the exact real-client call sequence.
+- Evidence is private under `artifacts/word/webgpt-preview8-closed-target/`.
+  Runtime, package, endpoint and published preview.8 assets are unchanged.
+  Raw live client wire/bridge, reliable rendering, keyboard, visible timing,
+  clean-machine and future Mac scopes remain open.
+
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including
