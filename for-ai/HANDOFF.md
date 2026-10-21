@@ -2,23 +2,13 @@
 
 ## Exact RGB recolor follow-up — 2026-10-20
 
-The existing recolor authority supports green `#00FF00` to red `#FF0000` with
-unchanged text/ranges and existing rules. MCP guidance now explicitly permits
-neutral red with an empty prompt and forbids inferring a function from hue or
-asking for an editing prompt for a visual request. Existing red rules retain
-their local meaning. Focused policy checks pass 201 assertions, including fresh
-and existing neutral red and unchanged Reject red; transport checks pass 2,116.
-The isolated native suite passes 217 recolor assertions, including exact paint,
-other-marker preservation, replay and save/reopen. The final component driver
-passes all 21 gates, including 1,419 native UI checks and 21 renders. Its overall
-`PARTIAL` retains the installed/public-client evidence boundary. See the scoped
-results and test-source line-ending receipt in `VERIFICATION.md`.
-Receipts are private under `.for-ai-local/recolor-20261020/`; installed/live AI
-clients and Writer parity are not qualified by these checks. Preserve the
-pre-existing preview.4 CLI work, now independently committed as `0aeb646`.
-At that recolor checkpoint, the change was based on `b79108a` and no installer
-or publication was performed. Subsequent integrated preview.5 qualification is
-recorded below; the overall goal remains open.
+Exact green-to-red recoloring preserves text, ranges and existing rules. Neutral
+red requires no editing prompt; hue never assigns a function. Policy 201,
+transport 2,116, isolated native 217 and twenty-one component gates pass with
+scoped evidence in `VERIFICATION.md` and private `.for-ai-local/recolor-20261020/`.
+These source results do not qualify installed/live clients or Writer parity.
+The independently committed CLI work `0aeb646` is preserved; later installed
+and actual WebGPT outcomes are recorded below. Overall acceptance remains open.
 
 This is a sanitized continuation contract for the standalone project, prepared
 2026-10-18. It describes unfinished acceptance work, not a transcript or a claim
@@ -77,15 +67,12 @@ or a successful host render.
 
 ## Known unresolved observations
 
-**Local-only background CLI autosave:** the installed preview.4 candidate leaves
-fresh inactive CLI rule/mark changes dirty until an MCP read enrolls that document
-for background saving. This is a new installed regression, not covered by its
-earlier 36-check run. The minimal source fix enrolls only successful local
-mutations in the existing native autosave path; reads/refusals remain excluded
-and no MCP authority is shared. The new native regression fails before the fix
-and passes 38 assertions afterward. Preview.5 is being qualified; do not ship the
-older preview.4 candidate as if this issue were fixed. WebGPT fixture preparation
-stopped at this persistence gate, and no new writing request has been sent.
+**Retained CLI autosave regression:** preview.4 left inactive local rule/mark
+changes dirty until an MCP read. The source regression fails before the fix and
+passes 38 assertions afterward. Successful local mutations now enroll in native
+autosave without sharing MCP authority; reads/refusals remain excluded. Preview.5
+and the current installed preview.8 independently qualify persistence. Never
+transfer those results to the retained older candidate.
 
 **Foreground editing:** the current direct path refuses when the relevant Word
 window owns foreground focus: "Finish typing and move focus from the Word
@@ -114,29 +101,17 @@ Plain host/answer-load failures were also observed without a proven common root
 cause. Keep these surfaces separate. Local widget tests and successful HTTP
 responses do not close the live-host gap.
 
-**Installed package identity:** the local preview.4 CLI candidate is installed
-with all eight exact payloads verified. Upgrade, uninstall, registration removal
-in both registry views and reinstall pass; all 112 existing profile files are
-unchanged. Its installed CLI passes 16 checks and all six originals are preserved.
-The published preview.3 separately passed its 69-check installed fixture after
-normal Stop cleared cleanup and normal Chrome activation moved foreground focus.
-Full hashes and scoped receipts are in `VERIFICATION.md`. Do not transfer results
-between candidates or hosts.
+**Installed package identity:** each candidate requires its own payload, profile,
+registration and installed-runtime evidence. Earlier preview.3/preview.4 outcomes
+and failures remain in `VERIFICATION.md`; current installed preview.8 is below.
+Do not transfer results between candidates or hosts.
 
-**Fresh hosted native UI:** standalone workflow run `39126772674` passed policy,
-transport and autosave checks but failed the native WinForms containment gate.
-The Custom prompt GroupBox required 166 pixels in a 115-pixel-high TableLayout
-cell at the tested size. The corresponding local 1,322-check run passed. A
-fresh hosted capture identified a 1024×720 working area, 18.875pt text and a
-screen-clamped minimum that could not contain the required controls. Commit
-`9ce27dc` fixes this with a readable no-fit state, preserves the open draft and
-restores editing when space returns. The regression fails against the old code;
-all 20 component gates pass locally and in hosted run `39175387165`, including
-1,419 local and 1,373 hosted native UI checks with 21 renders in each run.
-The original failures remain retained. Published preview.1 does not contain
-this fix; preview.2 has since been installed and tested as recorded below. Installed UI and
-physical interaction qualification remain open. This is separate from the
-ChatGPT picker and the earlier JSON property-order assertion correction.
+**Retained hosted native UI failure:** run `39126772674` fails containment on a
+1024×720 desktop despite a local pass. Commit `9ce27dc` adds readable no-fit
+behavior, preserves drafts and restores editing when space returns. The old-code
+regression fails; twenty local/hosted gates pass (`39175387165`). Full dimensions,
+counts and failures remain in `VERIFICATION.md`. This native fix does not qualify
+ChatGPT rendering, every installed environment or physical keyboard access.
 
 ## Prioritized scenario matrix
 
@@ -222,11 +197,13 @@ audit lifecycle changes. Overall acceptance remains open.
 - [x] Qualify preview.7 physical ribbon/text double-click and preset draft,
   Cancel and explicit Save on a new owned fixture. Each stage passes 21 checks;
   ten independent saved-DOCX checks and an effective missing-preset control pass.
-- [ ] Complete custom typing/keyboard and the corrected overlap chooser. Earlier
+- [x] Qualify preview.8's corrected installed overlap chooser: exactly two rows,
+  correct second protective rule, Cancel/Close and full preservation pass.
+- [ ] Complete custom typing/keyboard. Earlier
   owned C was corrupted when targeted draft typing reached its document body;
   no Save occurred and native control was stopped by Escape. C stays invalid.
   The new nonmutating routing check also selects document text, so no new typing
-  is attempted. The newly discovered duplicate chooser rows need installed recheck.
+  is attempted. The duplicate chooser correction is independently qualified below.
 - [x] Reconnect an equivalent ChatGPT test app and run the first named-document
   real WebGPT edit; verify actual native/saved results and original preservation.
 - [x] Run two independent real conversations and interleave color operations;
@@ -266,7 +243,7 @@ audit lifecycle changes. Overall acceptance remains open.
   preserved. Local stable-page rendering passes 313 checks with actual release
   metadata; verify its subsequent exact-SHA Pages deployment.
 
-Latest installed state: local preview.7 candidate, with seven documents open
+Latest installed state: local preview.8 candidate, with seven documents open
 (five originals and owned G/H) and all six known original saved files unchanged.
 Preview.5 remains the public release. The sixth original was already closed at upgrade
 preflight; its cause is unestablished. Preserve that observed open set rather
@@ -394,7 +371,7 @@ deployed manifest hashes match that exact Git commit. Retain the initial wrong
 comparison against Windows checkout bytes and the corrected tag-label assertion.
 The Git-byte audit's changed-source-hash control fails as intended.
 
-### Current preview.7 and overlap follow-up — 2026-10-21
+### Preview.7 rendering and overlap discovery — 2026-10-21
 
 Preview.7 is installed locally: 72 inputs/eight payloads, COM 536, CLI fifteen,
 installed isolation forty-two and installed diagnostics nine checks pass. Settled
@@ -434,17 +411,51 @@ reproduces native=4/managed=2. The shared list now queues resize/font/handle lay
 after WinForms operations. Focused source UI passes 1,433 checks/21 renders,
 including native row equality and exact selection after resize/font changes. A
 copy of the original list fails the final regression. All twenty-one full source
-component gates pass; installed preview.7 still has the defect. Private source evidence is
+component gates pass; preview.7 retains the observed defect. Private source evidence is
 in `artifacts/word/overlap-list-fix/`, with physical receipts/screenshots in
 `artifacts/word/native-ui-preview7/`.
 
 Only the new disposable UI fixture is closed after its normal timer save. Its
 chooser interactions leave policy/wording exact; the original seven-document set
-and all six known original saved files pass final preservation. Next: finish the
-exact-source hosted CI gate, then build a distinct preview.8, install through the
-settled-Stop/preservation lifecycle and qualify the actual corrected overlap chooser.
-Reliable first render, keyboard/custom typing, raw client wire, first-visible timing,
-clean-machine and future Mac implementation/qualification remain open.
+and all six known original saved files pass final preservation. Source checkpoint
+`8044b36` passes exact hosted verification `39515532203` before preview.8 packaging.
+
+### Current preview.8 installed automation — 2026-10-21
+
+Preview.8 is installed locally. All 72 inputs/eight payloads match; package COM
+536/CLI fifteen, installed CLI forty-two and diagnostics nine checks pass, with
+positive MCP writing and zero unqualified foreground checks. Settled Stop,
+Word-open refusal, upgrade and exact seven-document restore pass; 143 profile
+files remain unchanged. Exact identities are in `VERIFICATION.md`; receipts are
+private under `artifacts/word/overlap-list-fix/preview8/`. Public preview.5 remains.
+
+Physical mouse selection now shows exactly two overlap rows and opens the second
+protective rule correctly. Cancel/Close leave the owned fixture unchanged; it
+closes normally. Custom typing/keyboard remains unqualified for the routing
+reason above. No HTML/bridge or remote permission/tool change is included.
+
+The equivalent preview.8 four-tool app still fails cold and reloaded rendering.
+Explicitly named fresh I and J real chats each apply one saved edit. I displays
+its success; J's response fails to load despite a committed edit. Reload also
+fails. One read-only report retrieves the existing successful result without a
+new write. Each actual saved DOCX passes fifteen independent checks, including
+exact displayed Unicode wording, protective mark/paint, original rules/ending,
+one applied receipt/rationale and neighbor byte isolation. A copied missing-
+protection control fails. Raw wire is uncaptured. Never resend an unknown write
+under a new identity because the browser response failed to load.
+
+The read-only report leaves saved bytes, native state and full CLI state exact.
+Only owned I/J then close, with unchanged saved bytes. Final original seven-open/
+six-known-saved-file preservation passes. Keep initial observer failures separate:
+PowerShell 5's implicit UTF-8 decoding mismatches the same JSON values, and a
+prior UI-fixture cleanup path substitution fails before closure. Corrected
+observers pass. Current Word process/public status are in private preview.8
+restore/status receipts; the old endpoint is revoked. Recheck before reuse.
+
+Next: verify this candidate's version/evidence Git checkpoint and hosted CI/Pages;
+publish a new unsigned preview only with its actual identity and explicit limits.
+Reliable host rendering, keyboard/custom typing, raw client wire, first-visible
+timing, clean-machine and future Mac implementation/qualification remain open.
 
 ## Continuing test constraints and public release
 
@@ -469,12 +480,13 @@ eight-payload package and all three anonymous asset downloads were verified.
 Source verification `39488257735` and Pages `39488257736` pass. Actual release
 metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
 `39488997403`; anonymous Description, Download and release JSON matched local
-bytes and all twelve deployed inputs. This is distinct from local preview.7.
+bytes and all twelve deployed inputs. This is distinct from local preview.8.
 
 Version checkpoint `476342c` passes hosted verification `39511507796` and Pages
 `39511507524`; the private exact-Git deployment audit passes for all twelve inputs.
-The native overlap source correction is newer; use its own exact-source hosted CI
-before packaging. Its local twenty-one component gates pass.
+The native overlap source correction `8044b36` passes hosted verification
+`39515532203` and twenty-one local component gates before preview.8 packaging.
+Verify the newer version/evidence checkpoint separately.
 No new release asset has been published.
 Retain preview.5 assets and disclose the remaining preview limits. The overall
 shipment goal remains active for reliable cold picker, timing, physical,

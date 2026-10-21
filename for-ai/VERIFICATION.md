@@ -68,10 +68,55 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   `artifacts/word/overlap-list-fix/`. The full source component driver passes all
   twenty-one gates, including the 1,433 native UI checks/21 renders, existing
   transport and safety fault controls, COM 536 and CLI fifteen. Its overall
-  `PARTIAL` retains installed/public-client scope. Preview.7 remains installed
-  with the defect. A distinct preview.8 and installed recheck are required before
-  claiming the fix installed or published; use this correction's own exact-source
-  hosted verification before packaging.
+  `PARTIAL` retains installed/public-client scope. Source checkpoint `8044b36`
+  passes hosted verification `39515532203`; the following distinct preview.8
+  qualifies the installed correction. Preview.7's original failure is retained.
+
+## Installed preview.8 CLI and native correction — 2026-10-21
+
+- `VERIFIED`: 72 source inputs/eight payloads match the distinct package;
+  exact-package COM 536 and CLI fifteen checks and effective fault controls pass.
+  Installer size is 23,885,366 bytes, SHA-256
+  `E0F8D9456798D8507021A893E48421ACE9C8AE7EA67CC3104B152AB75A8DE423`.
+  Installed DLL SHA-256 is
+  `3E8A349F70CD03ED984E29C4B6B6FAE65BB0B2A722B3F56FF51D2161FECD3ACC`;
+  installed CLI SHA-256 is
+  `91D185C7476BB87A29D0FA6EE9C79A673A1EC6C28C4A43836CBC28F77EE458C6`.
+- `VERIFIED`: Word-open installer refusal preserves eight installed files.
+  Settled normal Stop precedes Word exit and upgrade. Payloads, version/manifest
+  and both registration views match; 143 profile files remain unchanged, none
+  added. Seven documents reopen with exact saved bytes, native text, annotations
+  and Saved state. Public preview.5 assets remain unchanged.
+- `VERIFIED`: installed CLI passes 42 checks, positive MCP writing included,
+  with zero unqualified foreground comparisons and no mouse/keyboard input.
+  Coverage includes separate clients, complete-read witnesses, cross-client
+  refusal, replay, revocation/recovery, local-only background timer autosave and
+  closed targets. Nine installed numeric-diagnostics checks pass independently.
+- `VERIFIED`, actual native mouse interaction: corrected overlap chooser shows
+  exactly two rows for two records. Selecting the second opens its exact local
+  protective rule with Preserve checked and wording controls disabled. Cancel
+  and Close leave policy and wording exact. Only the owned UI fixture closes;
+  all seven prior open documents/six known saved originals remain unchanged.
+- `FAIL`, equivalent four-tool Chrome app: cold and reloaded picker both report
+  display/response-load failure. Naming fresh owned I once completes its real
+  WebGPT edit. Naming J once produces a response-load failure, including after
+  reload, while Word applies and saves the edit once. A read-only follow-up
+  displays applied=true/replayed=false and the existing result; no writing request
+  is resent. Both actual saved DOCX files pass fifteen checks each: exact displayed
+  Unicode wording, protection/ranges/RGB, unchanged rules, one applied receipt,
+  one exact anchored rationale, no tracked revisions and other-document isolation.
+  The copied missing-protection control fails as intended. These are displayed
+  client/native correlations, not captured raw client wire.
+- `VERIFIED`: the read-only report changes neither saved bytes, native text and
+  annotation counts nor complete CLI state. Only owned I/J close normally with
+  byte-exact saved files. Final seven-open/six-saved-original audit passes.
+  Retain the initial audit's PowerShell 5 UTF-8 decoding mismatch (independent
+  JSON parsing confirms identical values), and the earlier UI-fixture cleanup
+  path-substitution failure; both stop before closing their fixtures. Corrected
+  explicit UTF-8/path observers pass. Raw receipts remain private under
+  `artifacts/word/overlap-list-fix/preview8/`. This candidate is installed locally,
+  not published. Reliable host rendering, keyboard/custom typing, raw wire,
+  first-visible latency, clean-machine and Mac scopes remain open.
 
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 

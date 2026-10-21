@@ -19,6 +19,19 @@ Real installed ribbon/text double-click, preset draft/Cancel and explicit preset
 Save pass; custom typing/keyboard routing remains unqualified. Raw evidence stays
 private under the preview.7 warm/native qualification folders.
 
+Source checkpoint `8044b36` passes all twenty-one local component gates and
+hosted verification `39515532203`. Package the same correction as distinct local
+preview.8: update the root version/lock and widget dependency manifest, preserving
+HTML bytes. Bind package inputs/payloads, test its COM/CLI contracts, preserve the
+seven-document session and profile, await normal Stop cleanup, install/reopen and
+run the installed CLI and actual overlap chooser. Preserve the public preview.5
+assets; no installed or published fix is claimed before those checks pass.
+
+Preview.8 now passes exact-package and installed CLI checks, upgrade/preservation,
+and physical corrected overlap selection. Fresh I/J real WebGPT writes pass
+independent saved-file audits; host picker/response failures remain retained.
+Current evidence and unfinished acceptance remain in the canonical for-ai owners.
+
 ## Resource delivery diagnostics — 2026-10-21
 
 Start from clean main `51098c3`. Preview.6 still fails cold/reloaded ChatGPT
