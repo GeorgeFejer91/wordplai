@@ -481,6 +481,20 @@ timing, clean-machine and future Mac implementation/qualification remain open.
 
 ## Continuing test constraints and public release
 
+Latest visible-workflow continuation: fresh owned K receives one real Chrome
+request and exact timer-saved wording. Fourteen independent DOCX checks,
+native/CLI correlation and the effective missing-protection control pass. The
+host answer fails to load after the native edit. Approval stalls and an operator
+pause leave normal latency unqualified; retained frame bounds and stale UIA text
+are scoped in `VERIFICATION.md`. Only owned K/focus fixture close; Chrome returns
+to its prior minimized state. Seven open/six known saved originals remain exact.
+Private packet: `artifacts/word/preview8-visible-timing/qualification-result.json`.
+The prior evidence checkpoint `12eb2a2` is on `main`/`origin/main` and passes
+hosted verification `39524273087`; recheck the next evidence commit separately.
+No production/package/public asset changes. Next: obtain supported host wire/
+bridge evidence for rendering and a clean approval-resolved timing run; preserve
+the uncertain-write rule and the separate native keyboard/Mac handoffs.
+
 Use `modules/word/cli/README.md` and `test-installed-cli.ps1 -WordProcessId PID`
 for automation without desktop input. Use the current process from the private
 restore receipt; never attach an arbitrary active Word instance. Browser setup

@@ -191,6 +191,37 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   Raw live client wire/bridge, reliable rendering, keyboard, visible timing,
   clean-machine and future Mac scopes remain open.
 
+## Preview.8 visible edit with host approval delay — 2026-10-21
+
+- `VERIFIED`, scoped native outcome: one real Chrome/Instant named-document
+  request edits fresh owned K to its exact saved local prompt, retaining the
+  emoji and all unmarked/protected wording. Fourteen independent timer-saved
+  DOCX checks verify rule/marker identities, UTF-16 rebasing, exact protective
+  RGB, one applied receipt and one anchored rationale, with zero tracked
+  revisions. Native/CLI correlation passes; removing protection from the audit
+  input fails the intended predicate. No writing request is resubmitted.
+- `PARTIAL`, visible timing: Word stays visible in the background with an owned
+  disposable focus window foreground. The first host approval click times out;
+  native wording and the same pending approval remain unchanged. A later semantic
+  Allow once succeeds without persistent permission changes. Retained JPEG frames
+  bracket changed pixels at 163.083–500.306 seconds after Send, including approval
+  and operator delay; changed wording/comment are observed by 5.249 seconds after
+  the acknowledged approval click. These are coarse workflow bounds, not normal
+  latency or an exact approval-to-edit measurement. The sentence is partly clipped
+  in those frames; exact complete wording is verified independently above.
+- `FAIL`, host answer: the screenshot reports "This response couldn't load"
+  although accessibility says Response complete. Frames showing the native edit
+  retain old UIA document text; cause/duration are unqualified. One applied native
+  edit persists despite the failed host answer. Raw host wire is not captured.
+- `VERIFIED`: normal close of owned K preserves its saved bytes; the owned focus
+  window closes and Chrome returns to its original minimized state. All seven
+  prior open documents and six known saved originals remain unchanged. Retain
+  the initial UTF-8-without-BOM observer failure and corrected pass separately.
+  An initial capture with mismatched pixels is excluded from timing evidence.
+  Private packet: `artifacts/word/preview8-visible-timing/qualification-result.json`.
+  Runtime, package and public assets are unchanged. Reliable rendering, normal
+  timing, keyboard/custom typing, clean-machine and future Mac scopes remain open.
+
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including
