@@ -11,6 +11,8 @@ namespace UnderTree.WordAddin
         private readonly Func<string, IDictionary<string, object>, object> dispatch;
         private readonly TextBox address;
         private readonly TextBox enrollmentToken;
+        private readonly TextBox commentAuthor;
+        private string savedCommentAuthor;
         private readonly Label status;
         private readonly Label setupStatus;
         private readonly Button start;
@@ -26,7 +28,7 @@ namespace UnderTree.WordAddin
             : this(dispatch, address => Process.Start(new ProcessStartInfo(address) { UseShellExecute = true })) { }
 
         internal ConnectionsDialog(Func<string, IDictionary<string, object>, object> dispatch, Action<string> openDocumentation)
-            : base("Connections", new Size(640, 560))
+            : base("Connections", new Size(640, 700))
         {
             this.dispatch = dispatch;
             TabControl tabs = new TabControl { Dock = DockStyle.Fill, AccessibleName = "Connection settings" };
@@ -66,10 +68,22 @@ namespace UnderTree.WordAddin
                     enrollmentToken.Clear();
             });
             setupStatus = NativeLayout.Label("Paste your zrok account token to configure this Word connection.");
+            commentAuthor = NativeLayout.TextBox("Edit comment author name", false, false);
+            commentAuthor.MaxLength = 80;
+            Button saveCommentAuthor = NativeLayout.Button("Save comment name", delegate
+            {
+                if (RunOperation("comment_author_save", UiState.Args("commentAuthorName", commentAuthor.Text)))
+                    commentAuthor.Text = savedCommentAuthor;
+            });
+            TableLayoutPanel authorActions = NativeLayout.Actions(saveCommentAuthor);
+            commentAuthor.TabIndex = 0;
+            saveCommentAuthor.TabIndex = 1;
+            authorActions.Controls.Add(commentAuthor, 0, 0);
             TableLayoutPanel setupBody = NativeLayout.Column();
             setupBody.RowStyles.Add(new RowStyle(SizeType.AutoSize));
             setupBody.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
             setupBody.Controls.Add(NativeLayout.Stack(
                 NativeLayout.Label("The connection engine is included. Set up your zrok account once."),
                 SetupLink("1. Sign in or create an account at myzrok.io", "https://myzrok.io", openDocumentation),
@@ -80,6 +94,8 @@ namespace UnderTree.WordAddin
             setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Account token for zrok enrollment"), enrollmentToken, showToken), 0, 1);
             setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Keep the token private; it is never part of the MCP address. Configuring the connection shares no document."),
                 setupStatus, NativeLayout.Actions(configureConnection)), 0, 2);
+            setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Edit comment author name"), authorActions,
+                NativeLayout.Label("Used for new edit rationale comments. Existing comments keep their author. Default: wordplai.")), 0, 3);
             setup.Controls.Add(setupBody);
 
             Button refresh = NativeLayout.Button("Refresh", delegate { NativeLayout.Attempt(this, RefreshAll); });
@@ -165,6 +181,9 @@ namespace UnderTree.WordAddin
 
         private void RenderConnection(IDictionary<string, object> connection)
         {
+            string authorName = UiState.Text(connection, "commentAuthorName");
+            if (savedCommentAuthor == null || commentAuthor.Text == savedCommentAuthor) commentAuthor.Text = authorName;
+            savedCommentAuthor = authorName;
             string publicAddress = UiState.Text(connection, "publicMcpUrl");
             if (address.Text != publicAddress) address.Text = publicAddress;
             bool running = UiState.Flag(connection, "running");

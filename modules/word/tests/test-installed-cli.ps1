@@ -1,9 +1,10 @@
-param([Parameter(Mandatory)][string]$CliPath, [Parameter(Mandatory)][int]$WordProcessId, [Parameter(Mandatory)][string]$OutputDirectory, [switch]$IsolationCases, [switch]$AllowForegroundChanges)
+param([Parameter(Mandatory)][string]$CliPath, [Parameter(Mandatory)][int]$WordProcessId, [Parameter(Mandatory)][string]$OutputDirectory, [switch]$IsolationCases, [switch]$AllowForegroundChanges, [string]$CommentAuthorName)
 $ErrorActionPreference = 'Stop'
 if ($PSVersionTable.PSEdition -eq 'Core') {
     $child = @('-NoProfile','-STA','-File',$PSCommandPath,'-CliPath',$CliPath,'-WordProcessId',[string]$WordProcessId,'-OutputDirectory',$OutputDirectory)
     if ($IsolationCases) { $child += '-IsolationCases' }
     if ($AllowForegroundChanges) { $child += '-AllowForegroundChanges' }
+    if ($CommentAuthorName) { $child += @('-CommentAuthorName',$CommentAuthorName) }
     & "$env:WINDIR/System32/WindowsPowerShell/v1.0/powershell.exe" @child
     if ($LASTEXITCODE -ne 0) { throw 'Installed CLI qualification failed.' }
     return
@@ -26,6 +27,7 @@ public static class CliNativeObservation {
 $checks = New-Object 'Collections.Generic.List[string]'
 $unqualifiedForeground = New-Object 'Collections.Generic.List[string]'
 $documents = @(); $initialHashes = @(); $sequence = 0; $started = $false
+$originalCommentAuthor = $null
 function Check($Condition, [string]$Message) { if (-not $Condition) { throw $Message }; $checks.Add($Message); Write-Output ('PASS: '+$Message) }
 function Get-SavedHash([string]$Path) {
     $stream = [IO.File]::Open($Path,[IO.FileMode]::Open,[IO.FileAccess]::Read,[IO.FileShare]::ReadWrite)
@@ -88,6 +90,15 @@ try {
     if ($actual -ne $WordProcessId) { throw 'Fixture creation refused a different Word process.' }
     $originalDocuments = @($word.Documents|ForEach-Object { @{path=[string]$_.FullName;text=[string]$_.Content.Text;saved=[bool]$_.Saved;comments=[int]$_.Comments.Count;revisions=[int]$_.Revisions.Count} })
     $originalDocuments | ConvertTo-Json -Depth 6 | Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'originals-before-private.json')
+    if ($CommentAuthorName) {
+        $authority = $word.COMAddIns.Item('UnderTree.WordAddin').Object
+        $status = $authority.Execute('connection_status','{}') | ConvertFrom-Json
+        if (-not $status.ok) { throw 'Cannot read the installed comment author preference.' }
+        $originalCommentAuthor = [string]$status.result.commentAuthorName
+        $wordUserName = [string]$word.UserName
+        $saved = $authority.Execute('comment_author_save',(@{commentAuthorName=$CommentAuthorName}|ConvertTo-Json -Compress)) | ConvertFrom-Json
+        Check ($saved.ok -and $saved.result.commentAuthorName -ceq $CommentAuthorName -and [string]$word.UserName -ceq $wordUserName) 'Installed comment author preference saves without changing the global Word user name'
+    }
     $emoji = [char]::ConvertFromUtf32(0x1F600)
     $prompt = "An overly long $emoji sentence can be made shorter."
     foreach ($letter in @('A','B')) {
@@ -209,6 +220,13 @@ try {
                 $savedText = -join @($xml.SelectNodes('//w:body//w:t',$names)|ForEach-Object InnerText)
                 $expected = if($index -eq 0){"A shorter $emoji sentence."}else{"Client B shortened $emoji wording."}
                 Check ($savedText.Contains($expected) -and -not $savedText.Contains($prompt) -and $xml.SelectNodes('//w:ins|//w:del',$names).Count -eq 0 -and $null -ne $zip.GetEntry('word/comments.xml')) 'Saved DOCX retains the authorized Unicode wording and rationale without revisions'
+                if ($CommentAuthorName) {
+                    $reader = New-Object IO.StreamReader($zip.GetEntry('word/comments.xml').Open())
+                    try { [xml]$comments = $reader.ReadToEnd() } finally { $reader.Dispose() }
+                    $commentNames = New-Object Xml.XmlNamespaceManager($comments.NameTable); $commentNames.AddNamespace('w','http://schemas.openxmlformats.org/wordprocessingml/2006/main')
+                    $authors = @($comments.SelectNodes('//w:comment/@w:author',$commentNames)|ForEach-Object Value)
+                    Check ($authors.Count -eq 1 -and $authors[0] -ceq $CommentAuthorName -and [string]$documents[$index].Comments.Item(1).Author -ceq $CommentAuthorName) 'Both native and timer-saved MCP rationale comments use the configured author exactly'
+                }
             } finally { $zip.Dispose(); $stream.Dispose() }
         }
         Check ([string]$word.ActiveDocument.FullName -ceq $activePath -and $word.Selection.Start -eq $selectionStart -and $word.Selection.End -eq $selectionEnd) 'Extended CLI operations preserve the original active document and native selection'
@@ -247,6 +265,10 @@ try {
 } finally {
     if ($started) { $null = Invoke-Cli @('stop') }
     foreach ($doc in $documents) { if ($null -ne $doc) { $doc.Close(0) } }
+    if ($null -ne $originalCommentAuthor) {
+        $restored = $authority.Execute('comment_author_save',(@{commentAuthorName=$originalCommentAuthor}|ConvertTo-Json -Compress)) | ConvertFrom-Json
+        if (-not $restored.ok -or $restored.result.commentAuthorName -cne $originalCommentAuthor) { throw 'The installed comment author preference could not be restored.' }
+    }
     if ($filter) { $filter.Dispose() }
 }
 [ordered]@{status=$(if($foregroundPid -ne $WordProcessId -and $unqualifiedForeground.Count -eq 0){'PASS'}else{'PARTIAL'});checks=$checks;unqualifiedForegroundChecks=$unqualifiedForeground;cliSha256=(Get-FileHash -LiteralPath $CliPath).Hash;wordProcessId=$WordProcessId;isolationCasesRequested=[bool]$IsolationCases;positiveMcpWrite=$(if($foregroundPid -ne $WordProcessId){'PASS'}else{'NOT RUN'});userInterfaceInput='NONE';publicTunnel='NOT RUN'}|ConvertTo-Json -Depth 6|Set-Content -Encoding UTF8 (Join-Path $OutputDirectory 'result.json')

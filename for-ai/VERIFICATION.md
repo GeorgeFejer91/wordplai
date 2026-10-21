@@ -11,6 +11,79 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Comment author and installed preview.9 — 2026-10-21
+
+- `VERIFIED`: Setup explicitly saves a local comment author for new rationale
+  comments, defaults to wordplai, retains Unicode and leaves existing comments
+  and the global Word user name unchanged. Five-field profiles load their old
+  default. Empty/control/invalid-Unicode/overlength names refuse; an external-file
+  conflict preserves both the effective name and the external saved state.
+  Restarted profile objects retain the exact saved Unicode name. The transport
+  suite passes 2,146 assertions and fifteen schema cases, with its existing
+  copied fault controls. The initial regression cannot compile against the old
+  missing preference API; the native behavioral fault control below is stronger.
+- `VERIFIED`: `modules/word/test.ps1 -OutputDirectory
+  artifacts/word/comment-author/components-final` passes all 21 component gates.
+  Its UI gate passes 1,452 checks/21 renders. Subsequent focused UI checks add
+  native traversal from the name field to Save, reopen/discard of the draft and
+  a width/height matrix, passing 1,738 checks/21 renders in `ui-matrix/renders/ui-report.json`.
+  The first enlarged-text run fails on the vertically clipped Save row. The
+  corrected native row pairs input and Save; minimum 640×700, tall/narrow,
+  wide/short, expanded and enlarged-text layouts retain visible controls without
+  panel scrollbars. This is native WinForms measurement, not HTML/Pretext or
+  installed physical-keyboard evidence.
+- `VERIFIED`: `test-native-highlighting.ps1 -DirectMode -MutationCheck` passes
+  56 isolated Word assertions. A chosen Unicode author appears on the actual
+  native comment and in saved/reopened DOCX; wording, native units, protection,
+  Undo/Redo and replay checks pass. A copied hardcoded-wordplai implementation
+  fails the exact saved-author predicate. Initial harness compile/command errors
+  remain retained; they do not replace these actual Word results.
+- `VERIFIED`: exact candidate COM 536/CLI fifteen and their copied controls pass.
+  NSIS 3.13 portable is retrieved from the official project and checked against
+  its HTTPS release RSS size/MD5; archive SHA-256 and tool bytes remain private.
+  The documented C:/tools compiler path is absent on this PC. Early download
+  attempts return HTML and fail the checksum gate before execution; the actual
+  release archive passes. The 23,886,825-byte unsigned preview.9 installer SHA-256
+  is `fe4a106e1ec5d66980ccde64cd6fa51bc474686f95743b18a13853315d57863d`.
+  All 72 source inputs/eight payloads match. Word-open setup refuses with exit 2
+  and preserves installed bytes. Normal stopped Word exits before upgrade;
+  both registration views, manifest, version and 150 private profile files pass.
+- `VERIFIED`: the exact seven saved documents reopen unchanged with their active
+  document and selection restored. Hidden startup first exposes only an empty,
+  saved EndNote startup template, so the initial ROT observer expires and the
+  initial expected-document observer refuses. PID-bound recovery reuses the
+  same process, opens the exact saved originals through COM, and normally closes
+  only that verified empty startup template. No original is discarded or edited.
+- `PARTIAL`, first installed CLI run: eighteen checks pass but Word foreground
+  prevents positive writing. `VERIFIED`, separate minimized/background run:
+  `test-installed-cli.ps1 -IsolationCases -CommentAuthorName 'Review Editor'`
+  passes 45 checks, positive MCP writes included, with zero unqualified foreground
+  checks. Both documents' native and timer-saved rationale comments carry the
+  exact chosen author. Replay, cross-client isolation, revocation/recovery,
+  closed-target and original-preservation checks pass. The original author
+  preference is restored; no mouse/keyboard input is used by this driver.
+- `VERIFIED`: public access is running in installed Word PID 39856. A plain
+  non-browser HTTPS probe initializes with HTTP 200, discovers exactly four
+  existing tools and reads the exact packaged 58,378-byte picker, in 1,659ms
+  combined. This is transport/resource evidence, not renderer/edit latency.
+  Initial probes receive 400 with an unsupported underscore header and warning
+  HTML with the default browser-like user agent; retain those failed probes.
+  Capability/session addresses are private. Final seven-file native/disk
+  preservation passes, with all originals saved and unchanged.
+- `VERIFIED`: picker state checks and 313 site checks pass via their direct Node
+  entry points (npm is absent from this shell). No site source/asset is changed.
+  The pinned picker HTML is unchanged; its build manifest reflects the versioned
+  lockfile. `git -c core.whitespace=cr-at-eol diff --check` honors the repository's
+  byte-preserved native files; ordinary diff check treats their CRLF as trailing
+  whitespace. The context checker passes with existing ledger-size warnings.
+- `NOT RUN`: preview.9 real Chrome host rendering/wire, installed physical
+  keyboard/custom typing, normal first-visible edit timing, clean-machine and
+  future Mac qualification. No enabled Chrome/native control surface is present
+  in this session; Windows Sandbox is absent and a separate clean host is not
+  identified. Writer author-preference parity is unimplemented/unverified.
+  The full release goal stays open. Raw receipts are ignored under
+  `artifacts/word/comment-author/`; no preview.9 publication or hosted CI is claimed.
+
 ## Real client/native continuation and overlap source correction — 2026-10-21
 
 - `FAIL`, fresh warm-cache Chrome conversation: first picker rendering and the

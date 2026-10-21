@@ -1,4 +1,20 @@
-# Current CLI implementation scope
+# Current implementation scope
+
+## Comment author and installer readiness — 2026-10-21
+
+Start from clean main `3b19cb7` tracking `origin/main`; an unrelated broken-name
+Git ref is present and must be preserved. Add a local Setup comment-author
+setting, persist it with the existing profile, and apply it only to future
+rationale comments. Owners: ConnectionsDialog, ConnectionProfile,
+ConnectionService, WordEditor and WordRemoteReview, their existing tests and
+user documentation. No MCP tool, permission, document-selection or editing
+policy change. Verify legacy defaults, Unicode, rejected input, failed save,
+restart persistence, dirty UI drafts and real native comment attribution;
+then component/package/installed MCP gates. Build a distinct installer candidate
+and restore the current Word session without modifying original manuscripts.
+Existing preview rendering, physical keyboard, timing and clean-machine gaps
+remain open until matching evidence passes. No production readiness claim is
+authorized by earlier preview evidence.
 
 ## Preview.8 publication — 2026-10-21
 

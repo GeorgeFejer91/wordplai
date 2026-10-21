@@ -30,6 +30,14 @@ or suggestion window. **New color rule** adds a color; **Connections** manages
 AI access. No separate application or tray utility is needed. The installed
 add-in owns its internal tunnel process and private connection profile.
 
+In **Connections → Setup**, set **Edit comment author name** and choose
+**Save comment name** to decide which name appears on new edit rationale
+comments. The default is **wordplai**. Names may contain Unicode and up to
+80 characters. This local setting survives Word restarts, does not change
+Word's user name, and leaves existing comments unchanged. Close without saving
+to discard a draft. Word's document privacy settings can remove author details
+when saving; keep those settings in mind when sharing a manuscript.
+
 ## Command-line automation
 
 Source builds and preview.5 packaging include `wordplai.exe` and

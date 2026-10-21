@@ -173,6 +173,7 @@ namespace UnderTree.WordAddin
             {
                 case "state": return State();
                 case "connection_status": return ConnectionStatus();
+                case "comment_author_save": OnlyKeys(args, "commentAuthorName"); connections.SetCommentAuthorName(Text(args, "commentAuthorName", "")); return ConnectionStatus();
                 case "connection_configure": connections.Configure(Text(args, "enrollmentToken", "")); return ConnectionStatus();
                 case "connection_start": connections.Start(); return ConnectionStatus();
                 case "connection_local": connections.StartLocal(); return ConnectionStatus();
@@ -217,7 +218,7 @@ namespace UnderTree.WordAddin
         {
             ConnectionStatus status = connections.Status;
             return new { running = status.LocalRunning, status = status.Phase, publicMcpUrl = status.PublicAddress ?? "",
-                localMcpUrl = connections.LocalAddress ?? "", lastError = status.Error ?? "", configured = status.Configured,
+                localMcpUrl = connections.LocalAddress ?? "", lastError = status.Error ?? "", configured = status.Configured, commentAuthorName = connections.CommentAuthorName,
                 tunnelRunning = status.TunnelRunning, enrollmentRequired = status.EnrollmentRequired, busy = status.Busy, cleanupPending = status.CleanupPending };
         }
 

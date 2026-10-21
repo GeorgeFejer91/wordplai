@@ -6,6 +6,11 @@ A standalone Microsoft Word add-in that connects AI writing assistants to locall
 
 ## Primary goal
 
+The 2026-10-21 Windows milestone is full installer readiness with a working MCP
+runtime on the user's PC and a locally saved Setup preference for the author
+of future manuscript edit comments. Resume its acceptance in `HANDOFF.md`;
+packaging or local installation alone does not close the full release goal.
+
 Finish the full standalone acceptance matrix in `HANDOFF.md` and maintain
 feature parity with LibrAI, correcting defects and retaining actual evidence on
 each host. The public repository, installer and two-page site already exist.

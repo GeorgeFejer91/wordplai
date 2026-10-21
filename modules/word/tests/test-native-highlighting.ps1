@@ -1,5 +1,6 @@
-param([string]$OutputDirectory, [string]$WordExecutable, [switch]$DirectMode, [switch]$ColorStress, [switch]$RecolorStress)
+param([string]$OutputDirectory, [string]$WordExecutable, [switch]$DirectMode, [switch]$ColorStress, [switch]$RecolorStress, [switch]$MutationCheck)
 $ErrorActionPreference = 'Stop'
+if ($MutationCheck -and -not $DirectMode) { throw 'The comment-author mutation check requires -DirectMode.' }
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repo ('artifacts/word/native-highlighting-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) }
 $OutputDirectory = [IO.Path]::GetFullPath($OutputDirectory)
@@ -36,3 +37,25 @@ foreach ($entry in $snapshot) {
 [ordered]@{status=$(if($code -eq 0 -and $changed.Count -eq 0){'PASS'}else{'FAIL'});exitCode=$code;mode=$(if($DirectMode){'direct'}elseif($RecolorStress){'recolor-only'}elseif($ColorStress){'colors-only'}else{'native-track-changes'});defines=$defines;inputs=$snapshot;changedInputs=$changed;harnessSha256=(Get-FileHash -LiteralPath $test).Hash.ToLowerInvariant();wordSha256=(Get-FileHash -LiteralPath $WordExecutable).Hash.ToLowerInvariant();installedPackage='NOT RUN';publicTunnel='NOT RUN'} | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $OutputDirectory 'manifest.json') -Encoding utf8
 if ($changed.Count -ne 0) { throw 'Source changed during native qualification.' }
 if ($code -ne 0) { throw 'Isolated native highlighting qualification failed.' }
+if ($MutationCheck) {
+    $copy = Join-Path $OutputDirectory 'comment-author-control'
+    New-Item -ItemType Directory -Path $copy | Out-Null
+    $original = Join-Path $PSScriptRoot '../src/WordRemoteReview.cs'
+    $changedSource = [IO.File]::ReadAllText($original)
+    $needle = 'comment.Author = connections.CommentAuthorName;'
+    if (-not $changedSource.Contains($needle)) { throw 'Comment-author fault control seam is missing.' }
+    $replacement = Join-Path $copy 'WordRemoteReview.cs'
+    [IO.File]::WriteAllText($replacement, $changedSource.Replace($needle, 'comment.Author = "wordplai";'))
+    $controlSources = @($sources | ForEach-Object { if ([IO.Path]::GetFileName($_) -eq 'WordRemoteReview.cs') { $replacement } else { $_ } })
+    $control = Join-Path $copy 'NativeHighlightingSmoke.exe'
+    & $compiler /nologo /target:exe /langversion:5 "/out:$control" /r:System.Windows.Forms.dll /r:System.Drawing.dll /r:System.Web.Extensions.dll /r:System.Security.dll /r:Microsoft.CSharp.dll "/resource:$contract,SelectiveEditorContract" @controlSources @testSources
+    if ($LASTEXITCODE -ne 0) { throw 'Comment-author control compilation failed.' }
+    $controlLog = & $control $WordExecutable (Join-Path $copy 'native') 'direct' 2>&1
+    $controlCode = $LASTEXITCODE
+    $controlLog | Set-Content -LiteralPath (Join-Path $copy 'native.log') -Encoding utf8
+    $effective = $controlCode -ne 0 -and ($controlLog -join "`n").Contains('The direct native edit includes exactly one concise rationale with the saved comment author.')
+    [ordered]@{status=$(if($effective){'PASS'}else{'FAIL'});fault='hardcoded historical comment author';exitCode=$controlCode;effective=$effective} |
+        ConvertTo-Json | Set-Content -LiteralPath (Join-Path $copy 'result.json') -Encoding utf8
+    if (-not $effective) { throw 'The hardcoded comment-author control did not fail the intended predicate.' }
+    Write-Output 'PASS: a copied hardcoded-author implementation fails the actual native attribution check.'
+}

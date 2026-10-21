@@ -34,6 +34,7 @@ namespace UnderTree.WordAddin
         private static string output;
         private static string assetDirectory;
         private static bool selectionUnavailable;
+        private static string commentAuthorName = "wordplai";
 
         [STAThread]
         private static int Main(string[] arguments)
@@ -94,6 +95,7 @@ namespace UnderTree.WordAddin
                 { "connection", Connection() }
             };
             if (operation == "connection_status") return Connection();
+            if (operation == "comment_author_save") { commentAuthorName = UiState.Text(arguments, "commentAuthorName").Trim(); return Connection(); }
             if (operation == "selection_preview" && selectionUnavailable) throw new InvalidOperationException("Select prose first.");
             if (operation == "selection_preview") return new Dictionary<string, object>
             {
@@ -109,7 +111,7 @@ namespace UnderTree.WordAddin
         {
             return new Dictionary<string, object>
             {
-                { "running", false }, { "status", "Access is stopped." }, { "lastError", "" }, { "configured", true },
+                { "running", false }, { "status", "Access is stopped." }, { "lastError", "" }, { "configured", true }, { "commentAuthorName", commentAuthorName },
                 { "publicMcpUrl", "https://example.invalid/synthetic-mcp-capability-do-not-use" }
             };
         }
@@ -493,9 +495,13 @@ namespace UnderTree.WordAddin
                 for (int index = 0; index < tabs.TabPages.Count; index++)
                 {
                     tabs.SelectedIndex = index;
-                    Settle(form);
-                    CheckBounds(form);
-                    CheckConnectionGuidance(form);
+                    foreach (Size size in new[] { form.MinimumSize, new Size(640, 950), new Size(1050, 700), new Size(1050, 950), form.MinimumSize })
+                    {
+                        form.Size = size;
+                        Settle(form);
+                        CheckBounds(form);
+                        CheckConnectionGuidance(form);
+                    }
                     Capture(form, "connections-" + index);
                 }
                 Require(tabs.TabPages.Count == 2 && tabs.TabPages[0].Text == "Overview" && tabs.TabPages[1].Text == "Setup", "Connections needs only Overview and Setup; connecting grants document reading.");
@@ -526,6 +532,19 @@ namespace UnderTree.WordAddin
                 Require(UiState.Flag(document, "shared") == sharedBefore
                     && calls.Count(call => call.Item1 != "state" && call.Item1 != "connection_status") == effectsBefore,
                     "Opening Connections and its setup links neither starts a connection nor grants document access.");
+                TextBox author = FindText(form, "Edit comment author name");
+                Require(author.Text == "wordplai" && author.MaxLength == 80, "Setup loads the saved comment name with a bounded input.");
+                author.Text = "  Élodie – Editor 😀  ";
+                FindButton(form, "Refresh").PerformClick();
+                Require(author.Text == "  Élodie – Editor 😀  " && commentAuthorName == "wordplai", "Refresh preserves an unsaved comment-name draft without committing it.");
+                FindButton(form, "Save comment name").PerformClick();
+                Require(author.Text == "Élodie – Editor 😀" && commentAuthorName == author.Text
+                    && calls.Last(call => call.Item1 == "comment_author_save").Item2.Count == 1,
+                    "Explicit Save submits only the comment name and shows its normalized saved value.");
+                author.Focus();
+                form.SelectNextControl(author, true, true, true, false);
+                Require(FindButton(form, "Save comment name").Focused, "Native keyboard traversal reaches Save immediately after the comment name.");
+                author.Text = "Unsubmitted author draft";
                 form.Font = new Font(form.Font.FontFamily, form.Font.SizeInPoints * 2);
                 form.Size = new Size(1600, 884);
                 for (int index = 0; index < tabs.TabPages.Count; index++)
@@ -539,6 +558,12 @@ namespace UnderTree.WordAddin
                 }
                 Require(FindText(form, "zrok enrollment token").UseSystemPasswordChar, "Enrollment token is masked by default.");
 
+            }
+            using (ConnectionsDialog reopened = new ConnectionsDialog(Dispatch, openedLinks.Add))
+            {
+                Open(reopened);
+                Require(FindText(reopened, "Edit comment author name").Text == "Élodie – Editor 😀",
+                    "Closing and reopening Setup discards the unsubmitted author draft and restores the saved name.");
             }
         }
 

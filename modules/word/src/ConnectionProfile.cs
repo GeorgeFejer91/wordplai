@@ -23,6 +23,7 @@ namespace UnderTree.WordAddin
         internal string PublicOrigin { get; private set; }
         internal string ApiEndpoint { get; private set; }
         internal bool Configured { get; private set; }
+        internal string CommentAuthorName { get; private set; }
 
         internal ConnectionProfile(string directory)
         {
@@ -36,6 +37,7 @@ namespace UnderTree.WordAddin
             catch (IOException) { throw new InvalidOperationException("Another Word process owns this connection. Close that Word process first."); }
             try
             {
+                CommentAuthorName = "wordplai";
                 string path = System.IO.Path.Combine(DirectoryPath, "connection.json");
                 CheckPlain(path);
                 if (!File.Exists(path))
@@ -50,13 +52,14 @@ namespace UnderTree.WordAddin
                 IDictionary<string, object> value;
                 try { value = McpEndpoint.Json().DeserializeObject(new UTF8Encoding(false, true).GetString(saved)) as IDictionary<string, object>; }
                 catch (ArgumentException) { throw InvalidProfile(); }
-                if (value == null || value.Count != 5 || !value.ContainsKey("version") || !Object.Equals(value["version"], 1) ||
+                if (value == null || value.Count != (value.ContainsKey("commentAuthorName") ? 6 : 5) || !value.ContainsKey("version") || !Object.Equals(value["version"], 1) ||
                     !value.ContainsKey("reservation") || !value.ContainsKey("apiEndpoint") || !value.ContainsKey("publicOrigin") || !value.ContainsKey("configured") || !(value["configured"] is bool))
                     throw InvalidProfile();
                 Reservation = value["reservation"] as string;
                 ApiEndpoint = value["apiEndpoint"] as string;
                 PublicOrigin = value["publicOrigin"] as string;
                 Configured = (bool)value["configured"];
+                if (value.ContainsKey("commentAuthorName")) CommentAuthorName = ValidateCommentAuthorName(value["commentAuthorName"] as string);
                 Validate();
             }
             catch { lease.Dispose(); throw; }
@@ -72,6 +75,29 @@ namespace UnderTree.WordAddin
         }
 
         internal void MarkConfigured() { Configured = true; Save(); }
+
+        internal void SetCommentAuthorName(string name)
+        {
+            string normalized = ValidateCommentAuthorName(name);
+            lock (persistenceGate)
+            {
+                RequireLease();
+                string previous = CommentAuthorName;
+                CommentAuthorName = normalized;
+                try { SaveCore(); }
+                catch { CommentAuthorName = previous; throw; }
+            }
+        }
+
+        private static string ValidateCommentAuthorName(string name)
+        {
+            name = (name ?? "").Trim();
+            if (name.Length == 0 || name.Length > 80 || Array.Exists(name.ToCharArray(), Char.IsControl))
+                throw new ArgumentException("Enter a comment author name of 1–80 characters on one line.");
+            try { new UTF8Encoding(false, true).GetBytes(name); }
+            catch (EncoderFallbackException) { throw new ArgumentException("The comment author name contains invalid Unicode."); }
+            return name;
+        }
 
         internal void SetPublicOrigin(string origin)
         {
@@ -138,7 +164,7 @@ namespace UnderTree.WordAddin
             }
             else if (saved != null) throw new InvalidOperationException("Word connection settings disappeared. Existing state was preserved.");
             byte[] content = Encoding.UTF8.GetBytes(McpEndpoint.Json().Serialize(new { version = 1, reservation = Reservation,
-                apiEndpoint = ApiEndpoint, publicOrigin = PublicOrigin, configured = Configured }));
+                apiEndpoint = ApiEndpoint, publicOrigin = PublicOrigin, configured = Configured, commentAuthorName = CommentAuthorName }));
             string temporary = System.IO.Path.Combine(DirectoryPath, "connection-" + Guid.NewGuid().ToString("N") + ".tmp");
             try
             {

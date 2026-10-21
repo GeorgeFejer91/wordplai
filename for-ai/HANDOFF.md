@@ -1,5 +1,52 @@
 # Remaining Word and real-client qualification
 
+## Active installer completion goal — 2026-10-21
+
+The user requests a full Windows installer release and a working MCP runtime on
+this PC, plus a Setup setting for the author of manuscript edit comments.
+Keep this goal open until the release gates pass. Current work starts from
+`3b19cb7` on main/origin/main; preserve the unrelated broken-name Git ref.
+
+- [x] Persist a local comment author name (default wordplai), used only for new
+  rationale comments; validate input, failed saves, legacy profiles and restart.
+- [x] Verify Setup save/draft behavior, native control keyboard order and geometry at
+  supported minimum and enlarged text, without internal panel scrolling.
+- [x] Verify actual native comment attribution and DOCX reopen with an effective
+  hardcoded-author fault control; preserve original manuscripts/global Word name.
+- [x] Pass final component gates and exact installer/package checks; install the
+  distinct candidate and verify the setting through installed Word/MCP.
+- [x] Leave the installed MCP endpoint running and verify its four-tool protocol
+  and a disposable document edit, preserving the original Word session.
+- [ ] Resolve or explicitly obtain the required external evidence for remaining
+  reliable client rendering, physical keyboard, visible latency and clean-machine
+  release gates. Mac implementation remains deferred by the earlier user decision.
+
+Writer parity for the new author preference is unimplemented/unverified; the
+Windows feature does not establish cross-platform parity. The sibling checkout
+is unavailable at the standard local path; do not claim its contract was updated.
+
+Preview.9 is installed locally, with a distinct unsigned candidate under private
+`artifacts/word/comment-author/candidate/`. Its 72 inputs/eight payloads, both
+registrations and exact 150-file profile preservation pass. The seven original
+open files are restored unchanged; Word PID 39856 owns the running public MCP
+connection. Recheck it before use; copy the current address from Connections.
+The default comment name is restored to wordplai after the installed test.
+The installed background run passes 45 checks, including independent actual MCP
+edits and exact configured authors in both native comments and timer-saved DOCX.
+The first foreground run is separately PARTIAL with 18 checks and no positive
+write. Public initialization/four tools/exact 58,378-byte picker delivery pass;
+these do not qualify a host renderer. Full details and fault controls are in
+`VERIFICATION.md`; retain initial restore/probe/layout failures privately.
+
+No enabled Chrome/native UI surface is available in this session (only empty
+in-app/MCP browser surfaces), and Windows Sandbox is absent. Clean Windows/Word
+test-machine availability was requested. Next: use that environment for the
+clean-install/uninstall gate, and connect the supported real Chrome/native UI
+test surface for the outstanding host rendering, keyboard and timing checks.
+Do not call the candidate a completed stable release or replace public preview.8
+without the applicable gates. This request prepares the candidate; no new public
+installer, site update or remote CI result is claimed.
+
 ## Exact RGB recolor follow-up — 2026-10-20
 
 Exact green-to-red recoloring preserves text, ranges and existing rules. Neutral

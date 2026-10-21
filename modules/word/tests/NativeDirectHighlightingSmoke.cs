@@ -267,6 +267,15 @@ internal static class NativeDirectHighlightingSmoke
                     if (directMode) Local(editor, "save_rule", new { documentId = documentId, id = "snappier", label = "Direct enclosing rewrite",
                         color = "#e5be50", action = "prompt", prompt = "Improve clarity.", accessMode = "direct" });
                     string rulesBeforeEdit = McpEndpoint.Json().Serialize(Local(editor, "state")["rules"]);
+                    string chosenAuthor = "Élodie – Editor 😀";
+                    Check(UiState.Text(Local(editor, "connection_status"), "commentAuthorName") == "wordplai",
+                        "The native editor begins with the historical comment author default.");
+                    WordSnapshot beforeAuthorSave = WordSnapshot.Capture(document);
+                    string originalWordUser = (string)application.UserName;
+                    Local(editor, "comment_author_save", new { commentAuthorName = chosenAuthor });
+                    Check(UiState.Text(Local(editor, "connection_status"), "commentAuthorName") == chosenAuthor &&
+                        WordSnapshot.Capture(document).Revision == beforeAuthorSave.Revision && (string)application.UserName == originalWordUser,
+                        "Saving the local comment author leaves the manuscript and global Word user name unchanged.");
                     string firstSignature = WordSnapshot.FormattingSignature(document.Bookmarks.Item(firstId).Range);
                     string fieldSignature = WordSnapshot.FormattingSignature(document.Bookmarks.Item(fieldId).Range);
                     context = Tool(address, "read_manuscript", new { manuscript_id = documentId });
@@ -280,8 +289,8 @@ internal static class NativeDirectHighlightingSmoke
                         "Both legacy suggestions and direct prompt rules produce an immediate native protected enclosing rewrite.");
                     WordSnapshot pending = WordSnapshot.Capture(document);
                     Check((int)document.Comments.Count == commentsBefore + 1 && pending.Review.feedback.Any(comment =>
-                        comment.author == "wordplai" && !String.IsNullOrEmpty(comment.text) && comment.text.Length <= 240),
-                        "The direct native edit includes exactly one concise rationale comment.");
+                        comment.author == chosenAuthor && !String.IsNullOrEmpty(comment.text) && comment.text.Length <= 240),
+                        "The direct native edit includes exactly one concise rationale with the saved comment author.");
                     string expected = text.Substring(fieldFrom, fieldTo - fieldFrom) + " before [B].\r";
                     Check(WordSnapshot.Capture(document).MainText == expected && (int)document.Fields.Count == 2 && (int)document.Hyperlinks.Count == 1 &&
                         WordSnapshot.FormattingSignature(document.Bookmarks.Item(firstId).Range) == firstSignature &&
@@ -327,6 +336,8 @@ internal static class NativeDirectHighlightingSmoke
                         WordSnapshot.FormattingSignature(document.Bookmarks.Item(firstId).Range) == firstSignature &&
                         WordSnapshot.FormattingSignature(document.Bookmarks.Item(fieldId).Range) == fieldSignature,
                         "Saved direct wording retains exact reconstructed fields and link and protects only its two surrounding wording gaps.");
+                    Check(WordSnapshot.Capture((object)document).Review.feedback.Any(comment => comment.author == chosenAuthor),
+                        "The exact custom Unicode author persists in the saved and reopened DOCX.");
                     document.Save(); document.Close(0);
                     document = application.Documents.Open(path, ReadOnly: false, Visible: false); document.Activate();
                     state = Local(editor, "state");

@@ -61,6 +61,8 @@ namespace UnderTree.WordAddin
 
         public string LocalAddress { get { lock (gate) return endpoint != null && endpoint.Active ? endpoint.LocalAddress : ""; } }
         public string PublicAddress { get { return Status.PublicAddress; } }
+        internal string CommentAuthorName { get { return profile.CommentAuthorName; } }
+        internal void SetCommentAuthorName(string name) { lock (gate) { RequireOpen(); profile.SetCommentAuthorName(name); } }
         internal object Diagnostics
         {
             get

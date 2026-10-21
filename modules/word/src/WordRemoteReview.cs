@@ -231,7 +231,7 @@ namespace UnderTree.WordAddin
             return State();
         }
 
-        private static void AddSuggestionComment(WordDocumentReview state, WordSnapshot snapshot, Proposal proposal, int replacementLength)
+        private void AddSuggestionComment(WordDocumentReview state, WordSnapshot snapshot, Proposal proposal, int replacementLength)
         {
             string rationale = String.Join(" ", proposal.Rationale.Split((char[])null, StringSplitOptions.RemoveEmptyEntries));
             if (rationale.Length == 0) rationale = replacementLength == 0 ? "Remove this passage as requested." : "Clarify the wording while preserving the meaning.";
@@ -241,7 +241,7 @@ namespace UnderTree.WordAddin
                 rationale = rationale.Substring(0, length).TrimEnd() + "...";
             }
             dynamic comment = state.Document.Comments.Add(snapshot.Range(state.Document, proposal.From, proposal.From + replacementLength), rationale);
-            comment.Author = AppBranding.Name;
+            comment.Author = connections.CommentAuthorName;
             comment.Initial = "AI";
         }
 

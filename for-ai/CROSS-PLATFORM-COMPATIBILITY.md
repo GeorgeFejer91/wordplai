@@ -14,6 +14,7 @@ WordPlai's current user-facing baseline is documented in [`modules/word/README.m
 
 | Capability area | Required equivalent outcome |
 | --- | --- |
+| Comment attribution | A local Setup preference names the author of future edit rationale comments, defaults to the product name, persists across restarts and leaves existing comments and the global host user name unchanged. Word implementation is under qualification; Writer implementation and verification remain open. |
 | Local passage rules | Users mark passages and locally own color/name, prompt, and writing-function rules. Neutral marks alone never authorize wording changes. |
 | Protection and review rules | Preserve-text, reject, discard, prompt editing, and overlapping-rule precedence remain explicit and restrictive where applicable. |
 | AI highlighting and recoloring | AI may add neutral marks, extend an unchanged local rule by exact identity, and recolor selected marks without changing rule definitions; ambiguous or unsafe batches are refused. |

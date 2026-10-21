@@ -61,6 +61,7 @@ internal static partial class TransportTests
                 Console.WriteLine("PASS: " + checks + " concurrent-client HTTP assertions; disposable fake native authority only.");
                 return 0;
             }
+            CommentAuthorProfile(Path.Combine(root, "comment-author"));
             VisualHighlights(Path.Combine(root, "visual-highlights"), fake);
             LocalEndpoint(Path.Combine(root, "local"), fake);
             ResourceDiagnostics(Path.Combine(root, "resource-diagnostics"), fake);
@@ -95,6 +96,43 @@ internal static partial class TransportTests
         }
         catch (Exception error) { Console.Error.WriteLine(error); return 1; }
         finally { Queue.CompleteAdding(); actor.Join(1000); }
+    }
+
+    private static void CommentAuthorProfile(string directory)
+    {
+        string path = Path.Combine(directory, "connection.json");
+        using (var profile = new ConnectionProfile(directory))
+        {
+            Assert(profile.CommentAuthorName == "wordplai", "New profiles default comment authors to wordplai.");
+            profile.SetCommentAuthorName("  Élodie – Editor 😀  ");
+            Assert(profile.CommentAuthorName == "Élodie – Editor 😀", "Unicode comment author names trim outer whitespace.");
+            byte[] before = File.ReadAllBytes(path);
+            foreach (string invalid in new[] { "", "  ", "Line\nBreak", new String('x', 81), "Bad\u0000Name", "Bad\ud800Name" })
+            {
+                bool refused = false;
+                try { profile.SetCommentAuthorName(invalid); } catch (ArgumentException) { refused = true; }
+                Assert(refused && profile.CommentAuthorName == "Élodie – Editor 😀" && before.SequenceEqual(File.ReadAllBytes(path)),
+                    "Invalid author input preserves the in-memory and saved name.");
+            }
+            profile.SetCommentAuthorName(new String('x', 80));
+            Assert(profile.CommentAuthorName.Length == 80, "The maximum author length is accepted.");
+            profile.SetCommentAuthorName("Élodie – Editor 😀");
+        }
+        using (var profile = new ConnectionProfile(directory))
+        {
+            Assert(profile.CommentAuthorName == "Élodie – Editor 😀", "A restarted profile retains the exact Unicode author name.");
+            byte[] before = File.ReadAllBytes(path);
+            File.AppendAllText(path, " ");
+            bool refused = false;
+            try { profile.SetCommentAuthorName("Other editor"); } catch (InvalidOperationException) { refused = true; }
+            Assert(refused && profile.CommentAuthorName == "Élodie – Editor 😀", "Failed persistence cannot change the effective comment author.");
+            File.WriteAllBytes(path, before);
+        }
+        var legacy = Json.Deserialize<Dictionary<string, object>>(File.ReadAllText(path));
+        legacy.Remove("commentAuthorName");
+        File.WriteAllText(path, Json.Serialize(legacy));
+        using (var profile = new ConnectionProfile(directory))
+            Assert(profile.CommentAuthorName == "wordplai", "Existing five-field profiles retain their historical default.");
     }
 
     private static object Marshal(Func<object> callback)
