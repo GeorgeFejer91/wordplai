@@ -222,6 +222,41 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   Runtime, package and public assets are unchanged. Reliable rendering, normal
   timing, keyboard/custom typing, clean-machine and future Mac scopes remain open.
 
+## Preview.8 installed CLI maximum batches — 2026-10-21
+
+- `VERIFIED`: the exact published DLL/CLI pass eighteen installed checks through
+  actual local MCP, without mouse/keyboard input. Batches of 1, 9 and 64 ranges
+  return exact marker identities/ranges and native RGB. A 65-range batch and a
+  duplicate-ID recolor refuse without native, policy or saved-byte changes. A
+  wrong final quote also preserves every native/saved field and rule/marker,
+  while explicitly revoking sharing. A fresh complete read restores authority.
+  The original assertion requiring sharing to remain true fails and is retained;
+  the corrected assertion requires that revocation and forbids every other change.
+- `VERIFIED`: recoloring 64 selected markers retires exactly those identities,
+  preserving ten earlier marks and the protected ending. Exact replay returns the
+  same current/retired identities and preserves full CLI, native XML and saved
+  bytes. Eighteen separate saved-DOCX/receipt checks verify all 75 native bookmark
+  ranges, exact Unicode/paragraphs/RGB, unchanged old rules, two neutral new colors
+  and no tracked wording revisions/comments. A missing-marker control fails the
+  intended persisted-count predicate. The 64-range mark/recolor CLI round trips
+  take 2,235/3,532ms on this host; these include CLI/transport overhead and do not
+  measure first-visible latency or establish a performance threshold.
+- `VERIFIED`: only owned fixtures close normally, with unchanged saved bytes;
+  seven original open documents and all six known saved originals remain exact.
+  The previous Word PID exited externally before continuation. A new explicit
+  instance restored the originals and was visible despite hidden startup; no
+  hidden-session or clean-machine claim follows. Indexed COM inspection replaces
+  intermittently incomplete pipeline enumeration. Retain the initial windowless
+  bootstrap, premature Stop observation and duplicate-title constructor failures.
+  The same Stop later settles without another Stop; the ambiguous constructor
+  makes no target choice and closes normally before a uniquely named fixture.
+- Evidence: `artifacts/word/preview8-installed-batches-isolated/qualification-result.json`,
+  with the earlier failed packet in `preview8-installed-batches/`. Previous-share
+  ownership cleanup and final local-only endpoint Stop are observed. The public
+  endpoint is now stopped; future WebGPT testing needs an equivalent reconnect.
+  Source, package and public assets are unchanged. Browser/rendering, normal
+  latency, physical keyboard/custom typing, clean-machine and future Mac gaps stay open.
+
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including

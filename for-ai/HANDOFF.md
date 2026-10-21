@@ -245,10 +245,20 @@ audit lifecycle changes. Overall acceptance remains open.
 - [x] Publish qualified Windows preview.8 with explicit limits; all three public
   asset bytes match. Actual-release site rendering passes 313 checks; exact hosted
   CI/Pages and anonymous page/source/metadata audits pass. Older assets remain.
+- [x] Qualify installed 1/9/64-range batches, 65-range/final-quote/duplicate-ID
+  refusals, maximum recoloring and exact replay. Eighteen installed checks and
+  eighteen saved-DOCX/receipt checks pass, with an effective missing-marker control.
+  Native refusal revokes sharing; fresh complete reading recovers it. Preserve
+  the original overstrict sharing assertion and all setup failures.
 
-Latest installed state: local preview.8 candidate, with seven documents open
+Latest installed state: public preview.8, with seven documents open
 (five originals and owned G/H) and all six known original saved files unchanged.
-Preview.8 is now public. The sixth original was already closed at upgrade
+The latest process is in `artifacts/word/preview8-installed-batches-isolated/cleanup-preservation-result.json`;
+the previous process exited externally. Normal startup restored the originals;
+indexed native/file preservation passes. Both previous-share cleanup and the
+owned local endpoint Stop settle; no public endpoint is currently running.
+An equivalent four-tool reconnect is required before new WebGPT tests.
+The sixth original was already closed at upgrade
 preflight; its cause is unestablished. Preserve that observed open set rather
 than reopening it to satisfy the earlier six-open baseline. Native shutdown
 initially exceeded the observer timeout; the same process later exited normally
@@ -489,15 +499,18 @@ pause leave normal latency unqualified; retained frame bounds and stale UIA text
 are scoped in `VERIFICATION.md`. Only owned K/focus fixture close; Chrome returns
 to its prior minimized state. Seven open/six known saved originals remain exact.
 Private packet: `artifacts/word/preview8-visible-timing/qualification-result.json`.
-The prior evidence checkpoint `12eb2a2` is on `main`/`origin/main` and passes
-hosted verification `39524273087`; recheck the next evidence commit separately.
+The prior evidence checkpoint `0bb9840` is on `main`/`origin/main` and passes
+hosted verification `39527533299`; recheck the next evidence commit separately.
+External name-clash renames removed canonical Git metadata/control directories.
+Matching branch/index copies and 22 exact tracked blobs restore their canonical
+paths without source-content changes; recheck Git before any publication.
 No production/package/public asset changes. Next: obtain supported host wire/
 bridge evidence for rendering and a clean approval-resolved timing run; preserve
 the uncertain-write rule and the separate native keyboard/Mac handoffs.
 
 Use `modules/word/cli/README.md` and `test-installed-cli.ps1 -WordProcessId PID`
-for automation without desktop input. Use the current process from the private
-restore receipt; never attach an arbitrary active Word instance. Browser setup
+for automation without desktop input. Use the current process from the latest
+private cleanup/preservation receipt above; never attach an arbitrary active Word instance. Browser setup
 and native foreground checks run serially. Any unqualified foreground comparison
 keeps the result PARTIAL; do not bypass the guard to manufacture a writing pass.
 Physical dialog/gesture, clean-machine and timing scopes remain open.
