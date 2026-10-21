@@ -245,7 +245,7 @@ audit lifecycle changes. Overall acceptance remains open.
 
 Latest installed state: local preview.8 candidate, with seven documents open
 (five originals and owned G/H) and all six known original saved files unchanged.
-Preview.5 remains the public release. The sixth original was already closed at upgrade
+Preview.8 is now public. The sixth original was already closed at upgrade
 preflight; its cause is unestablished. Preserve that observed open set rather
 than reopening it to satisfy the earlier six-open baseline. Native shutdown
 initially exceeded the observer timeout; the same process later exited normally
@@ -333,52 +333,35 @@ explicit owned-document complete read and retained choice. All twenty-one source
 component gates pass. Source checkpoint `3eed2b6` is pushed and passes hosted
 verification `39500996679`.
 
-Local candidate preview.6 now contains that declaration. Its installer passes
-Word-open refusal, upgrade from preview.5, all eight payload identities and both
-registration views; all 140 profile files remain exact across installation.
-The seven-document session closes/reopens with unchanged saved bytes, text and
-annotation counts. Source package inputs differ from the public preview.5;
-the candidate's 71-input identity is in
-`artifacts/word/picker-output-contract/preview6/package-identity.json`.
-The installed CLI run is PARTIAL: seventeen checks pass, but Word holds the
-foreground and its positive writing/isolation cases remain unrun. Do not reuse
-preview.5's forty-two-check pass as this candidate's installed evidence.
+Historical preview.6 contains that declaration. Word-open refusal, upgrade,
+eight payloads, both registrations and exact 140-file profile preservation pass;
+seven documents reopen unchanged. Its installed CLI remains PARTIAL: seventeen
+checks pass while foreground Word prevents positive writing/isolation. Later
+candidate passes never replace this result. Its 71-input package and raw receipts
+are private under `artifacts/word/picker-output-contract/preview6/`.
 
-The first Stop returned its asynchronous stopping state and the helper closed
-Word before cleanup settled. The encrypted ownership barrier survived the
-upgrade unchanged; normal Stop after reopening completes exact cleanup. Await
-stopped/busy=false/cleanupPending=false before future normal shutdowns. Preserve
-the first helper's JSON-array nesting refusal and corrected preflight.
+The first helper closes Word before asynchronous Stop settles; the encrypted
+ownership barrier survives unchanged, and normal Stop after reopening completes
+cleanup. Await stopped/busy=false/cleanupPending=false before normal shutdown.
+Keep the initial array-nesting refusal and corrected preflight. Old endpoints
+are revoked; use current preview.8 process/status receipts, never a historical URL.
 
-The equivalent `wordplai preview.6 qualification` app is connected with the same
-four tools and default low-risk permissions. Its cold and reloaded picker both
-report could-not-display and response-load failure. Explicitly named owned H
-reads completely in that same real chat; final native/disk preservation passes
-for all seven open documents and six known saved originals. The current Word
-process is recorded in `preview6/restore/result.json`; the previous process has
-exited. Public sharing is running on the new endpoint in the private status
-snapshot. The old preview.5 endpoint was revoked; do not reuse its connector.
-
-A default PowerShell public probe receives zrok's browser warning HTML. Its
-corrected non-browser client identification receives three JSON HTTP 200 replies,
-the exact installed catalogue and packaged 58,378-byte picker. This does not prove
-ChatGPT resource receipt or bridge initialization and is not an identified picker
-cause. Private receipts/screenshots are under `preview6/`. Preview.6 is not
-published; the public Description/Download bytes still match preview.5.
-Version checkpoint `51098c3` is pushed and passes verification `39504215085` and
-Pages `39504215244`. Anonymous page/release bytes match local output; all twelve
-deployed manifest hashes match that exact Git commit. Retain the initial wrong
-comparison against Windows checkout bytes and the corrected tag-label assertion.
-The Git-byte audit's changed-source-hash control fails as intended.
+The equivalent four-tool preview.6 app fails cold/reloaded rendering; explicitly
+named H still reads, and seven-open/six-saved-original preservation passes.
+A corrected non-browser probe receives exact catalogue/58,378-byte HTML, while
+the initial browser-like probe receives warning HTML. Neither establishes client
+receipt/bridge initialization or cause. Version `51098c3` passes verification
+`39504215085`, Pages `39504215244` and exact anonymous/Git-byte deployment audit.
+Retain the Windows-line-ending/tag-label audit failures and effective hash control.
 
 ### Preview.7 rendering and overlap discovery — 2026-10-21
 
-Preview.7 is installed locally: 72 inputs/eight payloads, COM 536, CLI fifteen,
+Historical preview.7 qualified 72 inputs/eight payloads, COM 536, CLI fifteen,
 installed isolation forty-two and installed diagnostics nine checks pass. Settled
 Stop, Word-open refusal, upgrade and seven-document restore pass; 140 profile
 files remain exact. Version checkpoint `476342c` is pushed and passes hosted
 verification `39511507796` and Pages `39511507524`. Anonymous deployed page/release
-bytes and twelve exact-Git input hashes match. Preview.5 remains public. Package
+bytes and twelve exact-Git input hashes match; preview.5 was then public. Package
 identities and retained source/CLI failures are indexed in `VERIFICATION.md`;
 private evidence is under `artifacts/word/resource-diagnostics/preview7/`.
 
@@ -427,7 +410,8 @@ Preview.8 is installed locally. All 72 inputs/eight payloads match; package COM
 positive MCP writing and zero unqualified foreground checks. Settled Stop,
 Word-open refusal, upgrade and exact seven-document restore pass; 143 profile
 files remain unchanged. Exact identities are in `VERIFICATION.md`; receipts are
-private under `artifacts/word/overlap-list-fix/preview8/`. Public preview.5 remains.
+private under `artifacts/word/overlap-list-fix/preview8/`. Its later publication
+is recorded below; earlier preview.5 assets remain unchanged.
 
 Physical mouse selection now shows exactly two overlap rows and opens the second
 protective rule correctly. Cancel/Close leave the owned fixture unchanged; it
@@ -459,8 +443,9 @@ blobs, including the effective changed-hash control. Private consolidated CLI
 proof is `preview8/cli-qualification-result.json`; remote/deployment receipts
 remain under the same ignored evidence root.
 
-Next: publish a new unsigned preview only with its actual identity and explicit
-limits; preview.8 is currently installed locally and preview.5 remains public.
+Preview.8 is now published as an unsigned prerelease with explicit limits.
+Next: verify the actual-release site update's exact hosted CI/Pages deployment
+and anonymous page/source identities, then continue unfinished host acceptance.
 Reliable host rendering, keyboard/custom typing, raw client wire, first-visible
 timing, clean-machine and future Mac implementation/qualification remain open.
 
@@ -481,22 +466,21 @@ equivalent reconnect is already authorized; preserve the same four tools and
 permissions. Historical failures and handoff chronology remain in Git history,
 with the durable evidence index in `VERIFICATION.md`; do not relabel them passed.
 
-Latest public release remains [preview.5](https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.5),
-targeting `79168c326cd9926bdcaabb6c0dc104fba254da92`. Its unchanged 71-input,
-eight-payload package and all three anonymous asset downloads were verified.
-Source verification `39488257735` and Pages `39488257736` pass. Actual release
-metadata checkpoint `3e9c768` passes verification `39488997631` and Pages
-`39488997403`; anonymous Description, Download and release JSON matched local
-bytes and all twelve deployed inputs. This is distinct from local preview.8.
+Latest public release is [preview.8](https://github.com/GeorgeFejer91/wordplai/releases/tag/v0.1.0-preview.8),
+targeting `994f03473bade689e6ad5f58482ecb88e1e19faf`; that checkpoint passes hosted
+verification `39521437016`. The 23,885,366-byte installer SHA-256 is
+`e0f8d9456798d8507021a893e48421ace9c8ae7ea67cc3104b152ab75a8de423`.
+All three public assets match anonymous downloads byte for byte; attached sums
+and GitHub digests/sizes match. The remote tag resolves to the intended commit.
+Preview.5's three asset digests/sizes remain unchanged. Raw release/download
+receipts are private under `artifacts/word/preview8-release/`.
 
-Version checkpoint `476342c` passes hosted verification `39511507796` and Pages
-`39511507524`; the private exact-Git deployment audit passes for all twelve inputs.
-The native overlap source correction `8044b36` passes hosted verification
-`39515532203` and twenty-one local component gates before preview.8 packaging.
-Version/evidence checkpoint `ae583e7` passes verification `39521101640` and Pages
-`39521101662`, with exact anonymous/Git-byte deployment audit. Subsequent
-documentation-only commits do not change the qualified package inputs.
-No new release asset has been published.
-Retain preview.5 assets and disclose the remaining preview limits. The overall
+Actual release metadata and limit copy are updated in the existing root README
+and two-page site. Verify this change's exact CI, rendered layouts and Pages
+deployment before claiming the stable download page updated. Older deployment
+and package outcomes remain indexed in `VERIFICATION.md` and Git history.
+The native source correction `8044b36` and version checkpoint `ae583e7` passed
+their own exact hosted gates before publication; package inputs are unchanged.
+Retain older assets and disclose the remaining preview limits. The overall
 shipment goal remains active for reliable cold picker, timing, physical,
 clean-machine, remaining host/client and future Mac scopes.

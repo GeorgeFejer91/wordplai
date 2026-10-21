@@ -123,6 +123,30 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   deployed source hashes match exact Git blobs. The copied changed-lock-hash
   control fails its intended predicate. The public release remains preview.5.
 
+## Preview.8 publication — 2026-10-21
+
+- `VERIFIED`: the candidate's 72 source inputs, eight packaged/installed payloads
+  and exact installer are rechecked before publication. Version/evidence target
+  `994f03473bade689e6ad5f58482ecb88e1e19faf` passes hosted verification
+  `39521437016`. Public prerelease `v0.1.0-preview.8` targets that exact commit;
+  the remote tag resolves correctly. All three assets return anonymous HTTP 200
+  and match local tested bytes, sizes and GitHub SHA-256 digests. Attached sums
+  independently match both installer and manifest. Preview.5's assets are unchanged.
+- Public installer: 23,885,366 bytes, SHA-256
+  `e0f8d9456798d8507021a893e48421ace9c8ae7ea67cc3104b152ab75a8de423`.
+  Public manifest SHA-256:
+  `9b0e7a6966dc096e02fb06e79a2e3358bd09fc9f65d13f03ddb2eb47ec52114b`;
+  checksum file SHA-256:
+  `cbc41fd43d58e647b6e260bcfe36725aefcd488a23774ea608b08cae3dc4b5fa`.
+  Raw public API/download receipts remain private under
+  `artifacts/word/preview8-release/`. No clean-machine or Mac support is inferred.
+- The release notes and updated site/README explicitly retain browser display/
+  response failures (including a committed edit behind a failed response),
+  foreground refusal, native keyboard/custom typing, latency, additional host
+  configurations, clean-machine and future Mac gaps. Physical preview.7 preset
+  results retain their version; preview.8 separately qualifies corrected overlap.
+  Verify this actual-metadata site's rendered/remote deployment separately.
+
 ## Local resource diagnostics — source checkpoint, 2026-10-21
 
 - `VERIFIED`: final source component run passes all twenty-one gates, including

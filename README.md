@@ -30,13 +30,19 @@ tunnel executable; it does not require UnderTree, LibreOffice or Node.js to run.
 Connection/account setup remains yours, and no connection credentials are shipped.
 
 This is an unsigned early build. The existing direct-edit guard can refuse while
-Word is the foreground application. Fresh WebGPT timing, host picker rendering,
-physical dialog draft/Cancel/Save and clean-machine cases are not fully qualified.
-Preview.5 includes the CLI and fixes saving locally marked inactive documents
-before MCP access. Its exact installed runtime passes 42 CLI checks, saved-file
-audits and upgrade/uninstall/reinstall. Two real WebGPT chats edit separate test
-documents; the second requires an explicit document-name fallback because the
-embedded picker fails to display. Mac support and a Mac installer remain deferred to the
+Word is the foreground application. ChatGPT's document picker remains unreliable;
+name the intended document if it does not open. A reply can fail to display after
+an edit has already been saved: inspect Word or the original result before
+repeating a request, and never retry an uncertain write under a new identity.
+Preview.8 includes the JSON CLI, local resource diagnostics and a corrected native
+overlap chooser. Its exact installed runtime passes 42 CLI checks, nine diagnostic
+checks, saved-file audits and upgrade/preservation. Physical mouse draft/Cancel/
+Save was qualified on preview.7; preview.8 separately verifies corrected overlap
+selection on the qualification host. Two fresh real WebGPT chats edit separate
+documents with independently verified saved
+wording and protection. Keyboard/custom typing, first-visible-edit timing,
+additional Windows/Office configurations and clean-machine installation remain
+unqualified. Mac support and a Mac installer remain deferred to the
 [future Mac agent handoff](for-ai/MACOS-COMPATIBILITY.md).
 The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
@@ -44,7 +50,7 @@ The [remaining acceptance handoff](for-ai/HANDOFF.md) names the required tests.
 
 The [Windows CLI](modules/word/cli/README.md) automates local rules, range marking,
 document-isolated state/context, connection lifecycle and MCP test requests using
-JSON, without desktop input. It is included in source builds and preview.5
+JSON, without desktop input. It is included in source builds and preview.8
 packaging; the earlier preview.3 installer does not contain it.
 
 To exercise an installed build with disposable documents and no desktop input:

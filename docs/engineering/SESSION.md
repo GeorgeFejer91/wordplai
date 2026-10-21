@@ -1,5 +1,17 @@
 # Current CLI implementation scope
 
+## Preview.8 publication — 2026-10-21
+
+Start from clean main `994f034`, whose hosted verification passes. Publish the
+already installed and independently qualified preview.8 package under D-0002.
+Recheck its 72 inputs/eight payloads and installer identity before publication;
+retain all older releases. Scope: root README, existing site release/limit copy
+and actual release metadata, plus canonical handoff/verification evidence.
+Preserve layout, locked Pretext, runtime/package bytes and private captures.
+Disclose remaining host rendering/response failures, native keyboard/custom
+typing, first-visible timing, clean-machine and Mac gaps. Verify all public
+asset bytes, rendered site, exact remote CI/Pages and anonymous deployment.
+
 ## Native overlap chooser follow-up — 2026-10-21
 
 Start from clean main `476342c`. Installed preview.7 physically renders four

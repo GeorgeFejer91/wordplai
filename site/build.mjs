@@ -64,8 +64,8 @@ const description = `
       <h2>Requirements</h2>
       <p>Windows 10 or 11 x64 (Intel/AMD), desktop Microsoft Word, and .NET Framework 4.8. An AI client that supports MCP is needed to connect a writing assistant.</p>
       <h2>Current limits</h2>
-      <p>This is an early, unsigned build. Word’s foreground editing guard can refuse an edit. Real WebGPT edit timing, the document picker’s appearance inside ChatGPT, and physical click and keyboard interactions still need acceptance testing.</p>
-      <p>Preview.5 adds a JSON CLI for tests without desktop input and fixes autosaving locally marked inactive documents. It passes 42 installed CLI checks and upgrade, uninstall, and reinstall on the qualification host. Two real WebGPT chats edited separate test documents, with a document-name fallback for the second. Mac support and a Mac installer remain deferred.</p>
+      <p>This is an early, unsigned build. Word’s foreground editing guard can refuse an edit. ChatGPT’s document picker remains unreliable; name the document if it does not open. A reply can fail to display after an edit has been saved, so check Word before repeating a request.</p>
+      <p>Preview.8 includes a JSON CLI for tests without desktop input, local diagnostics and a corrected overlap chooser. It passes 42 installed CLI checks, nine diagnostic checks, and upgrade/preservation on the qualification host. Mouse rule editing was qualified on preview.7; this build separately verifies corrected overlap selection. Two independent WebGPT chats produce verified saved edits. Keyboard/custom typing, first-visible-edit timing, additional Windows/Office configurations and clean-machine installation remain unqualified. Mac support and a Mac installer remain deferred.</p>
       <p>See <a href="/wordplai/download/">Download</a> for the installer and its release details.</p>`;
 
 const action = ready
@@ -85,7 +85,7 @@ const download = `
       </dl>
       <h2>Before you install</h2>
       <p>Save and close your Word documents before running the installer. The add-in appears in Word after installation. Source code and setup notes are in the <a href="https://github.com/GeorgeFejer91/wordplai#readme">repository README</a>.</p>
-      <p class="muted">Early build: foreground edit refusals are possible. ChatGPT’s embedded document picker failed cold and after reload; name the document explicitly. Physical dialog draft/Cancel/Save, further real-chat interleaving, first-visible-edit timing, and clean-machine installation remain unqualified. Mac support is deferred. See the <a href="https://github.com/GeorgeFejer91/wordplai/blob/main/for-ai/HANDOFF.md">remaining-test handoff</a>.</p>`;
+      <p class="muted">Early build: foreground edit refusals are possible. ChatGPT’s document picker failed cold and after reload; name the document explicitly. A reply can fail to display after an edit has been saved: check Word or the original result before repeating a request. Keyboard/custom typing, first-visible-edit timing, additional Windows/Office configurations and clean-machine installation remain unqualified. Mac support is deferred. See the <a href="https://github.com/GeorgeFejer91/wordplai/blob/main/for-ai/HANDOFF.md">remaining-test handoff</a>.</p>`;
 
 await mkdir(join(dist, 'assets'), { recursive: true });
 await mkdir(join(dist, 'download'), { recursive: true });
