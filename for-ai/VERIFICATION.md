@@ -83,6 +83,49 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
   identified. Writer author-preference parity is unimplemented/unverified.
   The full release goal stays open. Raw receipts are ignored under
   `artifacts/word/comment-author/`; no preview.9 publication or hosted CI is claimed.
+- `VERIFIED`: all 72 manifest inputs match exact Git blobs at local source
+  checkpoint `cae466868b70bcb51040bc5d3cbf26dc5e415793`; installed payloads still
+  match the candidate. Remote main remains `3b19cb7` and no push is performed.
+  The precommit context check passes; the final `-RequireRemote` gate fails
+  specifically because local HEAD is ahead of origin/main. This is an open
+  publication gate, not a passing remote/CI claim.
+
+### Installed restart and uninstall/reinstall continuation
+
+- `VERIFIED`: a non-default author saved by installed Word PID 39856 survives
+  normal stopped shutdown and reopens in distinct PID 166848. Native status and
+  actual profile bytes agree; the global Word user name stays exact. All seven
+  saved manuscripts reopen unchanged with active target and selection restored.
+  The original author preference is restored. The new public MCP endpoint passes
+  initialization/four-tool/exact-resource checks; the old capability receives
+  HTTP 403. No document dispatch is used by the public probes.
+- `VERIFIED`: preview.9 uninstall refuses while Word is open with directly
+  observed exit 2 and eight exact payloads. The first observer wrongly checks
+  the self-copy launcher's exit 0; independent payload/registration checks show
+  no removal. An exact copied uninstaller with the documented last `_?=` target
+  observes the real worker exit, following
+  [NSIS error-level guidance](https://nsis.sourceforge.io/Docs/AppendixD.html).
+  The initial observer failure is retained separately; no product check is
+  weakened and no installer code changes.
+- `VERIFIED`: settled Stop and normal exit precede uninstall. The explicitly
+  resolved per-user application directory matches registration before execution.
+  Uninstall removes all eight payloads and eight registration/install-location
+  entries across both registry views, preserving all 153 private profile files
+  byte for byte. Exact-candidate reinstall passes 72 inputs/eight payloads,
+  version/manifest and both registrations with the same profile preservation.
+  The non-default author survives this reinstall and a new Word process; it is
+  then reset to the original default. PID 159708 restores all seven originals,
+  native text, comments/revisions, Saved state, active target and selection.
+- `VERIFIED`: reinstalled public access is running with no pending cleanup.
+  HTTPS initialize/tool discovery/exact 58,378-byte resource delivery pass in
+  2,739ms combined. Installed payloads and manifest still match the same candidate.
+  Evidence: ignored `comment-author/restart/` and `comment-author/lifecycle/`.
+- `BLOCKED` scopes remain real Chrome/native physical/timing and clean-host
+  qualification. Current supported UI inventory exposes only empty in-app/MCP
+  browser surfaces. No Get-VM command or standard Sandbox, VirtualBox or VMware
+  executable/installation entry is found. Clean-host availability and source-push
+  authorization were requested; neither answer is inferred. No new hosted CI,
+  remote commit, installer publication or site deployment is claimed.
 
 ## Real client/native continuation and overlap source correction — 2026-10-21
 

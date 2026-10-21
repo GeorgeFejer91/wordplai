@@ -28,7 +28,7 @@ is unavailable at the standard local path; do not claim its contract was updated
 Preview.9 is installed locally, with a distinct unsigned candidate under private
 `artifacts/word/comment-author/candidate/`. Its 72 inputs/eight payloads, both
 registrations and exact 150-file profile preservation pass. The seven original
-open files are restored unchanged; Word PID 39856 owns the running public MCP
+open files are restored unchanged; Word PID 159708 owns the running public MCP
 connection. Recheck it before use; copy the current address from Connections.
 The default comment name is restored to wordplai after the installed test.
 The installed background run passes 45 checks, including independent actual MCP
@@ -46,6 +46,29 @@ test surface for the outstanding host rendering, keyboard and timing checks.
 Do not call the candidate a completed stable release or replace public preview.8
 without the applicable gates. This request prepares the candidate; no new public
 installer, site update or remote CI result is claimed.
+
+Observed Git state: source/package checkpoint `cae4668` is committed locally on
+main. All 72 package input hashes match its exact Git blobs. Remote main remains
+`3b19cb7`; the new candidate is not pushed, published or hosted-CI-qualified.
+The following handoff-only checkpoint records this observation without changing
+the qualified package. Preserve the unrelated broken-name ref.
+
+Continuation: an actual full installed Word restart retains a non-default author
+in native state and the private profile. Preview.9 uninstall/reinstall then
+preserves that preference and all 153 profile files byte for byte. Eight payloads
+and eight registrations are removed and restored; the exact candidate is
+reinstalled. The default name is restored. All seven original manuscripts,
+active target and selection are restored; final native/disk preservation passes.
+The previous endpoint is refused with HTTP 403 after capability rotation.
+The final reinstalled HTTPS endpoint initializes, exposes all four tools and
+delivers the exact picker. Receipts: `comment-author/restart/` and
+`comment-author/lifecycle/` privately. No product/package bytes change.
+
+No Get-VM command or standard Sandbox/VirtualBox/VMware runtime is found, and the
+supported browser/native inventory still exposes no Chrome or native surface.
+The clean-host request remains unanswered. Push authorization for the verified
+source/evidence commits was requested under WORKFLOW.md; do not infer approval
+from elapsed time. Hosted CI and publication remain unrun pending authorization.
 
 ## Exact RGB recolor follow-up — 2026-10-20
 
