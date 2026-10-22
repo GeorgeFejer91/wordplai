@@ -11,6 +11,57 @@ runtime access produce `BLOCKED` or `NOT RUN`, never `VERIFIED`.
 - `NOT RUN`: the check was intentionally not applicable or not attempted, with
   the reason stated.
 
+## Authorized push and hosted Setup geometry — 2026-10-22
+
+- `VERIFIED`: the external name-clash process renamed the canonical branch,
+  remote ref and index again. The latest renamed index matches `3f6a3b8` exactly;
+  both authorized commits still exist. Canonical Git metadata is restored while
+  retaining renamed copies. Six renamed control-plane directories contain 22
+  exact tracked Git blobs and are restored after checking all paths remain within
+  the repository and destinations are absent. The resulting working tree is clean.
+- `VERIFIED`: the two user-authorized commits, `cae4668` and `3f6a3b8`, push without
+  force. Anonymous remote main equals `3f6a3b86653386e56c9f621950732f93fb23d998`.
+  The remote-match context gate passes. Pages run `39773443501` succeeds for that
+  exact SHA, including its rendered site checks and deployment. Three anonymous
+  page/release files match local build bytes; all twelve deployed input hashes
+  match exact Git blobs. The changed-hash control is effective. Public preview.8
+  version, asset URL, size, SHA-256 and publication time match GitHub metadata.
+  No preview.9 installer release is created.
+- `FAIL`: Windows verification `39773443495` at `3f6a3b8` clips Setup's configured
+  status/action group at 1044×788 with doubled text. Transport passes 2,146
+  assertions/fifteen schema cases and existing fault controls before the UI gate.
+  The new explicit local 1044×788 enlarged regression reproduces the exact
+  native geometry and failure. The fit check is retained unchanged.
+- `VERIFIED`, local correction: instructions and settings use two native columns,
+  retaining their reading/tab order, masked token, draft/save behavior and full
+  name access. The native suite passes 1,906 checks/21 renders over normal
+  minimum/tall/narrow/wide/expanded sizes and enlarged 1044×788/1600×884 cases.
+  Screenshots are inspected. This is a native WinForms correction, not a browser
+  or installed physical-keyboard qualification.
+- `FAIL`, retained test observer: a local full run reports changed neighboring
+  protection even though every JSON field/value is identical; only property
+  order differs. Recolor snapshots now use the existing canonical serializer,
+  extended to accept individual objects. The comparison still checks every
+  field/value and list order; existing changed-identity/range/missing-field and
+  reordered-list controls pass. Recolor passes 201 assertions. Initial incomplete
+  conversion and pre-fix failures remain retained; no production recolor code
+  or policy gate is weakened.
+- `VERIFIED`: `modules/word/test.ps1 -OutputDirectory
+  artifacts/word/comment-author/push-20261022/components-ready` passes all 21
+  component gates after the corrections, including native UI 1,906. A separate
+  unsigned layout-corrected preview.9 candidate builds from 72 inputs/eight
+  payloads and passes exact-package COM 536/CLI fifteen plus existing controls.
+  Installer: 23,883,223 bytes, SHA-256
+  `ba0e00297254fa89fbee1d0d81c61a0c88b52d0c8b3436a1f319014559f68062`.
+  It is not installed or published; earlier installed/public MCP results retain
+  their original payload identities. The installed older preview.9 runtime is
+  still running with the default name and no pending cleanup.
+- `NOT RUN`: hosted CI and installed acceptance for this new follow-up. The
+  authorized two-commit push is completed; follow-up push authorization is
+  required under WORKFLOW.md. Clean-host, real Chrome/native keyboard/timing and
+  Writer parity scopes remain open. Private receipts and both failed/successful
+  local runs are under `artifacts/word/comment-author/push-20261022/`.
+
 ## Comment author and installed preview.9 — 2026-10-21
 
 - `VERIFIED`: Setup explicitly saves a local comment author for new rationale

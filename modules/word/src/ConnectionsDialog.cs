@@ -80,22 +80,31 @@ namespace UnderTree.WordAddin
             saveCommentAuthor.TabIndex = 1;
             authorActions.Controls.Add(commentAuthor, 0, 0);
             TableLayoutPanel setupBody = NativeLayout.Column();
-            setupBody.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            setupBody.RowStyles.Add(new RowStyle(SizeType.AutoSize));
-            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
-            setupBody.Controls.Add(NativeLayout.Stack(
+            setupBody.ColumnCount = 2;
+            setupBody.ColumnStyles.Clear();
+            setupBody.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            setupBody.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50));
+            setupBody.RowStyles.Add(new RowStyle(SizeType.Percent, 100));
+            TableLayoutPanel instructions = NativeLayout.Stack(
                 NativeLayout.Label("The connection engine is included. Set up your zrok account once."),
                 SetupLink("1. Sign in or create an account at myzrok.io", "https://myzrok.io", openDocumentation),
                 NativeLayout.Label("2. Open the zrok icon / API console, then Getting started. Copy your account token."),
                 SetupLink("View token instructions", "https://netfoundry.io/docs/zrok/get-started/get-token/", openDocumentation),
-                NativeLayout.Label("3. Paste the token below and choose Configure connection."),
-                NativeLayout.Label("4. In Overview, choose Start access. Copy the MCP address into your AI client's connector.")), 0, 0);
-            setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Account token for zrok enrollment"), enrollmentToken, showToken), 0, 1);
-            setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Keep the token private; it is never part of the MCP address. Configuring the connection shares no document."),
-                setupStatus, NativeLayout.Actions(configureConnection)), 0, 2);
-            setupBody.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Edit comment author name"), authorActions,
-                NativeLayout.Label("Used for new edit rationale comments. Existing comments keep their author. Default: wordplai.")), 0, 3);
+                NativeLayout.Label("3. Paste the token and choose Configure connection."),
+                NativeLayout.Label("4. In Overview, choose Start access. Copy the MCP address into your AI client's connector."));
+            instructions.Margin = new Padding(0, 0, 12, 0);
+            TableLayoutPanel preferences = NativeLayout.Column();
+            preferences.Margin = new Padding(12, 0, 0, 0);
+            preferences.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            preferences.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            preferences.RowStyles.Add(new RowStyle(SizeType.Percent, 50));
+            preferences.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Account token for zrok enrollment"), enrollmentToken, showToken), 0, 0);
+            preferences.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Keep the token private; it is never part of the MCP address. Configuring the connection shares no document."),
+                setupStatus, NativeLayout.Actions(configureConnection)), 0, 1);
+            preferences.Controls.Add(NativeLayout.Stack(NativeLayout.Label("Edit comment author name"), authorActions,
+                NativeLayout.Label("Used for new edit rationale comments. Existing comments keep their author. Default: wordplai.")), 0, 2);
+            setupBody.Controls.Add(instructions, 0, 0);
+            setupBody.Controls.Add(preferences, 1, 0);
             setup.Controls.Add(setupBody);
 
             Button refresh = NativeLayout.Button("Refresh", delegate { NativeLayout.Attempt(this, RefreshAll); });

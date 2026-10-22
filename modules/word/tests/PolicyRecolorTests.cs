@@ -80,7 +80,7 @@ internal static class PolicyRecolorTests
     {
         var engine = Engine(); PassageMark source = Add(engine, "Wrai_original_beta", "green", "beta");
         PassageMark neighbor = Add(engine, "Wrai_neighbor_delta", "green", "delta");
-        string definitions = Json.Serialize(engine.Rules), neighboring = Json.Serialize(neighbor);
+        string definitions = PolicyStateJson.Serialize(engine.Rules), neighboring = PolicyStateJson.Serialize(neighbor);
         var request = Recolor(engine, "green_to_red", "red", source);
         HighlightReceipt receipt = engine.Highlight(request, Text, Snapshot);
         Equal(true, Replaced(receipt).SequenceEqual(new[] { source.Id }), "Green-to-red returns the selected old identity in order.");
@@ -90,8 +90,8 @@ internal static class PolicyRecolorTests
         PassageMark replacement = engine.Marks.Single(mark => mark.Id == receipt.MarkIds.Single());
         Equal(true, replacement.Id != source.Id && replacement.RuleId == "red" && replacement.From == source.From && replacement.To == source.To &&
             replacement.Quote == source.Quote && replacement.Prompt == source.Prompt, "The new red identity preserves exact wording, range and passage instructions.");
-        Equal(definitions, Json.Serialize(engine.Rules), "Recoloring changes no existing local rule definition.");
-        Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Neighboring protection remains exact.");
+        Equal(definitions, PolicyStateJson.Serialize(engine.Rules), "Recoloring changes no existing local rule definition.");
+        Equal(neighboring, PolicyStateJson.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Neighboring protection remains exact.");
         Equal(0, engine.Proposals.Count, "A recolor request creates no wording change or acceptance proposal.");
         string unchanged = PolicyStateJson.Serialize(engine.ExportState());
         Equal(receipt.MarkIds.Single(), engine.Highlight(request, Text, Snapshot).MarkIds.Single(), "A lost recolor reply replays the same new identity.");
@@ -101,7 +101,7 @@ internal static class PolicyRecolorTests
         Denied(engine, request, Text, "Revocation prevents recolor replay or restoration of retired identities.");
         var reopened = new PolicyEngine(contract, Json.Deserialize<PolicyState>(Json.Serialize(engine.ExportState())));
         Equal("red", reopened.Marks.Single(mark => mark.Id == replacement.Id).RuleId, "Serialized recolor state retains the new color binding.");
-        Equal(definitions, Json.Serialize(reopened.Rules), "Reopening retains the unchanged local definitions.");
+        Equal(definitions, PolicyStateJson.Serialize(reopened.Rules), "Reopening retains the unchanged local definitions.");
         reopened.Share(Document);
         Denied(reopened, request, Text, "A reopened process cannot replay the prior native operation.");
     }
@@ -115,20 +115,20 @@ internal static class PolicyRecolorTests
             if (action != null) engine.AddOrUpdateRule(Rule("exact_red", "#FF0000", action));
             PassageMark source = Add(engine, "Wrai_rgb_source", "green", "beta");
             PassageMark neighbor = Add(engine, "Wrai_rgb_neighbor", "yellow", "delta", "Keep this term.");
-            string definitions = Json.Serialize(engine.Rules), neighboring = Json.Serialize(neighbor);
+            string definitions = PolicyStateJson.Serialize(engine.Rules), neighboring = PolicyStateJson.Serialize(neighbor);
             var request = Change(Recolor(engine, "exact_rgb_red", null, source), "Color", "#ff0000");
             HighlightReceipt receipt = engine.Highlight(request, Text, Snapshot);
             ColorRule red = engine.Rules.Single(rule => rule.Id == receipt.ColorId);
             Equal("#FF0000", red.Color, "The exact requested red RGB is retained.");
             Equal(action ?? "neutral", red.Action, "Red has only its existing local function, or is neutral when fresh.");
             Equal("", red.Prompt, "Red requires no editing prompt.");
-            Equal(definitions, Json.Serialize(engine.Rules.Where(rule => action != null || rule.Id != red.Id).ToArray()),
+            Equal(definitions, PolicyStateJson.Serialize(engine.Rules.Where(rule => action != null || rule.Id != red.Id).ToArray()),
                 "Exact RGB recoloring preserves all pre-existing color rules.");
             PassageMark replacement = engine.Marks.Single(mark => mark.Id == receipt.MarkIds.Single());
             Equal(true, Replaced(receipt).SequenceEqual(new[] { source.Id }) && replacement.From == source.From && replacement.To == source.To &&
                 replacement.Quote == source.Quote && replacement.Prompt == "" && replacement.RuleId == red.Id && engine.Marks.Count == 2,
                 "Green-to-red replaces only the selected binding while preserving its exact text and range.");
-            Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Other highlights and passage prompts remain exact.");
+            Equal(neighboring, PolicyStateJson.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Other highlights and passage prompts remain exact.");
             Equal(0, engine.Proposals.Count, "Visual recoloring creates no editing proposal.");
             string saved = PolicyStateJson.Serialize(engine.ExportState());
             Equal(receipt.MarkIds.Single(), engine.Highlight(request, Text, Snapshot).MarkIds.Single(), "Exact RGB replay returns the same red marker.");
@@ -159,7 +159,7 @@ internal static class PolicyRecolorTests
             PassageMark[] selected = engine.Marks.OrderBy(mark => mark.From).ThenBy(mark => mark.To).ToArray();
             Equal(2, selected.Length, "Separate ordinary same-RGB requests create two legitimate current " + scenario.Name + " overlaps.");
             PassageMark neighbor = Add(engine, "Wrai_overlap_neighbor", "green", "Alpha");
-            string definitions = Json.Serialize(engine.Rules), neighboring = Json.Serialize(neighbor);
+            string definitions = PolicyStateJson.Serialize(engine.Rules), neighboring = PolicyStateJson.Serialize(neighbor);
             Denied(engine, Recolor(engine, scenario.Name + "_selected_subset", "red", selected[0]), Text,
                 "A selected subset cannot recolor an unselected overlapping protected identity.");
             var request = Recolor(engine, scenario.Name + "_all_selected", "red", selected);
@@ -183,8 +183,8 @@ internal static class PolicyRecolorTests
                     replacement.Quote == source.Quote && replacement.Prompt == source.Prompt,
                     "Each new overlapping marker preserves its source's exact geometry, quote and passage prompt.");
             }
-            Equal(definitions, Json.Serialize(engine.Rules), "Overlapping recoloring leaves all local definitions unchanged.");
-            Equal(neighboring, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Overlapping recoloring leaves neighboring protection exact.");
+            Equal(definitions, PolicyStateJson.Serialize(engine.Rules), "Overlapping recoloring leaves all local definitions unchanged.");
+            Equal(neighboring, PolicyStateJson.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "Overlapping recoloring leaves neighboring protection exact.");
             string unchanged = PolicyStateJson.Serialize(engine.ExportState());
             Equal(true, engine.Highlight(request, Text, Snapshot).MarkIds.SequenceEqual(receipt.MarkIds), "An overlapping recolor replay returns the exact prior new IDs.");
             Equal(unchanged, PolicyStateJson.Serialize(engine.ExportState()), "Overlapping replay changes no markers, definitions or receipts.");
@@ -198,14 +198,14 @@ internal static class PolicyRecolorTests
     private static void NeutralTargetPreservesInstructions()
     {
         var engine = Engine(); PassageMark source = Add(engine, "Wrai_neutral_source", "green", "beta");
-        string definitions = Json.Serialize(engine.Rules);
+        string definitions = PolicyStateJson.Serialize(engine.Rules);
         var request = Change(Recolor(engine, "protect_to_fresh_visual", null, source), "Color", "#123ABC");
         HighlightReceipt receipt = engine.Highlight(request, Text, Snapshot);
         ColorRule visual = engine.Rules.Single(rule => rule.Id == receipt.ColorId);
         Equal("neutral", visual.Action, "An unused requested recolor RGB creates a neutral identity.");
         Equal(true, engine.Marks.Single().RuleId == visual.Id && engine.Marks.Single().Quote == "beta" && engine.Marks.Single().Prompt == "",
             "Explicitly recoloring an empty-prompt protected passage to a fresh color changes only its association.");
-        Equal(definitions, Json.Serialize(engine.Rules.Where(rule => rule.Id != visual.Id).ToArray()), "Allocating a neutral destination never alters prior rule definitions.");
+        Equal(definitions, PolicyStateJson.Serialize(engine.Rules.Where(rule => rule.Id != visual.Id).ToArray()), "Allocating a neutral destination never alters prior rule definitions.");
         string token = engine.ReadContext(Document, Revision, Text, Snapshot);
         Refused(() => engine.Submit(new Proposal { Id = "neutral_no_wording", DocumentId = Document, Revision = Revision, From = 6, To = 10,
             Quote = "beta", Replacement = "changed", Rationale = "" }, token, Text, Snapshot), "A neutral recolor creates no wording permission.");
@@ -219,7 +219,7 @@ internal static class PolicyRecolorTests
         var engine = Engine(); var selected = new[] { Add(engine, "Wrai_alpha", "green", "Alpha"), Add(engine, "Wrai_beta", "red", "beta"),
             Add(engine, "Wrai_gamma", "blue", "gamma", "Preserve this exact term."), Add(engine, "Wrai_delta", "discard", "delta") };
         PassageMark neighbor = Add(engine, "Wrai_period", "green", ".");
-        string definitions = Json.Serialize(engine.Rules), retained = Json.Serialize(neighbor);
+        string definitions = PolicyStateJson.Serialize(engine.Rules), retained = PolicyStateJson.Serialize(neighbor);
         HighlightReceipt receipt = engine.Highlight(Recolor(engine, "mixed_sources", "yellow", selected), Text, Snapshot);
         Equal(true, Replaced(receipt).SequenceEqual(selected.Select(mark => mark.Id)), "A mixed-action batch returns exactly the selected old IDs in range order.");
         Equal(5, engine.Marks.Count, "A mixed batch replaces only its four selected passages.");
@@ -229,8 +229,8 @@ internal static class PolicyRecolorTests
             Equal(true, fresh.Id != old.Id && fresh.RuleId == "yellow" && fresh.From == old.From && fresh.To == old.To && fresh.Quote == old.Quote && fresh.Prompt == old.Prompt,
                 "Every mixed-source replacement retains its exact text, geometry and passage prompt.");
         }
-        Equal(definitions, Json.Serialize(engine.Rules), "Mixed-action recoloring never redefines a function or access mode.");
-        Equal(retained, Json.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "A neighboring indivisible protected unit is untouched.");
+        Equal(definitions, PolicyStateJson.Serialize(engine.Rules), "Mixed-action recoloring never redefines a function or access mode.");
+        Equal(retained, PolicyStateJson.Serialize(engine.Marks.Single(mark => mark.Id == neighbor.Id)), "A neighboring indivisible protected unit is untouched.");
     }
 
     private static void InvalidSelectionIsAtomic()
@@ -263,19 +263,19 @@ internal static class PolicyRecolorTests
     private static void SameColorAndOrdinaryHighlighting()
     {
         var engine = Engine(); PassageMark source = Add(engine, "Wrai_same_color_source", "green", "beta");
-        string rules = Json.Serialize(engine.Rules);
+        string rules = PolicyStateJson.Serialize(engine.Rules);
         HighlightReceipt receipt = engine.Highlight(Recolor(engine, "same_color_replacement", "green", source), Text, Snapshot);
         Equal(true, receipt.MarkIds.Single() != source.Id && Replaced(receipt).Single() == source.Id && engine.Marks.Count == 1,
             "Even same-color recoloring produces a fresh identity with one uniform replacement receipt.");
-        PassageMark retained = engine.Marks.Single(); string exact = Json.Serialize(retained);
+        PassageMark retained = engine.Marks.Single(); string exact = PolicyStateJson.Serialize(retained);
         var ordinary = Change(Recolor(engine, "ordinary_addition", "red", retained), "RecolorMarkIds", null);
         ordinary.Ranges = new List<HighlightRange> { new HighlightRange { From = 11, To = 16, Quote = "gamma" } };
         HighlightReceipt added = engine.Highlight(ordinary, Text, Snapshot);
         Equal(2, engine.Marks.Count, "An ordinary request continues to add a marker without retiring another passage.");
-        Equal(exact, Json.Serialize(engine.Marks.Single(mark => mark.Id == retained.Id)), "Ordinary highlighting preserves existing source markers exactly.");
+        Equal(exact, PolicyStateJson.Serialize(engine.Marks.Single(mark => mark.Id == retained.Id)), "Ordinary highlighting preserves existing source markers exactly.");
         var encoded = Json.Deserialize<Dictionary<string, object>>(Json.Serialize(added));
         Equal(true, encoded["ReplacedMarkIds"] == null, "Ordinary highlighting records no retired identities.");
-        Equal(rules, Json.Serialize(engine.Rules), "Same-color replacement and ordinary extension keep all rule definitions exact.");
+        Equal(rules, PolicyStateJson.Serialize(engine.Rules), "Same-color replacement and ordinary extension keep all rule definitions exact.");
     }
 
     private static void UnselectedOverlapRemainsProtected()

@@ -550,10 +550,14 @@ namespace UnderTree.WordAddin
                 for (int index = 0; index < tabs.TabPages.Count; index++)
                 {
                     tabs.SelectedIndex = index;
-                    Settle(form);
-                    CheckBounds(form);
-                    CheckConnectionGuidance(form);
-                    CheckAppearance(form, SystemInformation.HighContrast);
+                    foreach (Size size in new[] { new Size(1044, 788), new Size(1600, 884), new Size(1044, 788) })
+                    {
+                        form.Size = size;
+                        Settle(form);
+                        CheckBounds(form);
+                        CheckConnectionGuidance(form);
+                        CheckAppearance(form, SystemInformation.HighContrast);
+                    }
                     Capture(form, "connections-enlarged-" + index);
                 }
                 Require(FindText(form, "zrok enrollment token").UseSystemPasswordChar, "Enrollment token is masked by default.");

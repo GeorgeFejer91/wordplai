@@ -13,8 +13,11 @@ Keep this goal open until the release gates pass. Current work starts from
   supported minimum and enlarged text, without internal panel scrolling.
 - [x] Verify actual native comment attribution and DOCX reopen with an effective
   hardcoded-author fault control; preserve original manuscripts/global Word name.
-- [x] Pass final component gates and exact installer/package checks; install the
+- [ ] Pass final component gates and exact installer/package checks; install the
   distinct candidate and verify the setting through installed Word/MCP.
+  The original preview.9 payload passes these installed checks below. Its later
+  small-desktop layout correction is packaged and source-qualified locally but
+  has not been installed or hosted-qualified yet.
 - [x] Leave the installed MCP endpoint running and verify its four-tool protocol
   and a disposable document edit, preserving the original Word session.
 - [ ] Resolve or explicitly obtain the required external evidence for remaining
@@ -44,14 +47,12 @@ test-machine availability was requested. Next: use that environment for the
 clean-install/uninstall gate, and connect the supported real Chrome/native UI
 test surface for the outstanding host rendering, keyboard and timing checks.
 Do not call the candidate a completed stable release or replace public preview.8
-without the applicable gates. This request prepares the candidate; no new public
-installer, site update or remote CI result is claimed.
+without the applicable gates. No new installer release is published.
 
-Observed Git state: source/package checkpoint `cae4668` is committed locally on
-main. All 72 package input hashes match its exact Git blobs. Remote main remains
-`3b19cb7`; the new candidate is not pushed, published or hosted-CI-qualified.
-The following handoff-only checkpoint records this observation without changing
-the qualified package. Preserve the unrelated broken-name ref.
+Observed Git state: the user authorized the two existing commits on 2026-10-22.
+Source `cae4668` and evidence `3f6a3b8` are pushed, and remote main matches the
+latter exactly. The original 72 package input hashes match its source Git blobs.
+Preserve the unrelated broken-name refs and renamed index copies.
 
 Continuation: an actual full installed Word restart retains a non-default author
 in native state and the private profile. Preview.9 uninstall/reinstall then
@@ -66,9 +67,25 @@ delivers the exact picker. Receipts: `comment-author/restart/` and
 
 No Get-VM command or standard Sandbox/VirtualBox/VMware runtime is found, and the
 supported browser/native inventory still exposes no Chrome or native surface.
-The clean-host request remains unanswered. Push authorization for the verified
-source/evidence commits was requested under WORKFLOW.md; do not infer approval
-from elapsed time. Hosted CI and publication remain unrun pending authorization.
+The clean-host request remains unanswered. Pages `39773443501` passes at
+`3f6a3b8`; anonymous page/release bytes and all twelve input hashes match exact
+Git. Public installer metadata remains preview.8 and matches GitHub's asset.
+Windows verification `39773443495` fails on enlarged Setup at 1044×788; transport
+and preceding component gates pass. The exact local regression reproduces it.
+
+The correction places the four setup steps beside token/name controls, retaining
+native reading/tab order and all fit assertions. Local source passes all 21
+gates, including 1,906 UI checks/21 renders. A separate local full-suite failure
+finds property-order-only comparisons in recolor snapshots; these now use the
+existing canonical helper with identity/range/missing-field/list-order controls.
+No production policy or MCP contract changes. Package COM 536/CLI fifteen pass.
+The 23,883,223-byte layout-corrected preview.9 candidate SHA-256 is
+`ba0e00297254fa89fbee1d0d81c61a0c88b52d0c8b3436a1f319014559f68062`.
+It is separate from the earlier installed candidate, under ignored
+`comment-author/push-20261022/layout-candidate/`; never relabel earlier installed
+results as this package. Next: obtain authorization to push the verified follow-up
+for hosted CI, then qualify the corrected installed package. The two-commit push
+is complete; the follow-up is local, with no new installer release.
 
 ## Exact RGB recolor follow-up — 2026-10-20
 

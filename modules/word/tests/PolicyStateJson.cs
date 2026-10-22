@@ -8,7 +8,7 @@ internal static class PolicyStateJson
 {
     private static readonly JavaScriptSerializer Json = new JavaScriptSerializer { MaxJsonLength = 16777216 };
 
-    internal static string Serialize(PolicyState state)
+    internal static string Serialize(object state)
     {
         return Canonical(Json.DeserializeObject(Json.Serialize(state)));
     }

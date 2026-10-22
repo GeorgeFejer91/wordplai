@@ -1,5 +1,19 @@
 # Current implementation scope
 
+## Hosted Setup geometry — 2026-10-22
+
+The authorized two-commit push reaches `3f6a3b8`; Pages passes while Windows
+verification fails in Connections Setup at enlarged text on a 1044×788 desktop.
+Transport/policy gates pass. Reproduce that exact allocation locally, retain the
+failure and fix native group geometry without weakening fit/accessibility checks.
+Scope: ConnectionsDialog and its existing UI regression plus the evidence owners.
+Preserve name persistence, token masking, link/keyboard order, all four MCP tools,
+existing package evidence, user documents and unrelated name-clash copies.
+The full local run also exposes a property-order-only failure in recolor marker
+comparison. Extend the existing canonical test serializer to accept individual
+objects and use it for recolor marker/rule snapshots. Retain all-value, missing-
+field and array-order controls; no production recolor behavior changes.
+
 ## Comment author and installer readiness — 2026-10-21
 
 Start from clean main `3b19cb7` tracking `origin/main`; an unrelated broken-name
