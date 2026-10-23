@@ -673,3 +673,9 @@ Cost if wrong: release is labelled preview, with no stable/clean-host claim.
 Private hosted run 39961834461 could not start because GitHub Actions budget
 blocked it; no steps or logs. Local gates pass. Public Word/Pages CI still to run.
 No new assets or live Pages changes are published at this record.
+
+Hosted Word run 39964534511 passes component checks, then exposed an existing
+context-checker assumption: GitHub PR checkout is detached, and empty branch
+output was null.Trim(). Reproduced on an actual detached Git fixture (RED),
+cast the branch output before trimming and report detached HEAD (GREEN). The
+normal repository context/safety check also passes. No check was bypassed.
