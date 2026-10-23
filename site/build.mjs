@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { rolldown } from 'rolldown';
 import { plannedRelease, validateRelease, releaseReady } from './release.mjs';
+import { validateCompanions, companionReady, companionUrl } from './companions.mjs';
 
 const site = dirname(fileURLToPath(import.meta.url));
 const root = dirname(site), dist = join(site, 'dist');
@@ -16,6 +17,7 @@ try { release = JSON.parse(await readFile(join(site, 'release.json'), 'utf8')); 
 catch (error) { if (error.code !== 'ENOENT') throw error; release = plannedRelease; }
 validateRelease(release);
 const ready = releaseReady(release);
+const companions=validateCompanions(JSON.parse(await readFile(join(site,'companions.json'),'utf8')));
 const escape = value => String(value).replace(/[&<>"']/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
 const label = text => `<span class="label" data-measure>${escape(text)}</span>`;
 
@@ -71,9 +73,17 @@ const description = `
 const action = ready
   ? `<a class="action" id="download-installer" href="${escape(release.downloadUrl)}">${label('Download for Windows')}</a>`
   : `<span class="action" aria-disabled="true">${label('Download unavailable')}</span>`;
+function companionSection(kind,title,description){
+  const file=companions[kind],available=companionReady(companions,kind);
+  const link=available?`<a class="action" id="download-${kind}" href="${escape(companionUrl(companions,kind))}">${label(kind==='standalone'?'Download Secret Tunnel Lite':'Download both apps')}</a>`:`<span class="action" aria-disabled="true">${label('Download being prepared')}</span>`;
+  return `<section class="download-option" aria-labelledby="${kind}-title"><h2 id="${kind}-title">${escape(title)}</h2><p>${escape(description)}</p><p class="download-action">${link}</p><dl class="metadata"><dt>Version</dt><dd>${escape(file.version)}</dd><dt>File</dt><dd>${escape(file.asset)}</dd><dt>Size</dt><dd>${file.sizeBytes===null?'Unavailable':`${file.sizeBytes.toLocaleString('en-US')} bytes`}</dd><dt>SHA-256</dt><dd><code class="checksum">${file.sha256===null?'Unavailable':escape(file.sha256)}</code></dd></dl></section>`;
+}
 const download = `
       <h1>Download wordplai</h1>
-      <p>Installer for Windows 10 and 11 x64 (Intel/AMD) with desktop Microsoft Word and .NET Framework 4.8. This preview does not support 32-bit or ARM Windows.</p>
+      <p>Choose the Word add-in, its optional folder and GitHub companion, or both. These unsigned previews require Windows 10 or 11 x64 (Intel/AMD).</p>
+      <section class="download-option" aria-labelledby="wordplai-only-title">
+      <h2 id="wordplai-only-title">Wordplai only</h2>
+      <p>AI-assisted writing in Microsoft Word. Requires desktop Word and .NET Framework 4.8. Secret Tunnel is optional.</p>
       <p class="download-action">${action}</p>
       ${ready ? '<p class="notice">This preview is unsigned. Windows may show a publisher warning. Review the source and checksum before installing.</p>' : '<p class="notice">The installer’s verified release details are not available yet. The download will appear here once they are published.</p>'}
       <dl class="metadata">
@@ -83,6 +93,9 @@ const download = `
         <dt>Published</dt><dd id="release-published">${release.publishedAt === null ? 'Unavailable' : `<time datetime="${escape(release.publishedAt)}">${escape(release.publishedAt.slice(0, 10))}</time>`}</dd>
         <dt>SHA-256</dt><dd><code class="checksum" id="release-sha256">${release.sha256 === null ? 'Unavailable' : escape(release.sha256)}</code></dd>
       </dl>
+      </section>
+      ${companionSection('standalone','Secret Tunnel Lite only','A compact companion for selected folders and GitHub publishing. The main page includes zrok registration and access controls; the second tab manages multiple folders. Word is not required. WebView2 is downloaded if needed.')}
+      ${companionSection('combined','Wordplai and Secret Tunnel Lite','One installer installs the same two standalone apps. Save and close Word first. Each app keeps its own settings, MCP URL and uninstaller; no account credentials are included.')}
       <h2>Before you install</h2>
       <p>Save and close your Word documents before running the installer. The add-in appears in Word after installation. Source code and setup notes are in the <a href="https://github.com/GeorgeFejer91/wordplai#readme">repository README</a>.</p>
       <p class="muted">Early build: foreground edit refusals are possible. ChatGPT’s document picker failed cold and after reload; name the document explicitly. A reply can fail to display after an edit has been saved: check Word or the original result before repeating a request. Keyboard/custom typing, first-visible-edit timing, additional Windows/Office configurations and clean-machine installation remain unqualified. Mac support is deferred. See the <a href="https://github.com/GeorgeFejer91/wordplai/blob/main/for-ai/HANDOFF.md">remaining-test handoff</a>.</p>`;
@@ -97,8 +110,9 @@ for (const file of await readdir(join(site, 'assets'))) await copyFile(join(site
 await writeFile(join(dist, 'index.html'), page('description', description));
 await writeFile(join(dist, 'download/index.html'), page('download', download));
 await writeFile(join(dist, 'release.json'), JSON.stringify(release, null, 2) + '\n');
+await writeFile(join(dist,'companions.json'),JSON.stringify(companions,null,2)+'\n');
 await writeFile(join(dist, '.nojekyll'), '');
-const inputs = ['site/build.mjs', 'site/site.js', 'site/style.css', 'site/release.mjs', 'package-lock.json',
+const inputs = ['site/build.mjs', 'site/site.js', 'site/style.css', 'site/release.mjs', 'site/companions.mjs','site/companions.json','package-lock.json',
   ...((await readdir(join(site, 'assets'))).map(file => `site/assets/${file}`))];
 if (release !== plannedRelease) inputs.push('site/release.json');
 const hashes = {};

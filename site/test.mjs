@@ -5,12 +5,14 @@ import { dirname, extname, join, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from 'playwright-core';
 import { plannedRelease, validateRelease, releaseReady } from './release.mjs';
+import { validateCompanions, companionReady, companionUrl } from './companions.mjs';
 import './build.mjs';
 
 const site = dirname(fileURLToPath(import.meta.url));
 const dist = join(site, 'dist'), evidence = join(site, 'test-results');
 await mkdir(evidence, { recursive: true });
 const release = validateRelease(JSON.parse(await readFile(join(dist, 'release.json'), 'utf8')));
+const companions=validateCompanions(JSON.parse(await readFile(join(dist,'companions.json'),'utf8')));
 let checks = 0;
 function check(condition, message) { assert.ok(condition, message); checks++; }
 for (const patch of [{ downloadUrl: 'https://example.com/setup.exe' }, { downloadUrl: 'https://github.com/GeorgeFejer91/wordplai/releases/latest' },
@@ -129,6 +131,11 @@ try {
   if (releaseReady(release)) check(await page.locator('#download-installer').getAttribute('href') === release.downloadUrl, 'Installer uses its explicit preview release URL.');
   else check(await page.locator('#download-installer').count() === 0 && await page.locator('[aria-disabled="true"]').count() === 1, 'Incomplete release metadata cannot create a working download link.');
   check(!(await page.content()).includes('/releases/latest'), 'Preview download never uses releases/latest.');
+  check(await page.locator('.download-option').count()===3,'Exactly three installer choices are offered.');
+  for(const kind of ['standalone','combined']){
+    const download=page.locator(`#download-${kind}`);
+    check(companionReady(companions,kind)?await download.getAttribute('href')===companionUrl(companions,kind):await download.count()===0,'Only exact published companion metadata enables its installer.');
+  }
   check(await page.locator('footer a').getAttribute('href') === 'https://github.com/GeorgeFejer91/wordplai', 'Source link is outside two-page navigation.');
   await context.close();
 
