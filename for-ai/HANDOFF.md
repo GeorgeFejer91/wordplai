@@ -677,5 +677,6 @@ No new assets or live Pages changes are published at this record.
 Hosted Word run 39964534511 passes component checks, then exposed an existing
 context-checker assumption: GitHub PR checkout is detached, and empty branch
 output was null.Trim(). Reproduced on an actual detached Git fixture (RED),
-cast the branch output before trimming and report detached HEAD (GREEN). The
+then removed the unnecessary trim and report detached HEAD (GREEN). An initial
+cast-before-trim attempt still failed with PowerShell's empty native output. The
 normal repository context/safety check also passes. No check was bypassed.

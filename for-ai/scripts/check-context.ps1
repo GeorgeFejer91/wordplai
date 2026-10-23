@@ -69,7 +69,7 @@ if (Test-Path -LiteralPath $forAiRoot) {
 if ($LASTEXITCODE -ne 0) {
     Add-Error "Project root is not a Git worktree."
 } else {
-    $branch = ([string](& git -C $root branch --show-current 2>$null)).Trim()
+    $branch = & git -C $root branch --show-current 2>$null
     if (-not $branch) { $branch = 'detached HEAD' }
     if ($branch -ne "main") {
         Add-Warning "Current branch is '$branch', not the bootstrap default 'main'."
