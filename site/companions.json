@@ -1,0 +1,6 @@
+{
+  "releaseTag": "companions-v0.1.0-preview.1",
+  "publishedAt": null,
+  "standalone": {"asset":"secret-tunnel-lite-setup.exe","version":"5.0.0","sha256":null,"sizeBytes":null},
+  "combined": {"asset":"wordplai-and-secret-tunnel-setup.exe","version":"Wordplai preview.8 + Secret Tunnel Lite 5.0.0","sha256":null,"sizeBytes":null}
+}

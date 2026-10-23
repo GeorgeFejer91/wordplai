@@ -627,3 +627,31 @@ their own exact hosted gates before publication; package inputs are unchanged.
 Retain older assets and disclose the remaining preview limits. The overall
 shipment goal remains active for reliable cold picker, timing, physical,
 clean-machine, remaining host/client and future Mac scopes.
+
+## Optional Lite companion — active 2026-10-23
+
+User requests three live Windows preview downloads: unchanged published Wordplai
+preview.8, a compact two-tab Secret Tunnel, and a combined installer. Implementation
+plan: docs/superpowers/plans/2026-10-23-companion-release.md. This section owns the
+cross-repository acceptance; earlier Word preview.9 gates remain independent.
+
+- Lite source: SecretTunnel-v2 branch codex/lite-companion, based on v5 b6a7b45.
+  Reuses native permissions/GitHub/multi-root authorities; no optional brokers.
+  Separate app/profile/port. Fresh zrok must use private USERPROFILE/HOME because
+  bundled zrok 2.0.4 ignores ZROK_HOME. Initial native isolation failure reproduced
+  and fixed; no copied enrollment. Published installers contain no account state.
+- Passed: Lite synthetic workflow/10 geometry cases; actual MCP 19 checks with
+  two roots/two clients, writes/conflicts/traversal/read-only refusal; full UI
+  baseline and 244 tab states/67 dialog pages; Lite Rust 125 before final CLI help
+  filtering. Final native install and exact release build still pending.
+- Word catalogue/rendering: 372 checks passed with disabled placeholders; final
+  ready download metadata must be tested again. NSIS real subprocess fixtures
+  pass success, first failure, second failure and open-Word refusal (4 checks).
+- Ruling: use separate endpoints for this preview; optional shared-URL question
+  unanswered, explicit package request is independent. User told this assumption.
+  Cost if wrong: shared forwarding requires a later scoped integration.
+- Ruling: retain exact preview.8 Word bytes; preview.9 qualification is incomplete.
+  Cost: latest author-setting source is not in this component.
+- Git/publication: both isolated worktrees still local/uncommitted at this record;
+  no new release or Pages deployment. Next: freeze/review source, native lifecycle,
+  exact final packages/checksums, hosted checks, publish and verify public bytes.
