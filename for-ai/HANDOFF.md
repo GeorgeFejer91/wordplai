@@ -655,3 +655,21 @@ cross-repository acceptance; earlier Word preview.9 gates remain independent.
 - Git/publication: both isolated worktrees still local/uncommitted at this record;
   no new release or Pages deployment. Next: freeze/review source, native lifecycle,
   exact final packages/checksums, hosted checks, publish and verify public bytes.
+
+Review/update 2026-10-23: one fresh whole-branch review found three Important Lite
+issues (no minors). Fixed natively: account adoption preserves publishing rights;
+cancellation invalidates credential commit, including late replies; UI ignores
+stale errors. Long selected additional paths now use the shared text pager.
+Regressions RED→GREEN; final source 7435d6040287e0a7e10e979f08ac8505ba7a6a42:
+127 Lite/123 full Rust pass, twelve geometry cases plus every outer/path page
+pass, full UI 244 states/67 dialogs pass. Real native candidate 21454d7 passes
+20 install/profile/enrollment/file/client-revocation/public-HTTPS checks; final
+7435d60 installer rebuild and requalification pending. No source metadata yet
+claims that older native evidence qualifies final fixed bytes.
+
+Ruling: external evidence remains explicit preview limits: real ChatGPT host,
+live GitHub-account flow and clean-machine/Word matrix have not run here.
+Cost if wrong: release is labelled preview, with no stable/clean-host claim.
+Private hosted run 39961834461 could not start because GitHub Actions budget
+blocked it; no steps or logs. Local gates pass. Public Word/Pages CI still to run.
+No new assets or live Pages changes are published at this record.
