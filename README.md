@@ -1,8 +1,9 @@
 # wordplai
 
 A standalone Microsoft Word add-in for AI-assisted writing in your document.
-Mark passages in Word, assign their color a writing prompt, and ask your connected
-assistant to use Wordplai. The native add-in applies authorized wording directly,
+In the current source, mark passages with Word's **Text Highlight Color**, then
+use **wordplai → Highlight rules** to assign an editing instruction or Preserve
+text. Ask your connected assistant to use Wordplai. The add-in applies authorized wording directly,
 adds a short rationale comment, and marks completed wording green/protected.
 
 [LibreOffice counterpart: LibrAI](https://github.com/GeorgeFejer91/LibrAI) ·

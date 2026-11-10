@@ -59,7 +59,7 @@ namespace UnderTree.WordAddin
             string quote = snapshot.MainText.Substring(from, to - from);
             if (Text(args, "quote") != quote) throw new InvalidOperationException("The selected wording changed.");
             string ruleId = Text(args, "ruleId");
-            ColorRule rule = state.Policy.Rules.FirstOrDefault(r => r.Id == ruleId);
+            ColorRule rule = state.Policy.Rules.FirstOrDefault(r => r.NativeHighlightIndex == 0 && r.Id == ruleId);
             if (rule == null) throw new InvalidOperationException("Choose a current color rule.");
             var mark = new PassageMark { Id = "Wrai_" + Guid.NewGuid().ToString("N"), RuleId = ruleId, From = from, To = to, Quote = quote, Prompt = Text(args, "prompt", "") };
             PolicyEngine candidate = PrepareLocalPolicy(state, policy => policy.AddMark(mark, snapshot.MainText));
@@ -79,6 +79,7 @@ namespace UnderTree.WordAddin
             string id = Text(args, "id");
             PassageMark mark = state.Policy.Marks.FirstOrDefault(m => m.Id == id);
             if (mark == null) throw new InvalidOperationException("The marker no longer exists.");
+            if (mark.NativeHighlight) throw new InvalidOperationException("Remove native text highlights in Word.");
             if ((bool)state.Document.Bookmarks.Exists(MarkBookmark(mark))) state.Document.Bookmarks.Item(MarkBookmark(mark)).Delete();
             state.Policy.RemoveMark(id);
             RepaintMarks(state);

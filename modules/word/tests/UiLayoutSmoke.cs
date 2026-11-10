@@ -49,6 +49,7 @@ namespace UnderTree.WordAddin
             {
                 CheckRules();
                 CheckRibbon();
+                CheckNativeHighlights();
                 CheckOverlappingRules();
                 CheckPassageRuleWindows();
                 CheckContext();
@@ -330,6 +331,61 @@ namespace UnderTree.WordAddin
                     Require(opened && calls.Count(call => call.Item1 == "mark_selection") == before + 1,
                         "Double-click opens only that color rule without marking, with " + (unavailable ? "no selected text." : "a selected passage."));
                 }
+            }
+        }
+
+        private static void CheckNativeHighlights()
+        {
+            string currentDocument = "synthetic-1";
+            var colors = Enumerable.Range(1, 16).Select(index => new Dictionary<string, object> {
+                { "index", index }, { "name", WordNativeHighlights.Name(index) }, { "color", WordNativeHighlights.Rgb(index) },
+                { "action", index == 7 ? "protect" : "neutral" }, { "prompt", "" }
+            }).ToArray();
+            int writes = 0;
+            using (var form = new NativeHighlightsDialog((operation, args) =>
+            {
+                if (operation != "native_highlight_colors") writes++;
+                return new Dictionary<string, object> { { "documentId", currentDocument }, { "colors", colors } };
+            }))
+            {
+                Open(form);
+                form.Size = form.MinimumSize;
+                Settle(form);
+                CheckBounds(form);
+                Button[] swatches = Descendants(form).OfType<Button>().Where(button => button.Visible && button.Image != null).ToArray();
+                Require(swatches.Length == 16 && swatches.Select(button => button.AccessibleName).Distinct().Count() == 16 &&
+                    swatches.All(button => button.TabStop && button.CanSelect), "All present Word colors have one keyboard-accessible swatch.");
+                Require(FindButton(form, "Yellow").AccessibleDescription == "Preserve text", "The yellow swatch exposes its saved function.");
+                Capture(form, "native-highlights");
+                CheckEnlarged(form, "native-highlights-enlarged");
+                currentDocument = "synthetic-2";
+                colors = colors.Where(color => UiState.Text(color, "index") == "6").ToArray();
+                form.RefreshColors();
+                Settle(form);
+                Require(Descendants(form).OfType<Button>().Count(button => button.Visible && button.Image != null) == 1 &&
+                    FindButton(form, "Red").Visible && writes == 0, "Switching documents refreshes the swatches without assigning a rule.");
+            }
+            string savedAction = null;
+            string savedPrompt = null;
+            Action<string, string> save = (action, prompt) => { savedAction = action; savedPrompt = prompt; };
+            using (var form = new NativeHighlightRuleDialog(colors[0], save))
+            {
+                Open(form);
+                Descendants(form).OfType<RadioButton>().Single(function => function.Text == "Editing instruction").Checked = true;
+                FindText(form, "Editing instruction").Text = "Improve clarity.";
+                FindButton(form, "Cancel").PerformClick();
+                Require(savedAction == null, "Cancel leaves the current color assignment intact.");
+            }
+            using (var form = new NativeHighlightRuleDialog(colors[0], save))
+            {
+                Open(form);
+                Descendants(form).OfType<RadioButton>().Single(function => function.Text == "Editing instruction").Checked = true;
+                FindText(form, "Editing instruction").Text = "Improve clarity.";
+                CheckBounds(form);
+                Capture(form, "native-highlight-rule");
+                CheckEnlarged(form, "native-highlight-rule-enlarged");
+                FindButton(form, "Save rule").PerformClick();
+                Require(savedAction == "prompt" && savedPrompt == "Improve clarity.", "Save sends only the chosen editing function and instruction.");
             }
         }
 

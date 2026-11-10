@@ -72,10 +72,12 @@ namespace UnderTree.WordAddin
             ReconcileNativeEdit(state, snapshot);
             ReconcileProtectedNativeReview(state, snapshot);
             RefreshMarks(state, snapshot);
+            RefreshNativeHighlightMarks(state, snapshot);
             if (ReconcileAcceptedChanges(state, snapshot))
             {
                 snapshot = WordSnapshot.Capture(state.Document);
                 RefreshMarks(state, snapshot);
+                RefreshNativeHighlightMarks(state, snapshot);
             }
             state.Snapshot = snapshot;
             return state;
@@ -141,7 +143,8 @@ namespace UnderTree.WordAddin
         private static string MarkBookmark(PassageMark mark) { return mark.NativeBookmark ?? mark.Id; }
 
         private static ISet<string> OwnedBookmarks(WordDocumentReview state)
-        { return new HashSet<string>(state.Policy.Marks.Select(mark => mark.Id).Concat(state.Policy.Marks.Select(MarkBookmark))
+        { var anchored = state.Policy.Marks.Where(mark => !mark.NativeHighlight);
+          return new HashSet<string>(anchored.Select(mark => mark.Id).Concat(anchored.Select(MarkBookmark))
             .Concat(state.Policy.Proposals.Where(proposal => proposal.NativeOriginalMarks != null).SelectMany(proposal => proposal.NativeOriginalMarks).Select(witness => witness.Bookmark))
             .Concat(state.Policy.Proposals.Where(proposal => proposal.NativeReviewBookmark != null).Select(proposal => proposal.NativeReviewBookmark))
             .Concat(state.Policy.Proposals.Where(proposal => proposal.NativeAcceptanceBookmark != null).Select(proposal => proposal.NativeAcceptanceBookmark))); }
@@ -182,6 +185,8 @@ namespace UnderTree.WordAddin
                 case "share_context": return ShareContext(args);
                 case "revoke_context": Current().Policy.Revoke(); return State();
                 case "selection_preview": return SelectionPreview();
+                case "native_highlight_colors": return NativeHighlightColors();
+                case "save_native_highlight_rule": return SaveNativeHighlightRule(args);
                 case "save_rule": return SaveRule(args);
                 case "mark_selection": return MarkSelection(args);
                 case "remove_mark": return RemoveMark(args);
@@ -202,8 +207,8 @@ namespace UnderTree.WordAddin
             WordSnapshot snapshot = state.Snapshot;
             return new { document = new { id = state.Id, title = snapshot.Title, shared = state.Policy.IsShared, revision = snapshot.Revision,
                     notice = state.Policy.Proposals.Any(p => p.Status == "outcome_uncertain") ? "An earlier edit needs inspection in Word. Its request cannot be replayed." : "" },
-                rules = state.Policy.Rules.Select(r => new { id = r.Id, label = r.Label, color = r.Color, action = r.Action, prompt = r.Prompt, accessMode = r.AccessMode }).ToArray(),
-                marks = state.Policy.Marks.Select(m => new { id = m.Id, ruleId = m.RuleId, from = m.From, to = m.To, quote = m.Quote, prompt = m.Prompt, stale = m.Stale }).ToArray(),
+                rules = state.Policy.Rules.Where(r => r.NativeHighlightIndex == 0).Select(r => new { id = r.Id, label = r.Label, color = r.Color, action = r.Action, prompt = r.Prompt, accessMode = r.AccessMode }).ToArray(),
+                marks = state.Policy.Marks.Where(m => !m.NativeHighlight).Select(m => new { id = m.Id, ruleId = m.RuleId, from = m.From, to = m.To, quote = m.Quote, prompt = m.Prompt, stale = m.Stale }).ToArray(),
                 proposals = state.Policy.Proposals.Where(p => p.Status == "pending").Select(p => new { id = p.Id, quote = p.Quote, replacement = DisplayReplacement(state.Policy, p, snapshot.MainText), rationale = p.Rationale, status = p.Status }).ToArray(),
                 connection = ConnectionStatus() };
         }

@@ -56,6 +56,7 @@ namespace UnderTree.WordAddin
         private Control dispatcher;
         private WordEditor editor;
         private ConnectionsDialog connections;
+        private NativeHighlightsDialog nativeHighlights;
         private WordRibbon ribbon;
         private ColorRuleWindows ruleWindows;
         private object wordApplication;
@@ -195,7 +196,16 @@ namespace UnderTree.WordAddin
             connections.Activate();
         }
 
-        public void RibbonOpen(object control) { ShowEditor(); }
+        public void RibbonOpen(object control)
+        {
+            MarshalToWord(delegate
+            {
+                if (nativeHighlights == null || nativeHighlights.IsDisposed) nativeHighlights = new NativeHighlightsDialog(LocalDispatch);
+                if (!nativeHighlights.Visible) nativeHighlights.Show();
+                nativeHighlights.Activate();
+                return null;
+            });
+        }
         public void RibbonConnections(object control)
         {
             MarshalToWord(delegate { ShowConnectionsCore(); return null; });
@@ -206,7 +216,7 @@ namespace UnderTree.WordAddin
                 object result = json.DeserializeObject(json.Serialize(editor.Dispatch(operation, arguments)));
                 if (ribbon != null && operation != "automation") ribbon.Observe(result);
                 if (operation == "automation" && WordEditor.AutomationMutates(arguments)) QueuePaletteRefresh();
-                if (automaticSave != null && (operation == "save_rule" || operation == "mark_selection" ||
+                if (automaticSave != null && (operation == "save_rule" || operation == "save_native_highlight_rule" || operation == "mark_selection" ||
                     operation == "remove_mark" || operation == "accept" || operation == "reject" ||
                     (operation == "automation" && WordEditor.AutomationMutates(arguments)))) automaticSave.Changed(DateTime.UtcNow);
                 return result;
@@ -363,6 +373,7 @@ namespace UnderTree.WordAddin
             if (ruleWindows != null) { ruleWindows.Dispose(); ruleWindows = null; }
             if (ribbon != null) ribbon.Dispose();
             if (connections != null && !connections.IsDisposed) connections.Close();
+            if (nativeHighlights != null && !nativeHighlights.IsDisposed) nativeHighlights.Close();
             if (editor != null) { editor.Dispose(); editor = null; }
             ribbon = null;
             if (dispatcher != null) { dispatcher.Dispose(); dispatcher = null; }

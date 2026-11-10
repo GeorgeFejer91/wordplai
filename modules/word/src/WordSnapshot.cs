@@ -21,6 +21,7 @@ namespace UnderTree.WordAddin
         private WordTextMap textMap;
         private XmlDocument proseBookmarks;
         private string nativeBodySource;
+        internal string NativeBodySource { get { return nativeBodySource; } }
 
         public static WordSnapshot Capture(dynamic document)
         {
@@ -251,7 +252,7 @@ namespace UnderTree.WordAddin
             return PolicyEngine.Hash(signature.ToString());
         }
 
-        private static XmlDocument ReadNativeXml(string source, int maximum)
+        internal static XmlDocument ReadNativeXml(string source, int maximum)
         {
             if (source.Length > maximum) throw new InvalidOperationException("The native document structure exceeds its inspection bound.");
             var xml = new XmlDocument { XmlResolver = null };
@@ -261,7 +262,7 @@ namespace UnderTree.WordAddin
             return xml;
         }
 
-        private static XmlNamespaceManager WordNamespaces(XmlDocument xml)
+        internal static XmlNamespaceManager WordNamespaces(XmlDocument xml)
         {
             var namespaces = new XmlNamespaceManager(xml.NameTable);
             namespaces.AddNamespace("w", "http://schemas.openxmlformats.org/wordprocessingml/2006/main");

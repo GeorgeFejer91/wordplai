@@ -21,6 +21,7 @@ namespace UnderTree.WordAddin
         internal long ContextGeneration { get; private set; }
 
         public List<ColorRule> Rules { get; private set; }
+        internal int LegacyRuleCount { get { return Rules.Count(rule => rule.NativeHighlightIndex == 0); } }
         public List<PassageMark> Marks { get; private set; }
         public List<Proposal> Proposals { get; private set; }
         public List<HighlightReceipt> HighlightReceipts { get; private set; }
@@ -44,6 +45,8 @@ namespace UnderTree.WordAddin
                 foreach (ColorRule rule in state.Rules.Where(rule => rule.Action == "prompt")) rule.AccessMode = "direct";
             Rules = state.Rules;
             Marks = state.Marks;
+            if (Marks != null && Marks.Any(mark => mark != null && mark.NativeHighlight))
+                throw Refusal("Native text highlights must be read from Word, independently of saved marker metadata.");
             Proposals = state.Proposals;
             HighlightReceipts = state.HighlightReceipts ?? new List<HighlightReceipt>();
             ValidateState();
@@ -54,7 +57,21 @@ namespace UnderTree.WordAddin
         public PolicyState ExportState()
         {
             ValidateState();
-            return Copy(new PolicyState { Version = 1, Rules = Rules, Marks = Marks, Proposals = Proposals, HighlightReceipts = HighlightReceipts });
+            return Copy(new PolicyState { Version = 1, Rules = Rules, Marks = Marks.Where(mark => !mark.NativeHighlight).ToList(),
+                Proposals = Proposals, HighlightReceipts = HighlightReceipts });
+        }
+
+        internal void SetNativeHighlights(List<PassageMark> marks)
+        {
+            var legacy = Marks.Where(mark => !mark.NativeHighlight).ToList();
+            if (legacy.Count + marks.Count > contract.limits.marks)
+                throw Refusal("The document has too many assigned highlight passages to review safely.");
+            if (legacy.Select(mark => mark.Id).Concat(marks.Select(mark => mark.Id)).Distinct(StringComparer.Ordinal).Count() != legacy.Count + marks.Count)
+                throw Refusal("The document contains repeated highlight identities.");
+            foreach (PassageMark mark in marks) ValidateMark(mark);
+            if (Marks.Where(mark => mark.NativeHighlight).Select(mark => mark.Id).SequenceEqual(marks.Select(mark => mark.Id))) return;
+            Marks = legacy.Concat(marks).ToList();
+            InvalidateContext();
         }
 
         public void AddOrUpdateRule(ColorRule rule)
@@ -64,10 +81,16 @@ namespace UnderTree.WordAddin
             int index = Rules.FindIndex(candidate => candidate.Id == rule.Id);
             if (index < 0)
             {
-                if (Rules.Count >= contract.slots.ruleLimit) throw Refusal("The color-rule limit has been reached.");
+                if (rule.NativeHighlightIndex == 0 && LegacyRuleCount >= contract.slots.ruleLimit) throw Refusal("The color-rule limit has been reached.");
+                if (rule.NativeHighlightIndex != 0 && Rules.Any(existing => existing.NativeHighlightIndex == rule.NativeHighlightIndex))
+                    throw Refusal("This Word highlight already has a color rule.");
                 Rules.Add(Copy(rule));
             }
-            else Rules[index] = Copy(rule);
+            else
+            {
+                if (Rules[index].NativeHighlightIndex != rule.NativeHighlightIndex) throw Refusal("The source of a color rule cannot change.");
+                Rules[index] = Copy(rule);
+            }
             InvalidateContext();
         }
 
@@ -268,6 +291,9 @@ namespace UnderTree.WordAddin
                 if (replacement.Length != 0 || proposal.From > mark.From || proposal.To < mark.To)
                     throw Refusal("Every overlapping discard marker requires a complete removal suggestion.");
             List<PassageMark> current = overlaps.Where(mark => IsCurrent(mark, text) && (Rule(mark).Action == "prompt" || Rule(mark).Action == "discard")).OrderBy(mark => mark.From).ToList();
+            if (current.Any(mark => Rule(mark).Action == "prompt"))
+                current = current.Concat(overlaps.Where(mark => mark.NativeHighlight && Rule(mark).Action == "protect"))
+                    .OrderBy(mark => mark.From).ToList();
             int covered = proposal.From;
             foreach (PassageMark mark in current)
             {
@@ -287,8 +313,12 @@ namespace UnderTree.WordAddin
 
         private string PolicyHash()
         {
-            return Hash(json.Serialize(new { Rules = Rules.OrderBy(rule => rule.Id, StringComparer.Ordinal).ToArray(),
-                Marks = Marks.OrderBy(mark => mark.Id, StringComparer.Ordinal).ToArray() }));
+            return Hash(json.Serialize(new {
+                Rules = Rules.OrderBy(rule => rule.Id, StringComparer.Ordinal).Select(rule => rule.NativeHighlightIndex != 0
+                    ? (object)rule : new { rule.Id, rule.Label, rule.Color, rule.Action, rule.Prompt, rule.AccessMode }).ToArray(),
+                Marks = Marks.OrderBy(mark => mark.Id, StringComparer.Ordinal).Select(mark => mark.NativeHighlight
+                    ? (object)mark : new { mark.Id, mark.RuleId, mark.From, mark.To, mark.Quote, mark.Prompt, mark.Stale, mark.RequiresRemarking, mark.NativeBookmark }).ToArray()
+            }));
         }
 
         private static string SnapshotHash(string snapshotBinding)

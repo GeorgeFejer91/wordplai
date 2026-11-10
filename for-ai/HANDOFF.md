@@ -46,20 +46,42 @@ inputs and eight staged payloads match its manifest. The packaged DLL passes
 `artifacts/word/setup-components/` and `artifacts/word/setup-checkpoint-final/`.
 The interactive installer and actual enrollment still need installed testing.
 
-Next, build native highlight detection and reconcile derived permissions with
-the existing rule store, keeping legacy marks and protection. An isolated Word
-probe confirmed that `HighlightColorIndex` distinguishes adjoining colors,
-ignores shading, retains the selection, and follows removal and Undo/Redo.
-The first probe stopped before touching the fixture because its identity check
-failed. The later isolated COM result is evidence for the API, with physical
-ribbon behavior and the Wordplai swatches still to be qualified.
+Native highlight checkpoint: the ribbon opens a dedicated swatch panel, and
+the document stores the color assignments. Review derives ranges from Word's
+live formatting and retains legacy rules. Word's aggregate COM color can
+omit highlighted spaces or absorb unhighlighted spaces. A range Find probe
+also missed a highlighted final paragraph. The final scanner checks exported
+run formatting against the current body text and uses bounded native range
+inspection for complex mappings. The full isolated Word suite passes 372
+assertions, including exact mixed-color protection after reopen and refusal
+across an unmarked space. All 21 component gates pass, including 2,016 native
+UI checks and 25 renders. The packaged DLL passes 188 COM assertions and its
+dispatch-only fault control. See `artifacts/word/native-highlight-full-review/`
+and `artifacts/word/native-highlight-components-final/`.
+
+The 23,899,876-byte qualification installer is installed. SHA-256
+`63e2e24aed934fab78ea874fbbd93d9f5ae50fe81b14e81cc5f665bb86a4932a`.
+The finish page rendered the zrok steps and allowed Finish without enrollment.
+All 74 source inputs, eight installed payloads, both registration views and
+156 unchanged profile files verified. In the installed Word session, native
+yellow and red produced two swatches, and Ctrl+Z/Ctrl+Y removed and restored
+red in the open panel. The saved DOCX retains the original text and the exact
+two highlight colors. The disposable Word session is closed. Evidence is
+under `artifacts/word/native-highlight-installer/`.
+
+Next, qualify swatch rule entry and the installed MCP path. The UI tool opened
+the yellow rule but keyboard input targeted the main Word window. Verify
+ownership and focus for the modeless palette and its rule dialog, then run
+installed Save/Cancel, document switching and the actual MCP client checks.
+Upgrade evidence does not cover first enrollment on a clean Windows profile.
+No Chrome browser extension was visible in the UI inventory for this turn.
 
 Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
 prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,
 an unresolved local main/index, and separate handoff and verification edits.
 The goal worktree is based on the verified GitHub revision and preserves those
-primary-checkout files. The setup checkpoint remains local. Release qualification
-will require a new installer containing both changes.
+primary-checkout files. Both checkpoints remain local. The public download
+remains on preview.8 while the remaining release gates are open.
 
 ## Active installer completion goal — 2026-10-21
 
