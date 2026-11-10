@@ -92,18 +92,32 @@ the old public session returned HTTP 502. See private evidence in
 attempts stopped on the open-file hash, an unclassified local dispatch error
 and a plain-text MCP refusal that the harness tried to parse as JSON.
 
-Next, qualify physical prompt entry and active-document palette switching,
-first enrollment on a clean Windows/Word profile, and the hosted AI client.
+Next, qualify physical prompt entry, first enrollment on a clean Windows/Word
+profile, and the hosted AI client.
 The in-app ChatGPT browser remained on its access challenge, no Chrome
 extension surface was listed, and this PC has no Windows Sandbox available.
 The HTTPS result covers the protocol through zrok.
+
+Installed document switching is now observed: with the palette open, switching
+from the saved red fixture to an unmarked fixture clears the swatches, and
+switching back restores red. Two attempts with intentionally invalid tokens in
+an isolated profile using the installed DLL and bundled zrok settled as setup
+failures, kept Start unavailable, and saved neither test token in connection
+settings. The service returned its generic management failure, so the remote
+failure cause is unclassified. Valid enrollment on a clean Windows/Word host
+and physical typing into the prompt remain open.
+
+[Draft PR 2](https://github.com/GeorgeFejer91/wordplai/pull/2) runs hosted
+verification. Run 42843810045 passed the hosted product checks and failed
+the context script on a detached checkout. Reproduced locally and handled
+detached HEAD without skipping any structure or secret checks.
 
 Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
 prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,
 an unresolved local main/index, and separate handoff and verification edits.
 The goal worktree is based on the verified GitHub revision and preserves those
-primary-checkout files. Both checkpoints remain local. The public download
-remains on preview.8 while the remaining release gates are open.
+primary-checkout files. The qualification branch is in the draft PR. The
+public download remains on preview.8 while the remaining release gates are open.
 
 ## Active installer completion goal — 2026-10-21
 
