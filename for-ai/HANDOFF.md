@@ -1,5 +1,50 @@
 # Remaining Word and real-client qualification
 
+## Active Windows release goal — 2026-11-10
+
+See [PROJECT.md](PROJECT.md) for the native highlight and guided MCP setup
+contract. Older acceptance and evidence below remain relevant to regression
+and release gates.
+
+- [ ] In installed Word, use **Text Highlight Color** to apply two different
+  colors and repeat one in a separate passage. Observe one named, keyboard
+  accessible swatch per color in Wordplai. Recolor, remove the last occurrence,
+  Undo/Redo, and switch between two open documents. Verify the panel follows
+  native formatting and document activation without changing the selection.
+- [ ] From the swatches, save an instruction for one color and **Preserve
+  text** for another. Verify Cancel leaves the prior rule intact, a newly
+  highlighted passage picks up its saved color rule, and save/reopen retains
+  the mapping. Check a legacy document with existing rules and protected
+  ranges. Exercise mixed formatting and keep existing Word formatting intact.
+- [ ] On the exact installer, start from a clean Windows/Word profile. Follow
+  the setup instructions to get a zrok account token, enroll in Wordplai,
+  explicitly start access, and connect an actual MCP client using the
+  displayed URL. Exercise deferred setup, an invalid token, retry, and an
+  upgrade with an existing profile. Verify secrets stay out of installer
+  inputs, logs, and shared evidence.
+- [ ] Use that MCP client to read a disposable document and edit an eligible
+  highlighted passage with its saved instruction. Verify exact protected and
+  unassigned text, comment attribution, current-context refusal after
+  changing a highlight, and document isolation. Stop access and verify the
+  prior client loses authority. Reopen the saved document and verify the
+  native colors, rules, and resulting text.
+- [ ] Pass the applicable component, installed UI, clean-host lifecycle,
+  hosted CI, and publication gates in [VERIFICATION.md](VERIFICATION.md).
+  Publish the qualified installer and confirm its anonymous download, version,
+  checksum, and the stable Download page. Retain Mac deferral and report
+  Writer parity separately.
+
+Next work starts with Word's native highlight ranges and the existing
+Wordplai rule store, ribbon and reconciliation path. Reuse the existing
+Connections enrollment and tunnel controls behind the installer guidance.
+Both flows need fresh evidence for the new installer.
+
+Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
+prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,
+an unresolved local main/index, and separate handoff and verification edits.
+The goal worktree starts clean from the verified GitHub revision and preserves
+those primary-checkout files. No new candidate has been built.
+
 ## Active installer completion goal — 2026-10-21
 
 The user requests a full Windows installer release and a working MCP runtime on
