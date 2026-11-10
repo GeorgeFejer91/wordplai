@@ -23,6 +23,7 @@ namespace UnderTree.WordAddin
         private string statusDetails = "";
         private bool refreshing;
         private bool previouslyRunning;
+        private bool configured;
 
         internal ConnectionsDialog(Func<string, IDictionary<string, object>, object> dispatch)
             : this(dispatch, address => Process.Start(new ProcessStartInfo(address) { UseShellExecute = true })) { }
@@ -116,7 +117,15 @@ namespace UnderTree.WordAddin
             Shell.Controls.Add(NativeLayout.Actions(refresh, close), 0, 1);
             refreshTimer = new Timer { Interval = 1500 };
             refreshTimer.Tick += delegate { RefreshConnectionStatus(); };
-            Shown += delegate { NativeLayout.Attempt(this, RefreshAll); refreshTimer.Start(); };
+            Shown += delegate
+            {
+                NativeLayout.Attempt(this, delegate
+                {
+                    RefreshAll();
+                    if (!configured) tabs.SelectedTab = setup;
+                });
+                refreshTimer.Start();
+            };
             Activated += delegate { if (IsHandleCreated) NativeLayout.Attempt(this, RefreshAll); };
         }
 
@@ -196,6 +205,7 @@ namespace UnderTree.WordAddin
             string publicAddress = UiState.Text(connection, "publicMcpUrl");
             if (address.Text != publicAddress) address.Text = publicAddress;
             bool running = UiState.Flag(connection, "running");
+            configured = UiState.Flag(connection, "configured");
             string phase = UiState.Text(connection, "status");
             bool busy = UiState.Flag(connection, "busy") || phase == "configuring" || phase == "starting" || phase == "stopping";
             bool cleanup = UiState.Flag(connection, "cleanupPending") || phase == "cleanup_required" || phase == "revocation_required";
@@ -204,13 +214,15 @@ namespace UnderTree.WordAddin
             string error = UiState.Text(connection, "lastError");
             if (error.Length > 0) statusDetails += "\r\n\r\n" + error;
             if (statusDetails.Trim().Length == 0) statusDetails = running ? "Connection process is running." : "Access is stopped.";
-            status.Text = error.Length > 0 ? "Connection needs attention. View status details." : StatusLabel(phase, running);
+            status.Text = error.Length > 0 ? "Connection needs attention. View status details."
+                : !configured && !busy && !cleanup ? "Set up your zrok account in the Setup tab." : StatusLabel(phase, running);
             setupStatus.Text = busy ? "Connection setup or access is in progress. See Overview for status."
-                : UiState.Flag(connection, "configured") ? "The Word connection is configured." : "Paste your zrok account token, then choose Configure connection.";
-            start.Enabled = !tunnelRunning && !busy && !cleanup;
+                : tunnelRunning ? "Access is running."
+                : configured ? "Start access in Overview." : "Paste your zrok account token, then choose Configure connection.";
+            start.Enabled = configured && !tunnelRunning && !busy && !cleanup;
             stop.Enabled = running || busy || cleanup || publicAddress.Length > 0 || error.Length > 0;
             configureConnection.Enabled = !busy && !cleanup && !tunnelRunning;
-            copy.Enabled = publicAddress.Length > 0;
+            copy.Enabled = running && tunnelRunning && !busy && !cleanup && error.Length == 0 && publicAddress.Length > 0;
             previouslyRunning = running;
         }
 

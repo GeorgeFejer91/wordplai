@@ -53,6 +53,7 @@ namespace UnderTree.WordAddin
                 CheckPassageRuleWindows();
                 CheckContext();
                 CheckConnections();
+                CheckConnectionOnboarding();
                 CheckSmallPaging();
                 CheckDetails();
                 CheckBranding();
@@ -568,6 +569,48 @@ namespace UnderTree.WordAddin
                 Open(reopened);
                 Require(FindText(reopened, "Edit comment author name").Text == "Élodie – Editor 😀",
                     "Closing and reopening Setup discards the unsubmitted author draft and restores the saved name.");
+            }
+        }
+
+        private static void CheckConnectionOnboarding()
+        {
+            Dictionary<string, object> connection = Connection();
+            connection["configured"] = false;
+            connection["tunnelRunning"] = false;
+            connection["publicMcpUrl"] = "";
+            connection["status"] = "stopped";
+            int writes = 0;
+            using (var form = new ConnectionsDialog((operation, arguments) =>
+            {
+                if (operation == "state") return UiState.Args("connection", connection);
+                if (operation == "connection_status") return connection;
+                writes++;
+                return connection;
+            }))
+            {
+                Open(form);
+                TabControl tabs = Descendants(form).OfType<TabControl>().First();
+                Require(tabs.SelectedTab.Text == "Setup", "Unconfigured Connections opens directly to zrok enrollment.");
+                tabs.SelectedIndex = 0;
+                Button start = FindButton(form, "Start access");
+                Button copy = FindButton(form, "Copy MCP address");
+                Require(!start.Enabled && !copy.Enabled, "Unconfigured public access and its copy action are unavailable.");
+
+                connection["configured"] = true;
+                connection["status"] = "configured";
+                FindButton(form, "Refresh").PerformClick();
+                Require(start.Enabled && !copy.Enabled, "Enrollment alone makes Start access available.");
+                connection["running"] = true;
+                connection["status"] = "starting";
+                FindButton(form, "Refresh").PerformClick();
+                Require(!start.Enabled && !copy.Enabled, "Starting access does not expose a copyable address.");
+
+                connection["status"] = "running";
+                connection["tunnelRunning"] = true;
+                connection["publicMcpUrl"] = "https://example.invalid/synthetic-mcp-capability-do-not-use";
+                FindButton(form, "Refresh").PerformClick();
+                Require(!start.Enabled && copy.Enabled, "Only ready public access has a copyable MCP address.");
+                Require(writes == 0, "Opening Connections and refreshing readiness does not change access.");
             }
         }
 

@@ -34,16 +34,32 @@ and release gates.
   checksum, and the stable Download page. Retain Mac deferral and report
   Writer parity separately.
 
-Next work starts with Word's native highlight ranges and the existing
-Wordplai rule store, ribbon and reconciliation path. Reuse the existing
-Connections enrollment and tunnel controls behind the installer guidance.
-Both flows need fresh evidence for the new installer.
+Setup checkpoint on `codex/native-highlights-mcp-setup`: the installer
+finish page explains where to get the zrok token and how to connect in Word.
+Connections opens to Setup for a fresh profile, enables Start after enrollment,
+and enables Copy only when the public tunnel and local endpoint report running.
+The source WinForms test failed on the old opening tab. The corrected build
+passes 21 component gates, including 1,924 native UI checks and 21 renders.
+The checkpoint installer built with NSIS 3.13 and pinned zrok 2.0.4. All 72
+inputs and eight staged payloads match its manifest. The packaged DLL passes
+536 COM assertions with an effective fault control. See private evidence in
+`artifacts/word/setup-components/` and `artifacts/word/setup-checkpoint-final/`.
+The interactive installer and actual enrollment still need installed testing.
+
+Next, build native highlight detection and reconcile derived permissions with
+the existing rule store, keeping legacy marks and protection. An isolated Word
+probe confirmed that `HighlightColorIndex` distinguishes adjoining colors,
+ignores shading, retains the selection, and follows removal and Undo/Redo.
+The first probe stopped before touching the fixture because its identity check
+failed. The later isolated COM result is evidence for the API, with physical
+ribbon behavior and the Wordplai swatches still to be qualified.
 
 Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
 prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,
 an unresolved local main/index, and separate handoff and verification edits.
-The goal worktree starts clean from the verified GitHub revision and preserves
-those primary-checkout files. No new candidate has been built.
+The goal worktree is based on the verified GitHub revision and preserves those
+primary-checkout files. The setup checkpoint remains local. Release qualification
+will require a new installer containing both changes.
 
 ## Active installer completion goal — 2026-10-21
 
