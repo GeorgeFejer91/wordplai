@@ -69,12 +69,34 @@ red in the open panel. The saved DOCX retains the original text and the exact
 two highlight colors. The disposable Word session is closed. Evidence is
 under `artifacts/word/native-highlight-installer/`.
 
-Next, qualify swatch rule entry and the installed MCP path. The UI tool opened
-the yellow rule but keyboard input targeted the main Word window. Verify
-ownership and focus for the modeless palette and its rule dialog, then run
-installed Save/Cancel, document switching and the actual MCP client checks.
-Upgrade evidence does not cover first enrollment on a clean Windows profile.
-No Chrome browser extension was visible in the UI inventory for this turn.
+Word-owned panel checkpoint: the highlight palette now uses the Word window
+as its modeless owner. The rebuilt 23,892,058-byte installer was exercised
+interactively and installed. SHA-256
+`3076e802fdfa18243e6283df9d248cee5371f9affaec228186a7c10caca2d5bb`.
+The finish page rendered, all 74 inputs and eight installed payloads matched,
+both registration views matched, and all 156 pre-upgrade profile files were
+byte-identical. All 21 components and the exact packaged COM check passed.
+Installed UI saved the red Preserve text rule and Cancel left it intact.
+The owner keeps the panel in front of Word. The desktop tool still targets
+Word for text entry, so the yellow instruction was saved through the installed
+local API for the wire test.
+
+Public HTTPS qualification passed 22 checks with the exact installed DLL and
+the existing zrok enrollment. Two real protocol sessions chose separate
+synthetic documents. An authorized edit applied once, with the configured
+comment author. Unmarked and red protected text remained exact. Native
+recoloring invalidated the previous read, the independent document's saved
+bytes matched, and the edit and red rule survived reopen. Stop settled and
+the old public session returned HTTP 502. See private evidence in
+`artifacts/word/native-highlight-owned/wire-23f80c0c/`. Earlier harness
+attempts stopped on the open-file hash, an unclassified local dispatch error
+and a plain-text MCP refusal that the harness tried to parse as JSON.
+
+Next, qualify physical prompt entry and active-document palette switching,
+first enrollment on a clean Windows/Word profile, and the hosted AI client.
+The in-app ChatGPT browser remained on its access challenge, no Chrome
+extension surface was listed, and this PC has no Windows Sandbox available.
+The HTTPS result covers the protocol through zrok.
 
 Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
 prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,

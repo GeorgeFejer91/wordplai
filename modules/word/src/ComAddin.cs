@@ -201,7 +201,11 @@ namespace UnderTree.WordAddin
             MarshalToWord(delegate
             {
                 if (nativeHighlights == null || nativeHighlights.IsDisposed) nativeHighlights = new NativeHighlightsDialog(LocalDispatch);
-                if (!nativeHighlights.Visible) nativeHighlights.Show();
+                if (!nativeHighlights.Visible)
+                {
+                    if ((int)((dynamic)wordApplication).Windows.Count == 0) nativeHighlights.Show();
+                    else nativeHighlights.Show(DialogOwner());
+                }
                 nativeHighlights.Activate();
                 return null;
             });
