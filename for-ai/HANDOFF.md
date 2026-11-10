@@ -1,5 +1,124 @@
 # Remaining Word and real-client qualification
 
+## Active Windows release goal — 2026-11-10
+
+See [PROJECT.md](PROJECT.md) for the native highlight and guided MCP setup
+contract. Older acceptance and evidence below remain relevant to regression
+and release gates.
+
+- [ ] In installed Word, use **Text Highlight Color** to apply two different
+  colors and repeat one in a separate passage. Observe one named, keyboard
+  accessible swatch per color in Wordplai. Recolor, remove the last occurrence,
+  Undo/Redo, and switch between two open documents. Verify the panel follows
+  native formatting and document activation without changing the selection.
+- [ ] From the swatches, save an instruction for one color and **Preserve
+  text** for another. Verify Cancel leaves the prior rule intact, a newly
+  highlighted passage picks up its saved color rule, and save/reopen retains
+  the mapping. Check a legacy document with existing rules and protected
+  ranges. Exercise mixed formatting and keep existing Word formatting intact.
+- [ ] On the exact installer, start from a clean Windows/Word profile. Follow
+  the setup instructions to get a zrok account token, enroll in Wordplai,
+  explicitly start access, and connect an actual MCP client using the
+  displayed URL. Exercise deferred setup, an invalid token, retry, and an
+  upgrade with an existing profile. Verify secrets stay out of installer
+  inputs, logs, and shared evidence.
+- [ ] Use that MCP client to read a disposable document and edit an eligible
+  highlighted passage with its saved instruction. Verify exact protected and
+  unassigned text, comment attribution, current-context refusal after
+  changing a highlight, and document isolation. Stop access and verify the
+  prior client loses authority. Reopen the saved document and verify the
+  native colors, rules, and resulting text.
+- [ ] Pass the applicable component, installed UI, clean-host lifecycle,
+  hosted CI, and publication gates in [VERIFICATION.md](VERIFICATION.md).
+  Publish the qualified installer and confirm its anonymous download, version,
+  checksum, and the stable Download page. Retain Mac deferral and report
+  Writer parity separately.
+
+Setup checkpoint on `codex/native-highlights-mcp-setup`: the installer
+finish page explains where to get the zrok token and how to connect in Word.
+Connections opens to Setup for a fresh profile, enables Start after enrollment,
+and enables Copy only when the public tunnel and local endpoint report running.
+The source WinForms test failed on the old opening tab. The corrected build
+passes 21 component gates, including 1,924 native UI checks and 21 renders.
+The checkpoint installer built with NSIS 3.13 and pinned zrok 2.0.4. All 72
+inputs and eight staged payloads match its manifest. The packaged DLL passes
+536 COM assertions with an effective fault control. See private evidence in
+`artifacts/word/setup-components/` and `artifacts/word/setup-checkpoint-final/`.
+The interactive installer and actual enrollment still need installed testing.
+
+Native highlight checkpoint: the ribbon opens a dedicated swatch panel, and
+the document stores the color assignments. Review derives ranges from Word's
+live formatting and retains legacy rules. Word's aggregate COM color can
+omit highlighted spaces or absorb unhighlighted spaces. A range Find probe
+also missed a highlighted final paragraph. The final scanner checks exported
+run formatting against the current body text and uses bounded native range
+inspection for complex mappings. The full isolated Word suite passes 372
+assertions, including exact mixed-color protection after reopen and refusal
+across an unmarked space. All 21 component gates pass, including 2,016 native
+UI checks and 25 renders. The packaged DLL passes 188 COM assertions and its
+dispatch-only fault control. See `artifacts/word/native-highlight-full-review/`
+and `artifacts/word/native-highlight-components-final/`.
+
+The 23,899,876-byte qualification installer is installed. SHA-256
+`63e2e24aed934fab78ea874fbbd93d9f5ae50fe81b14e81cc5f665bb86a4932a`.
+The finish page rendered the zrok steps and allowed Finish without enrollment.
+All 74 source inputs, eight installed payloads, both registration views and
+156 unchanged profile files verified. In the installed Word session, native
+yellow and red produced two swatches, and Ctrl+Z/Ctrl+Y removed and restored
+red in the open panel. The saved DOCX retains the original text and the exact
+two highlight colors. The disposable Word session is closed. Evidence is
+under `artifacts/word/native-highlight-installer/`.
+
+Word-owned panel checkpoint: the highlight palette now uses the Word window
+as its modeless owner. The rebuilt 23,892,058-byte installer was exercised
+interactively and installed. SHA-256
+`3076e802fdfa18243e6283df9d248cee5371f9affaec228186a7c10caca2d5bb`.
+The finish page rendered, all 74 inputs and eight installed payloads matched,
+both registration views matched, and all 156 pre-upgrade profile files were
+byte-identical. All 21 components and the exact packaged COM check passed.
+Installed UI saved the red Preserve text rule and Cancel left it intact.
+The owner keeps the panel in front of Word. The desktop tool still targets
+Word for text entry, so the yellow instruction was saved through the installed
+local API for the wire test.
+
+Public HTTPS qualification passed 22 checks with the exact installed DLL and
+the existing zrok enrollment. Two real protocol sessions chose separate
+synthetic documents. An authorized edit applied once, with the configured
+comment author. Unmarked and red protected text remained exact. Native
+recoloring invalidated the previous read, the independent document's saved
+bytes matched, and the edit and red rule survived reopen. Stop settled and
+the old public session returned HTTP 502. See private evidence in
+`artifacts/word/native-highlight-owned/wire-23f80c0c/`. Earlier harness
+attempts stopped on the open-file hash, an unclassified local dispatch error
+and a plain-text MCP refusal that the harness tried to parse as JSON.
+
+Next, qualify physical prompt entry, first enrollment on a clean Windows/Word
+profile, and the hosted AI client.
+The in-app ChatGPT browser remained on its access challenge, no Chrome
+extension surface was listed, and this PC has no Windows Sandbox available.
+The HTTPS result covers the protocol through zrok.
+
+Installed document switching is now observed: with the palette open, switching
+from the saved red fixture to an unmarked fixture clears the swatches, and
+switching back restores red. Two attempts with intentionally invalid tokens in
+an isolated profile using the installed DLL and bundled zrok settled as setup
+failures, kept Start unavailable, and saved neither test token in connection
+settings. The service returned its generic management failure, so the remote
+failure cause is unclassified. Valid enrollment on a clean Windows/Word host
+and physical typing into the prompt remain open.
+
+[Draft PR 2](https://github.com/GeorgeFejer91/wordplai/pull/2) runs hosted
+verification. Run 42843810045 passed the hosted product checks and failed
+the context script on a detached checkout. Reproduced locally and handled
+detached HEAD without skipping any structure or secret checks.
+
+Baseline observed 2026-11-10: GitHub main is `fc84d77` and the newest public
+prerelease is `v0.1.0-preview.8`. The primary checkout has sync name clashes,
+an unresolved local main/index, and separate handoff and verification edits.
+The goal worktree is based on the verified GitHub revision and preserves those
+primary-checkout files. The qualification branch is in the draft PR. The
+public download remains on preview.8 while the remaining release gates are open.
+
 ## Active installer completion goal — 2026-10-21
 
 The user requests a full Windows installer release and a working MCP runtime on

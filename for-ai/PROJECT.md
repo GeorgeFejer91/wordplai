@@ -6,6 +6,27 @@ A standalone Microsoft Word add-in that connects AI writing assistants to locall
 
 ## Primary goal
 
+Release a new Windows installer for Wordplai with native Word highlighting and
+guided MCP setup. Users mark text with Word's **Home → Text Highlight Color**.
+Wordplai shows one clickable swatch per highlight color present in the active
+document. Clicking a swatch lets the user save an AI editing instruction or
+**Preserve text** for that color in that document. The saved rule applies to
+passages with that color, including later native highlights. A color without a
+saved rule grants no editing permission.
+
+Show the zrok account and token instructions during interactive installation.
+Finish enrollment and MCP client setup in Wordplai's Connections flow, with
+clear steps to configure zrok, start access, copy the MCP URL, and verify the
+connection. Users who defer enrollment can use Wordplai locally. Start remote
+access only after an explicit user action. Preserve existing profiles, legacy
+document rules and protection, and the current MCP document and write guards.
+
+The exact installer and workflow must pass the installed Word and real MCP
+client checks in [HANDOFF.md](HANDOFF.md) before publication. Verify the
+published installer and stable download page after release.
+
+### Earlier release acceptance
+
 The 2026-10-21 Windows milestone is full installer readiness with a working MCP
 runtime on the user's PC and a locally saved Setup preference for the author
 of future manuscript edit comments. Resume its acceptance in `HANDOFF.md`;

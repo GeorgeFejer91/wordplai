@@ -78,8 +78,8 @@ namespace UnderTree.WordAddin
                 dynamic range = snapshot.Range(document, placement.From, placement.To);
                 if ((string)range.Text != unit.Quote || WordSnapshot.FormattingSignature(range) != signatures[unit.Id])
                     throw new InvalidOperationException("Word did not preserve a protected unit's exact native text and formatting.");
-                if (!(bool)document.Bookmarks.Exists(unit.Id) || (int)document.Bookmarks.Item(unit.Id).Range.Start != (int)range.Start ||
-                    (int)document.Bookmarks.Item(unit.Id).Range.End != (int)range.End)
+                if (!unit.NativeHighlight && (!(bool)document.Bookmarks.Exists(unit.Id) || (int)document.Bookmarks.Item(unit.Id).Range.Start != (int)range.Start ||
+                    (int)document.Bookmarks.Item(unit.Id).Range.End != (int)range.End))
                     throw new InvalidOperationException("Word did not retain the protected native identity.");
             }
         }

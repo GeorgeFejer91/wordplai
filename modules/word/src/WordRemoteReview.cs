@@ -283,6 +283,8 @@ namespace UnderTree.WordAddin
             string replacement = state.Policy.ResolveReplacement(proposal, before.MainText);
             List<PassageMark> protectedUnits = state.Policy.ProtectedUnits(proposal, before.MainText);
             List<ProtectedPlacement> placements = state.Policy.ProtectedPlacements(proposal, before.MainText);
+            if (tracked && state.Policy.Marks.Any(mark => mark.NativeHighlight && mark.From < proposal.To && proposal.From < mark.To))
+                throw new InvalidOperationException("Resolve the native text highlights in Word before applying this tracked change.");
             RequireParagraphUnit(state, before, proposal);
             before.RequireProse(state.Document, proposal.From, proposal.To, OwnedBookmarks(state), protectedUnits);
             RequireNativeReviewRange(state, before, proposal, tracked);
@@ -345,7 +347,7 @@ namespace UnderTree.WordAddin
                 int delta = replacement.Length - (proposal.To - proposal.From);
                 foreach (PassageMark mark in state.Policy.Marks.ToArray())
                 {
-                    if (mark.Stale) continue;
+                    if (mark.Stale || mark.NativeHighlight) continue;
                     int from = mark.From, to = mark.To;
                     if (to <= proposal.From) continue;
                     if (from >= proposal.To) { from += delta; to += delta; }
@@ -429,6 +431,7 @@ namespace UnderTree.WordAddin
                     throw new InvalidOperationException("Word's replacement did not preserve the surrounding manuscript.");
                 if (after.ContextStories != expectedReview.ContextStories || after.Review.FeedbackIdentity() != expectedReview.Review.FeedbackIdentity())
                     throw new InvalidOperationException("Word's replacement did not preserve the native review discussion.");
+                RefreshNativeHighlightMarks(state, after);
                 diagnostic.Phase = WordNativeOutcome.Stage.commit_receipt;
                 if (tracked)
                 {
