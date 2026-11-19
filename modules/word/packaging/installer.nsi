@@ -21,6 +21,10 @@ VIAddVersionKey "LegalCopyright" "UnderTree contributors"
 !insertmacro MUI_PAGE_WELCOME
 !insertmacro MUI_PAGE_DIRECTORY
 !insertmacro MUI_PAGE_INSTFILES
+!define MUI_FINISHPAGE_TITLE "wordplai is installed"
+!define MUI_FINISHPAGE_TEXT "To connect an AI client:$\r$\n$\r$\n1. Sign in at myzrok.io. In the zrok console, open Getting started and copy your account token.$\r$\n2. In Word, open wordplai > Connections > Setup. Paste the token and choose Configure connection.$\r$\n3. In Overview, choose Start access. Copy the MCP address into your AI client.$\r$\n$\r$\nYou can finish now and connect later."
+!define MUI_FINISHPAGE_LINK "Get your zrok account token"
+!define MUI_FINISHPAGE_LINK_LOCATION "https://netfoundry.io/docs/zrok/get-started/get-token/"
 !insertmacro MUI_PAGE_FINISH
 !insertmacro MUI_UNPAGE_CONFIRM
 !insertmacro MUI_UNPAGE_INSTFILES

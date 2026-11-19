@@ -22,10 +22,13 @@ namespace UnderTree.WordAddin
 
         public void ValidateState()
         {
-            if (Rules == null || Marks == null || Proposals == null || Rules.Count > contract.slots.ruleLimit ||
+            if (Rules == null || Marks == null || Proposals == null || Rules.Count > contract.slots.ruleLimit + 16 ||
                 Marks.Count > contract.limits.marks || Proposals.Count > MaxReceipts || HighlightReceipts == null || HighlightReceipts.Count > MaxReceipts)
                 throw Refusal("Word review metadata is missing or exceeds its limits; preserve the original content.");
             foreach (ColorRule rule in Rules) ValidateRule(rule);
+            var nativeColors = Rules.Where(rule => rule.NativeHighlightIndex != 0).Select(rule => rule.NativeHighlightIndex).ToArray();
+            if (LegacyRuleCount > contract.slots.ruleLimit || nativeColors.Distinct().Count() != nativeColors.Length)
+                throw Refusal("Word review metadata contains too many legacy rules or repeated native highlight rules.");
             foreach (PassageMark mark in Marks) ValidateMark(mark);
             foreach (Proposal proposal in Proposals) ValidateProposal(proposal, true);
             foreach (HighlightReceipt receipt in HighlightReceipts) ValidateHighlightReceipt(receipt);
@@ -55,6 +58,9 @@ namespace UnderTree.WordAddin
                 throw Refusal("Only a wording-prompt color may authorize direct edits.");
             if (rule.Action == "neutral" && rule.Prompt.Length != 0)
                 throw Refusal("A color-only identity has no prompt or AI function.");
+            if (rule.NativeHighlightIndex < 0 || rule.NativeHighlightIndex > 16 ||
+                rule.NativeHighlightIndex != 0 && rule.Action != "neutral" && rule.Action != "prompt" && rule.Action != "protect")
+                throw Refusal("Invalid Word text highlight rule.");
         }
 
         private void ValidateMark(PassageMark mark)
@@ -62,6 +68,8 @@ namespace UnderTree.WordAddin
             if (mark == null || mark.Id == null || !Identifier.IsMatch(mark.Id) ||
                 !Rules.Any(rule => rule.Id == mark.RuleId) || mark.From < 0 || mark.To <= mark.From || mark.To > MaxText)
                 throw Refusal("Invalid passage-highlight identity or range.");
+            if (mark.NativeHighlight != (Rule(mark).NativeHighlightIndex != 0))
+                throw Refusal("A Word text highlight cannot be assigned by a bookmark marker.");
             if (mark.NativeBookmark != null && (mark.NativeBookmark.Length > 40 || !Identifier.IsMatch(mark.NativeBookmark) ||
                 !mark.NativeBookmark.StartsWith("WraiO_", StringComparison.Ordinal)))
                 throw Refusal("Invalid native preserved-mark anchor.");

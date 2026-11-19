@@ -26,11 +26,11 @@ namespace UnderTree.WordAddin
             }
             if (cursor < end) AddAcceptedGap(plan, quote, from, cursor, end);
             if (plan.Marks.Count == 0) return plan;
-            plan.Rule = state.Policy.Rules.FirstOrDefault(rule => rule.Action == "protect" &&
+            plan.Rule = state.Policy.Rules.FirstOrDefault(rule => rule.NativeHighlightIndex == 0 && rule.Action == "protect" &&
                 String.Equals(rule.Color, AcceptedGreen, StringComparison.OrdinalIgnoreCase));
             if (plan.Rule == null)
             {
-                if (state.Policy.Rules.Count >= 24)
+                if (state.Policy.LegacyRuleCount >= 24)
                     throw new InvalidOperationException("Accepted wording cannot be protected until an unused color rule is removed locally.");
                 plan.Rule = new ColorRule { Id = "accepted_" + Guid.NewGuid().ToString("N"), Label = "Accepted wording",
                     Color = AcceptedGreen, Action = "protect", AccessMode = "suggestions", Prompt = "" };

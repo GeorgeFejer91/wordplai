@@ -38,18 +38,18 @@ namespace UnderTree.WordAddin
             ColorRule color;
             if (request.ColorId != null)
             {
-                color = Rules.FirstOrDefault(rule => rule.Id == request.ColorId);
+                color = Rules.FirstOrDefault(rule => rule.NativeHighlightIndex == 0 && rule.Id == request.ColorId);
                 if (color == null) throw Refusal("The selected color identity no longer exists; read the document again.");
             }
             else
             {
-                var matching = Rules.Where(rule => String.Equals(rule.Color, request.Color, StringComparison.OrdinalIgnoreCase)).ToArray();
+                var matching = Rules.Where(rule => rule.NativeHighlightIndex == 0 && String.Equals(rule.Color, request.Color, StringComparison.OrdinalIgnoreCase)).ToArray();
                 if (matching.Length > 1) throw Refusal("Several color identities use that RGB. Select the exact colorId from the current document rules.");
                 color = matching.FirstOrDefault();
                 if (color == null)
                 {
-                    if (Rules.Count >= contract.slots.ruleLimit) throw Refusal("No unused color slot is available.");
-                    color = new ColorRule { Id = "ai_" + Guid.NewGuid().ToString("N"), Label = "AI color " + (Rules.Count + 1),
+                    if (LegacyRuleCount >= contract.slots.ruleLimit) throw Refusal("No unused color slot is available.");
+                    color = new ColorRule { Id = "ai_" + Guid.NewGuid().ToString("N"), Label = "AI color " + (LegacyRuleCount + 1),
                         Color = request.Color == null ? UnusedColor() : request.Color.ToUpperInvariant(), Action = "neutral", Prompt = "", AccessMode = "suggestions" };
                 }
             }
@@ -125,7 +125,8 @@ namespace UnderTree.WordAddin
             string[] palette = { "#F6BD60", "#84A59D", "#F28482", "#A9DEF9", "#CDB4DB", "#B9FBC0", "#FFCFD2", "#CFBAF0",
                 "#98F5E1", "#90DBF4", "#F1C0E8", "#A3C4F3", "#FFC6FF", "#CAFFBF", "#FDFFB6", "#FFD6A5", "#9BF6FF", "#BDB2FF",
                 "#E4C1F9", "#D0F4DE", "#FCF6BD", "#A9D6E5", "#E9C46A", "#E8AEB7", "#BDD5EA", "#C7E9B0", "#D8B4A0", "#B8D8BA" };
-            string result = palette.FirstOrDefault(candidate => Rules.All(rule => Distinguishable(rule.Color, candidate)));
+            string result = palette.FirstOrDefault(candidate => Rules.Where(rule => rule.NativeHighlightIndex == 0)
+                .All(rule => Distinguishable(rule.Color, candidate)));
             if (result == null) throw Refusal("No distinguishable unused color is available.");
             return result;
         }

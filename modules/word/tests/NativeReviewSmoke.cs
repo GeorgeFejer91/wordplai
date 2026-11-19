@@ -64,6 +64,12 @@ internal static partial class NativeReviewSmoke
             string scenario = args.Length < 3 ? "all" : args[2];
             if (scenario == "cli-only") CliAutomation();
             else if (scenario == "stale-marker-only") StaleCachedPromptMarkerRecoversFromCurrentContext();
+            else if (scenario == "native-highlight-palette")
+            {
+                NativeHighlightPalette();
+                NativeHighlightPermissions();
+                NativeHighlightPreservation();
+            }
             else if (scenario == "all" || scenario == "manual-marking-only")
             {
                 if (scenario == "all")
@@ -82,6 +88,9 @@ internal static partial class NativeReviewSmoke
                     NativeRemovalCanBeRejected();
                     NativeUndoRedoRevokesAndRetainsReceipts();
                     LocalPolicyChangesSurviveNativeUndo();
+                    NativeHighlightPalette();
+                    NativeHighlightPermissions();
+                    NativeHighlightPreservation();
                 }
                 ManualParagraphColoring();
             }
@@ -916,6 +925,129 @@ internal static partial class NativeReviewSmoke
         Denied(request, "Revoking sharing immediately blocks the next direct edit of a separately authorized passage.");
         Check(WordSnapshot.Capture(document).MainText == after, "A revoked request preserves the complete manuscript.");
         NoSave();
+    }
+
+    private static void NativeHighlightPalette()
+    {
+        NewFixture("native-highlight-palette", "YellowRed Yellow Shaded.");
+        int start = ((string)document.Content.Text).IndexOf("YellowRed", StringComparison.Ordinal);
+        document.Range(start, start + 6).HighlightColorIndex = 7;
+        document.Range(start + 6, start + 9).HighlightColorIndex = 6;
+        document.Range(start + 10, start + 16).HighlightColorIndex = 7;
+        document.Range(start + 17, start + 23).Font.Shading.BackgroundPatternColor = 65535;
+        document.Range(start + 1, start + 4).Font.Bold = -1;
+        int selectionFrom = (int)application.Selection.Start, selectionTo = (int)application.Selection.End;
+        var palette = UiState.Records(Local("native_highlight_colors"), "colors");
+        Check(palette.Select(color => UiState.Text(color, "name")).SequenceEqual(new[] { "Red", "Yellow" }),
+            "Adjacent and repeated native highlights produce two named colors while shading produces none.");
+        Check(palette.All(color => UiState.Text(color, "action") == "neutral"), "Detected colors initially have no AI function.");
+        Check((int)application.Selection.Start == selectionFrom && (int)application.Selection.End == selectionTo,
+            "Reading native highlights does not move the Word selection.");
+        document.Range(start + 6, start + 9).HighlightColorIndex = 7;
+        document.Range(start + 9, start + 10).HighlightColorIndex = 2;
+        Check(UiState.Records(Local("native_highlight_colors"), "colors").Any(color => UiState.Text(color, "name") == "Blue"),
+            "A differently colored space is detected even when Word's mixed range reports the letters' color.");
+        document.Range(start + 9, start + 10).HighlightColorIndex = 0;
+        document.Range(start + 6, start + 9).HighlightColorIndex = 6;
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 7, "action", "prompt", "prompt", "Improve clarity."));
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 6, "action", "protect", "prompt", ""));
+        Check((int)document.Range(start, start + 6).HighlightColorIndex == 7 &&
+            (int)document.Range(start + 6, start + 9).HighlightColorIndex == 6 &&
+            (int)document.Range(start + 1, start + 4).Font.Bold == -1, "Assigning color rules leaves Word highlighting and bold intact.");
+        document.Save();
+        document.Close(0);
+        document = application.Documents.Open(savedPath, false, false);
+        palette = UiState.Records(Local("native_highlight_colors"), "colors");
+        Check(UiState.Text(palette[0], "action") == "protect" && UiState.Text(palette[1], "prompt") == "Improve clarity.",
+            "The document's native color assignments survive save and reopen.");
+        document.Range(start + 6, start + 9).HighlightColorIndex = 0;
+        Check(UiState.Records(Local("native_highlight_colors"), "colors").Count == 1,
+            "Removing the last red highlight removes its swatch.");
+        Check((bool)document.Undo(1) && UiState.Text(UiState.Records(Local("native_highlight_colors"), "colors")[0], "action") == "protect",
+            "Native Undo restores the red swatch and its saved Preserve text function.");
+        Check((bool)document.Redo(1) && UiState.Records(Local("native_highlight_colors"), "colors").Count == 1,
+            "Native Redo removes the red swatch again.");
+    }
+
+    private static void NativeHighlightPermissions()
+    {
+        const string intro = "Unmarked introduction stays unchanged.";
+        const string ending = "Unmarked conclusion stays unchanged.";
+        NewFixture("native-highlight-permissions", Paragraph);
+        string before = (string)document.Content.Text;
+        int from = before.IndexOf(Paragraph, StringComparison.Ordinal);
+        int endingFrom = before.IndexOf(ending, StringComparison.Ordinal);
+        document.Range(from, from + 1).HighlightColorIndex = 7;
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 7, "action", "prompt", "prompt", "Make this paragraph concise."));
+        document.Range(from, from + Paragraph.Length).HighlightColorIndex = 7;
+        document.Range(endingFrom, endingFrom + ending.Length).HighlightColorIndex = 6;
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 6, "action", "protect", "prompt", ""));
+        document.Range(0, intro.Length).HighlightColorIndex = 2;
+        var context = ShareAndRead();
+        var marks = Rows(context["highlights"]);
+        Check(marks.Any(mark => (int)mark["from"] == from && (int)mark["to"] == from + Paragraph.Length)
+            && marks.Any(mark => (int)mark["from"] == endingFrom && Text(mark, "protectedId").Length > 0)
+            && !marks.Any(mark => (int)mark["from"] == 0), "MCP sees the full later native prompt highlight and the Preserve text unit while the unassigned color grants nothing.");
+        Denied(Request("native-unassigned", context, intro, "The introduction is shorter."), "An unassigned native highlight grants no wording permission.");
+        context = Read();
+        Denied(Request("native-protect", context, ending, "The ending is shorter."), "A native Preserve text highlight refuses changed wording.");
+        int space = from + Paragraph.IndexOf(' ');
+        document.Range(space, space + 1).HighlightColorIndex = 0;
+        context = Read();
+        Check(!Rows(context["highlights"]).Any(mark => (int)mark["from"] <= space && (int)mark["to"] > space),
+            "An unmarked space between two same-color runs remains outside native prompt authority.");
+        Denied(Request("native-space-gap", context, Paragraph, Replacement), "An unmarked space prevents a full-range rewrite.");
+        document.Range(space, space + 1).HighlightColorIndex = 7;
+        context = Read();
+        var stale = Request("native-recolored", context, Paragraph, Replacement);
+        document.Range(from, from + Paragraph.Length).HighlightColorIndex = 2;
+        Denied(stale, "A native recolor invalidates the previous read without editing the manuscript.", "manuscript changed");
+        Check((string)document.Content.Text == before && (int)document.Comments.Count == 0, "Refused native edits leave the manuscript and discussion exact.");
+        document.Range(from, from + Paragraph.Length).HighlightColorIndex = 7;
+        var result = Review("suggest_text", Request("native-approved", Read(), Paragraph, Replacement));
+        Check(Text(result, "status") == "applied" && (string)document.Content.Text == Replace(before, Paragraph, Replacement),
+            "An authorized native prompt edits exactly the requested passage.");
+        Check((int)document.Range(0, intro.Length).HighlightColorIndex == 2 &&
+            (int)document.Range(endingFrom + Replacement.Length - Paragraph.Length, endingFrom + Replacement.Length - Paragraph.Length + ending.Length).HighlightColorIndex == 6,
+            "Unassigned and Preserve text highlights keep their native Word colors after a neighboring edit.");
+        CheckRationaleComments(1);
+    }
+
+    private static void NativeHighlightPreservation()
+    {
+        const string protectedText = "[CITATION]";
+        const string prose = "Wordy text before [CITATION] and more wordy text.";
+        NewFixture("native-highlight-preservation", prose);
+        string before = (string)document.Content.Text;
+        int start = before.IndexOf(prose, StringComparison.Ordinal);
+        int from = before.IndexOf(protectedText, StringComparison.Ordinal);
+        int to = from + protectedText.Length;
+        document.Range(start, from).HighlightColorIndex = 7;
+        document.Range(to, start + prose.Length).HighlightColorIndex = 7;
+        document.Range(from, to).HighlightColorIndex = 6;
+        document.Range(from, to).Font.Italic = -1;
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 7, "action", "prompt", "prompt", "Trim the prose."));
+        Local("save_native_highlight_rule", Values("documentId", documentId, "index", 6, "action", "protect", "prompt", ""));
+        var context = Read();
+        var protectedMark = Rows(context["highlights"]).Single(mark => (int)mark["from"] == from);
+        Denied(Request("native-protection-omitted", context, prose, "Before and after."),
+            "An enclosing native rewrite cannot omit the required protection mapping.", "preservation mapping");
+        var request = Request("native-protection-mapped", Read(), prose, "");
+        request["replacementParts"] = new[] { Values("text", "Before "), Values("protectedId", protectedMark["protectedId"]), Values("text", " after.") };
+        var result = Review("suggest_text", request);
+        int moved = start + "Before ".Length;
+        Check(Text(result, "status") == "applied" && (string)document.Content.Text == Replace(before, prose, "Before [CITATION] after."),
+            "An enclosing rewrite can edit both prompt spans while preserving the native protected unit.");
+        Check((int)document.Range(moved, moved + protectedText.Length).HighlightColorIndex == 6 &&
+            (int)document.Range(moved, moved + protectedText.Length).Font.Italic == -1,
+            "Native Preserve text retains the protected highlight and exact italic formatting.");
+        document.Save();
+        document.Close(0);
+        document = application.Documents.Open(savedPath, false, false);
+        var saved = Read();
+        Check(Rows(saved["highlights"]).Any(mark => (int)mark["from"] == moved && (int)mark["to"] == moved + protectedText.Length && Text(mark, "protectedId").Length > 0) &&
+            (int)document.Range(moved, moved + protectedText.Length).HighlightColorIndex == 6, "The protected unit is reconstructed from its saved native formatting after reopening.");
+        CheckRationaleComments(1);
     }
 
     private static void NewFixture(string name, string paragraph)

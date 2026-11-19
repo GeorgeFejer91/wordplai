@@ -8,27 +8,20 @@ Dialogs use its cream and deep-green palette, with a small logo beside the
 bottom actions. Controls keep their native behavior; high contrast uses system
 colors.
 
-A native Windows Word add-in with a single installer. Select prose, then click
-a color square on Word's **Home** or **wordplai** ribbon to mark it. Double-click
-the square or an already marked passage to open that color's rule dialog.
-Rule windows keep Word available for another passage double-click. Different
-colors open their own matching windows; returning to a color retains its unsaved
-draft. A changed passage can still open its rule through its surviving native
-marker. Current native bookmark ranges, visible colors and saved local rules
-automatically reconcile ordinary local wording changes and recover valid stale
-markers. Missing identities, removed colors, changed paragraph boundaries and
-ambiguous native review/Undo states remain blocked with a specific diagnostic.
-Shading alone never grants permission. Overlapping markers require an
-explicit choice. The dialog places its logo at the top left and shows prompt
-presets in three columns. Wording edits apply directly; there is no mode toggle.
-Only Save color rule applies the chosen function or instructions.
-Color selections may span paragraphs, include their paragraph marks and contain
-manual soft line breaks. AI wording edits still stay within one authorized paragraph.
-Overlapping colors offer an explicit choice. Ribbon keytips provide keyboard
-access. Each of up to 24 colors has its own dialog; there is no central highlight
-or suggestion window. **New color rule** adds a color; **Connections** manages
-AI access. No separate application or tray utility is needed. The installed
-add-in owns its internal tunnel process and private connection profile.
+A native Windows Word add-in with a single installer. Select text and apply a
+color with Word's **Home → Text Highlight Color**. Open **wordplai → Highlight
+rules** to see one swatch per color in the active document. Select a swatch and
+save an **Editing instruction**, **Preserve text**, or **No rule**. The
+assignment is saved in the document and applies when you use that color again.
+The swatches update as you add, remove, or change highlights and switch
+documents. Shading is separate from text highlighting.
+
+AI wording edits apply directly to eligible main-body prose. An unassigned
+color grants no editing permission. Existing documents keep their earlier
+Wordplai rules. Use **Legacy rules at selection** or double-click an earlier
+Wordplai mark to open its rule. An overlapping selection offers a choice.
+**Connections** manages AI access and uses Wordplai's bundled tunnel and private
+connection profile.
 
 In **Connections → Setup**, set **Edit comment author name** and choose
 **Save comment name** to decide which name appears on new edit rationale

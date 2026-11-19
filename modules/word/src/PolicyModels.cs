@@ -10,6 +10,7 @@ namespace UnderTree.WordAddin
         public string Action { get; set; }
         public string Prompt { get; set; }
         public string AccessMode { get; set; }
+        public int NativeHighlightIndex { get; set; }
     }
 
     public sealed class PassageMark
@@ -23,6 +24,7 @@ namespace UnderTree.WordAddin
         public bool Stale { get; set; }
         public bool RequiresRemarking { get; set; }
         public string NativeBookmark { get; set; }
+        public bool NativeHighlight { get; set; }
     }
 
     public sealed class Proposal

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Globalization;
-using System.Text;
 using System.Windows.Forms;
 
 namespace UnderTree.WordAddin
@@ -46,18 +45,11 @@ namespace UnderTree.WordAddin
 
         internal static string GroupXml(string suffix)
         {
-            var xml = new StringBuilder("<group id=\"wrAIterColors" + suffix + "\" label=\" \"><box id=\"wrAIterSwatches" + suffix + "\" boxStyle=\"horizontal\">");
-            for (int slot = 0; slot < 24; slot++)
-            {
-                if (slot % 3 == 0) xml.Append("<box id=\"wrAIterColorColumn" + suffix + slot + "\" boxStyle=\"vertical\">");
-                xml.Append("<button id=\"wrAIterColor" + suffix + slot + "\" tag=\"" + slot + "\" size=\"normal\" showLabel=\"false\" showImage=\"true\" keytip=\"W" + (slot + 1).ToString("00", CultureInfo.InvariantCulture) + "\" getLabel=\"RibbonColorLabel\" getScreentip=\"RibbonColorLabel\" getImage=\"RibbonColorImage\" getVisible=\"RibbonColorEnabled\" getEnabled=\"RibbonColorEnabled\" onAction=\"RibbonColor\"/>");
-                if (slot % 3 == 2) xml.Append("</box>");
-            }
-            xml.Append("</box><box id=\"wrAIterColorActions" + suffix + "\" boxStyle=\"vertical\">");
-            xml.Append("<button id=\"wrAIterNew" + suffix + "\" size=\"normal\" showLabel=\"false\" showImage=\"true\" imageMso=\"TextHighlightColorPicker\" label=\"New color rule\" screentip=\"Define a new color rule\" keytip=\"WN\" onAction=\"RibbonColorRules\"/>");
-            xml.Append("<button id=\"wrAIterSelectionRules" + suffix + "\" size=\"normal\" showLabel=\"false\" showImage=\"true\" imageMso=\"ReviewProtectDocument\" label=\"Rules at selection\" screentip=\"Open rules at highlighted selection (keyboard: ribbon keytip WT)\" keytip=\"WT\" onAction=\"RibbonSelectionRules\"/>");
-            xml.Append("<button id=\"wrAIterSettings" + suffix + "\" tag=\"brand\" size=\"normal\" showLabel=\"false\" showImage=\"true\" getImage=\"RibbonColorImage\" label=\"Connections\" screentip=\"Connections and document context sharing\" keytip=\"WE\" onAction=\"RibbonConnections\"/>");
-            return xml.Append("</box></group>").ToString();
+            return "<group id=\"wrAIterColors" + suffix + "\" label=\"wordplai\">" +
+                "<button id=\"wrAIterNativeHighlights" + suffix + "\" size=\"normal\" label=\"Highlight rules\" imageMso=\"TextHighlightColorPicker\" screentip=\"Assign rules to Word text highlight colors\" keytip=\"WH\" onAction=\"RibbonOpen\"/>" +
+                "<button id=\"wrAIterSelectionRules" + suffix + "\" size=\"normal\" imageMso=\"ReviewProtectDocument\" label=\"Legacy rules at selection\" screentip=\"Open a Wordplai rule from an earlier version at the selection\" keytip=\"WT\" onAction=\"RibbonSelectionRules\"/>" +
+                "<button id=\"wrAIterSettings" + suffix + "\" tag=\"brand\" size=\"normal\" getImage=\"RibbonColorImage\" label=\"Connections\" screentip=\"Connections and document context sharing\" keytip=\"WE\" onAction=\"RibbonConnections\"/>" +
+                "</group>";
         }
 
         private IDictionary<string, object> Rule(object control)

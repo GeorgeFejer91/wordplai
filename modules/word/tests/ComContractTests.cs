@@ -197,22 +197,20 @@ internal static class ComContractTests
             string source = (string)type.GetMethod("GroupXml", BindingFlags.Static | BindingFlags.NonPublic).Invoke(null, new object[] { suffix });
             var xml = new System.Xml.XmlDocument();
             xml.LoadXml(source);
-            Equal("", xml.DocumentElement.GetAttribute("label").Trim(), "Palette group has no visible caption.");
+            Equal("wordplai", xml.DocumentElement.GetAttribute("label"), "Wordplai owns a named ribbon group.");
             System.Xml.XmlNodeList buttons = xml.SelectNodes("//button");
-            Equal(27, buttons.Count, "Palette exposes all 24 colors and three explicit actions.");
-            Equal(8, xml.SelectNodes("//box[starts-with(@id, 'wrAIterColorColumn')]").Count, "All 24 swatches use eight compact native columns.");
-            Equal(24, xml.SelectNodes("//button[@onAction='RibbonColor']").Count, "Every color has a direct ribbon button.");
-            Equal(0, xml.SelectNodes("//button[@onAction='RibbonNextColors' or @onAction='RibbonOpen']").Count, "The ribbon has no paged palette or unified-editor action.");
-            Equal(1, xml.SelectNodes("//button[@label='New color rule']").Count, "New color opens one rule definition.");
+            Equal(3, buttons.Count, "The group exposes the native rules panel, legacy rule access and Connections.");
+            Equal(0, xml.SelectNodes("//button[@onAction='RibbonColor' or @onAction='RibbonNextColors']").Count, "The ribbon uses Word's existing highlighter to mark text.");
+            Equal(1, xml.SelectNodes("//button[@label='Highlight rules' and @onAction='RibbonOpen']").Count, "Highlight rules opens the native swatch panel.");
+            Equal(1, xml.SelectNodes("//button[@onAction='RibbonSelectionRules']").Count, "Existing marked passages retain access to their rules.");
+            Equal(1, xml.SelectNodes("//button[@onAction='RibbonConnections']").Count, "Connections remains directly accessible.");
             foreach (System.Xml.XmlElement button in buttons)
             {
                 Equal("normal", button.GetAttribute("size"), "Palette uses small native controls.");
-                Equal("false", button.GetAttribute("showLabel"), "Palette controls have no visible text.");
-                Equal("true", button.GetAttribute("showImage"), "Palette controls display icons.");
-                Equal(true, button.GetAttribute("keytip").Length > 0, "Icon-only controls retain keyboard access.");
-                Equal(true, button.HasAttribute("getLabel") || button.GetAttribute("label").Length > 0, "Icon-only controls retain accessible names.");
-                Equal(true, button.HasAttribute("getScreentip") || button.GetAttribute("screentip").Length > 0, "Icon-only controls retain tooltips.");
-                Equal(true, button.HasAttribute("getImage") || button.GetAttribute("imageMso").Length > 0, "Icon-only controls have an image source.");
+                Equal(true, button.GetAttribute("keytip").Length > 0, "Ribbon controls retain keyboard access.");
+                Equal(true, button.GetAttribute("label").Length > 0, "Ribbon controls retain accessible names.");
+                Equal(true, button.GetAttribute("screentip").Length > 0, "Ribbon controls retain tooltips.");
+                Equal(true, button.HasAttribute("getImage") || button.GetAttribute("imageMso").Length > 0, "Ribbon controls have an image source.");
             }
         }
     }

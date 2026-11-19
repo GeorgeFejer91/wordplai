@@ -48,6 +48,7 @@ namespace UnderTree.WordAddin
             foreach (PassageMark mark in Marks.Where(mark => !mark.Stale && mark.From < proposal.To && proposal.From < mark.To))
             {
                 if (units.Any(unit => unit.Id == mark.Id)) continue;
+                if (mark.NativeHighlight) continue;
                 if (mark.From <= proposal.From && mark.To >= proposal.To) continue;
                 if (units.Any(unit => mark.From >= unit.From && mark.To <= unit.To)) continue;
                 throw Refusal("An overlapping marker cannot be reanchored unambiguously; resolve it locally before rearranging protection.");

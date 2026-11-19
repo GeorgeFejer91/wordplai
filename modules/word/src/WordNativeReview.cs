@@ -203,7 +203,7 @@ namespace UnderTree.WordAddin
                 state.Policy.InvalidateContext(); state.ReadRevision = null;
                 if (unmatchedUndo)
                 {
-                    foreach (PassageMark mark in state.Policy.Marks)
+                    foreach (PassageMark mark in state.Policy.Marks.Where(mark => !mark.NativeHighlight))
                     {
                         NativeMarker native = LocateMarker(state, snapshot, mark);
                         if (native.Issue != null || native.Quote != mark.Quote) mark.RequiresRemarking = true;
@@ -228,7 +228,7 @@ namespace UnderTree.WordAddin
         private static bool NativeMarksMatch(WordDocumentReview state, WordSnapshot snapshot, List<PassageMark> expected, List<PassageMark> other)
         {
             var expectedIds = new HashSet<string>(expected.Select(mark => mark.Id));
-            foreach (PassageMark mark in other.Where(mark => !expectedIds.Contains(mark.Id)))
+            foreach (PassageMark mark in other.Where(mark => !mark.NativeHighlight && !expectedIds.Contains(mark.Id)))
                 if ((bool)state.Document.Bookmarks.Exists(MarkBookmark(mark))) return false;
             foreach (PassageMark mark in expected.Where(mark => !mark.Stale))
             {

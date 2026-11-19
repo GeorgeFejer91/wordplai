@@ -21,7 +21,7 @@ namespace UnderTree.WordAddin
 
         private void RefreshMarks(WordDocumentReview state, WordSnapshot snapshot)
         {
-            var native = state.Policy.Marks.Select(mark => LocateMarker(state, snapshot, mark)).ToList();
+            var native = state.Policy.Marks.Where(mark => !mark.NativeHighlight).Select(mark => LocateMarker(state, snapshot, mark)).ToList();
             state.MarkerIssues.Clear();
             bool changed = false;
             foreach (NativeMarker current in native)

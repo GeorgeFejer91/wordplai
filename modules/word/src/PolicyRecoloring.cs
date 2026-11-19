@@ -23,6 +23,7 @@ namespace UnderTree.WordAddin
                 string id = request.RecolorMarkIds[index];
                 PassageMark mark = Marks.FirstOrDefault(candidate => candidate.Id == id);
                 if (mark == null) throw Refusal("The selected recolor marker " + id + " no longer exists; read the current document again.");
+                if (mark.NativeHighlight) throw Refusal("Change native text highlight colors in Word.");
                 if (!IsCurrent(mark, text) || mark.RequiresRemarking)
                     throw Refusal("The selected recolor marker " + id + " is stale or unresolved; inspect its current passage in Word.");
                 HighlightRange range = request.Ranges[index];

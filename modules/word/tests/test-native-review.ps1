@@ -1,6 +1,6 @@
-param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly, [switch]$StaleMarkerOnly, [switch]$CliOnly)
+param([string]$OutputDirectory, [string]$WordExecutable, [switch]$ManualMarkingOnly, [switch]$StaleMarkerOnly, [switch]$CliOnly, [switch]$NativeHighlightPalette)
 $ErrorActionPreference = 'Stop'
-$modes = @($ManualMarkingOnly, $StaleMarkerOnly, $CliOnly).Where({ $_ }).Count
+$modes = @($ManualMarkingOnly, $StaleMarkerOnly, $CliOnly, $NativeHighlightPalette).Where({ $_ }).Count
 if ($modes -gt 1) { throw 'Choose only one focused native review scenario.' }
 $repo = (Resolve-Path (Join-Path $PSScriptRoot '../../..')).Path
 if (-not $OutputDirectory) { $OutputDirectory = Join-Path $repo ('artifacts/word/native-review-' + (Get-Date -Format 'yyyyMMdd-HHmmss')) }
@@ -21,6 +21,7 @@ $nativeArguments = @($WordExecutable, (Join-Path $OutputDirectory 'native'))
 if ($ManualMarkingOnly) { $nativeArguments += 'manual-marking-only' }
 if ($StaleMarkerOnly) { $nativeArguments += 'stale-marker-only' }
 if ($CliOnly) { $nativeArguments += 'cli-only' }
+if ($NativeHighlightPalette) { $nativeArguments += 'native-highlight-palette' }
 & $test @nativeArguments 2>&1 | Tee-Object -FilePath (Join-Path $OutputDirectory 'native.log')
 $code = $LASTEXITCODE
 foreach ($entry in $snapshot) {

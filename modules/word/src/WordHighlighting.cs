@@ -46,7 +46,12 @@ namespace UnderTree.WordAddin
             if (!replay && request.Revision != snapshot.Revision) throw new InvalidOperationException("The manuscript changed; read complete context again.");
             string beforeNative = state.NativeEdit.NativeIdentity(state.Document, snapshot);
             ISet<string> ownedBookmarks = OwnedBookmarks(state);
-            foreach (HighlightRange range in ranges) snapshot.RequireProse(state.Document, range.From, range.To, ownedBookmarks, null, true);
+            foreach (HighlightRange range in ranges)
+            {
+                snapshot.RequireProse(state.Document, range.From, range.To, ownedBookmarks, null, true);
+                if (!replay && WordNativeHighlights.ContainsHighlight(snapshot.Range(state.Document, range.From, range.To)))
+                    throw new InvalidOperationException("Change native text highlight colors in Word before applying AI colors here.");
+            }
             if ((int)application.UndoRecord.CustomRecordLevel != 0)
                 throw new InvalidOperationException("Finish the current Word operation before marking text.");
             IntPtr colorFrame = IntPtr.Zero;
@@ -213,7 +218,7 @@ namespace UnderTree.WordAddin
             bool preserveMatchingShading = false)
         {
             snapshot = snapshot ?? WordSnapshot.CaptureTextPositions(state.Document);
-            var repaint = (marks ?? state.Policy.Marks).Where(mark => !mark.Stale).ToList();
+            var repaint = (marks ?? state.Policy.Marks).Where(mark => !mark.Stale && !mark.NativeHighlight).ToList();
             var unchanged = marks == null ? new List<PassageMark>() : state.Policy.Marks.Where(mark => !mark.Stale &&
                 !repaint.Any(candidate => candidate.Id == mark.Id) && state.Policy.Rules.Any(rule => rule.Id == mark.RuleId &&
                     (rule.Action == "protect" || rule.Action == "reject"))).OrderBy(mark => mark.From).ToList();
